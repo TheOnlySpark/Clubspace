@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from './useAuth'
 import { createClient } from '@/lib/supabase/client'
-import type { UserRole } from '@/types/index'
 
 export function useRole() {
   const { user, loading: authLoading } = useAuth()

@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import type { Notification } from '@/types/index'
-import { formatDate } from '@/lib/utils'
 
 export function useNotifications() {
   const [notifications, setNotifications] = useState<Notification[]>([])
@@ -24,7 +23,7 @@ export function useNotifications() {
         return
       }
 
-      const { data, error, count } = await supabase
+      const { data, error } = await supabase
         .from('notifications')
         .select('*', { count: 'exact' })
         .eq('user_id', session.user.id)
