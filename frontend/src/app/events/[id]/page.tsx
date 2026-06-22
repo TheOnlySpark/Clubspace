@@ -1,5 +1,5 @@
 // src/app/events/[id]/page.tsx
-import { GoogleCalendarButton } from '@/components/events/GoogleCalendarButton'
+import GoogleCalendarButton from '@/components/events/GoogleCalendarButton'
 
 export default function EventPage({ params }: { params: { id: string } }) {
   // In a real app, we would fetch the event from the database

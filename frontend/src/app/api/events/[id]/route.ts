@@ -137,7 +137,7 @@ export async function PATCH(
       .select('role')
       .eq('user_id', auth.session.user.id)
       .eq('role', 'super_admin')
-      .then(({ data }) => data?.length > 0)
+      .then(({ data }) => (data?.length ?? 0) > 0)
 
     if (!(isCreator || isClubAdminOrOfficer || isUniversityAdmin || isSuperAdmin)) {
       return NextResponse.json(
@@ -166,7 +166,7 @@ export async function PATCH(
   } catch (error: any) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: error.errors[0].message },
+        { error: error.issues[0]?.message || 'Validation error' },
         { status: 400 }
       )
     }
@@ -252,7 +252,7 @@ export async function DELETE(
       .select('role')
       .eq('user_id', auth.session.user.id)
       .eq('role', 'super_admin')
-      .then(({ data }) => data?.length > 0)
+      .then(({ data }) => (data?.length ?? 0) > 0)
 
     if (!(isCreator || isClubAdminOrOfficer || isUniversityAdmin || isSuperAdmin)) {
       return NextResponse.json(

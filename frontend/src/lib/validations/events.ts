@@ -9,6 +9,7 @@ export const eventSchema = z.object({
   ends_at: z.string().datetime({ offset: true }).or(z.string()),
   capacity: z.number().int().positive().optional(),
   status: z.enum(['draft', 'published', 'cancelled']).default('draft'),
+  club_id: z.string().uuid(),
 });
 
 export const eventIdSchema = z.object({

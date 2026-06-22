@@ -9,7 +9,7 @@ export default function LoginPage() {
         <h2 className="text-2xl font-bold text-primary">Sign in to ClubSpace</h2>
         <LoginForm />
         <p className="text-sm text-muted-foreground">
-          Don't have an account? <a href="/auth/register" className="font-medium text-primary hover:underline">Sign up</a>
+          Don&apos;t have an account? <a href="/auth/register" className="font-medium text-primary hover:underline">Sign up</a>
         </p>
       </div>
     </div>

@@ -32,6 +32,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
       return () => {
         document.removeEventListener('keydown', handleKeyDown)
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open])
 
     if (!open) return null

@@ -2,12 +2,13 @@
 "use client";
 
 import { useEffect, useState } from 'react'
-import { useAuth, useRole } from '@/hooks/useAuth'
-import { createClient } from '@/lib/supabase/server'
+import { useAuth } from '@/hooks/useAuth'
+import { useRole } from '@/hooks/useRole'
+import { createClient } from '@/lib/supabase/client'
 import UniversitySettings from '@/components/admin/UniversitySettings'
 import ClubManager from '@/components/admin/ClubManager'
 import UserRoleTable from '@/components/admin/UserRoleTable'
-import { Button } from '@/components/ui/Button'
+import Button from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
 
 export default function AdminPage() {
@@ -27,6 +28,7 @@ export default function AdminPage() {
   }, [user])
 
   const fetchUniversity = async () => {
+    if (!user) return
     setLoading(true)
     try {
       const supabase = createClient()

@@ -4,8 +4,8 @@ import * as React from 'react'
 import { useState } from 'react'
 import { z } from 'zod'
 import { cn } from '@/lib/utils'
-import { Input } from '@/components/ui/Input'
-import { Button } from '@/components/ui/Button'
+import Input from '@/components/ui/Input'
+import Button from '@/components/ui/Button'
 import { createClient } from '@/lib/supabase/client'
 
 // We'll create a schema for the invite link generation
@@ -79,7 +79,7 @@ export default function InviteGenerator({
       onInviteCreated(newInvite)
     } catch (err: any) {
       if (err instanceof z.ZodError) {
-        setError(err.errors[0].message)
+        setError(err.issues[0]?.message || 'Validation failed')
       } else {
         setError(err.message ?? 'An unexpected error occurred')
       }

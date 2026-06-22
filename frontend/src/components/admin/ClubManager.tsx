@@ -1,8 +1,8 @@
 // src/components/admin/ClubManager.tsx
 "use client";
 import * as React from 'react';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
 
@@ -331,13 +331,12 @@ export default function ClubManager({
                               <label htmlFor={"editDescription-" + club.id} className="block text-sm font-medium text-muted-foreground mb-2">
                                 Description
                               </label>
-                              <input
+                              <Input
                                 id={"editDescription-" + club.id}
                                 type="text"
                                 value={editDescription}
                                 onChange={(e) => setEditDescription(e.target.value)}
                                 className="block w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-file placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                rows={3}
                               />
                             </div>
                             <div className="grid grid-cols-2 gap-4">

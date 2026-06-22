@@ -20,10 +20,10 @@ export default function VerifyEmailPage() {
       <div className="w-full max-w-md space-y-6 text-center">
         <h2 className="text-2xl font-bold text-primary">Verify your email</h2>
         <p className="text-muted-foreground">
-          We've sent a verification link to your email. Please check your inbox and click the link to verify your account.
+          We&apos;ve sent a verification link to your email. Please check your inbox and click the link to verify your account.
         </p>
         <p className="text-xs text-muted-foreground">
-          If you don't see the email, check your spam folder.
+          If you don&apos;t see the email, check your spam folder.
         </p>
       </div>
     </div>

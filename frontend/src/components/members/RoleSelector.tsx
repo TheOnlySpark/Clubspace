@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { Dropdown, DropdownTrigger, DropdownContent } from '@/components/ui/Dropdown'
-import { Button } from '@/components/ui/Button'
+import Button from '@/components/ui/Button'
 
 type Role = 'member' | 'officer' | 'club_admin' | 'university_admin' | 'super_admin'
 

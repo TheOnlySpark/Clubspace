@@ -2,11 +2,12 @@
 "use client";
 
 import { useState, useEffect } from 'react'
-import { useAuth, useRole } from '@/hooks/useAuth'
-import { createClient } from '@/lib/supabase/server'
+import { useAuth } from '@/hooks/useAuth'
+import { useRole } from '@/hooks/useRole'
+import { createClient } from '@/lib/supabase/client'
 import InviteGenerator from '@/components/invites/InviteGenerator'
 import InviteTable from '@/components/invites/InviteTable'
-import { Button } from '@/components/ui/Button'
+import Button from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
 import { formatDate } from '@/lib/utils'
 
@@ -235,7 +236,7 @@ export default function SettingsPage() {
           <h2 className="text-2xl font-bold text-primary">Loading settings...</h2>
         </div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -264,7 +265,7 @@ export default function SettingsPage() {
             Go to clubs
           </a>
         </div>
-      </div)
+      </div>
     )
   }
 

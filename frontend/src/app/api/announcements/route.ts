@@ -136,7 +136,7 @@ export async function POST(request: Request) {
       .select('role')
       .eq('user_id', userId)
       .eq('role', 'super_admin')
-      .then(({ data }) => data?.length > 0)
+      .then(({ data }) => (data?.length ?? 0) > 0)
 
     if (!(isClubAdminOrOfficer || isUniversityAdmin || isSuperAdmin)) {
       return NextResponse.json(

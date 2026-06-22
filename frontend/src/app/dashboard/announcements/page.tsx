@@ -1,14 +1,14 @@
+"use client";
+
 // src/app/dashboard/announcements/page.tsx
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { useRole } from '@/hooks/useRole'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
 import AnnouncementForm from '@/components/announcements/AnnouncementForm'
 import AnnouncementList from '@/components/announcements/AnnouncementList'
 import NotificationInbox from '@/components/announcements/NotificationInbox'
 import Button from '@/components/ui/Button'
-
-"use client";
 
 export default function AnnouncementsPage() {
   const { user } = useAuth()
@@ -89,6 +89,7 @@ export default function AnnouncementsPage() {
 
   // Handle announcement creation/update
   async function handleAnnouncementSubmit(announcementData: any) {
+    if (!user) return
     try {
       const supabase = createClient()
 
@@ -240,7 +241,7 @@ export default function AnnouncementsPage() {
   }
 
   // Load announcements on mount
-  React.useEffect(() => {
+  useEffect(() => {
     loadAnnouncements()
   }, [user])
 
@@ -266,9 +267,9 @@ export default function AnnouncementsPage() {
         </div>
       </div>
     );
-}
+  }
 
-return (
+  return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold text-primary">Announcements</h1>
@@ -312,10 +313,10 @@ return (
         </div>
       )}
 
-      {/* Notification inbox (we can place it in the sidebar, but for now we'll put it at the bottom)} */
-        <div className="mt-6 border-t pt-6">
-          <NotificationInbox />
-        </div>
+      {/* Notification inbox (we can place it in the sidebar, but for now we'll put it at the bottom) */}
+      <div className="mt-6 border-t pt-6">
+        <NotificationInbox />
+      </div>
     </div>
   )
 }

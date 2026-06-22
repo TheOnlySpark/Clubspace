@@ -2,14 +2,11 @@
 import React from 'react'
 import { cn } from '@/lib/utils'
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
   size?: 'default' | 'sm' | 'lg' | 'icon'
   asChild?: boolean
-  className?: string
-  disabled?: boolean
-  type?: 'button' | 'submit' | 'reset'
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

@@ -4,8 +4,8 @@ import * as React from 'react'
 import { useState } from 'react'
 import { z } from 'zod'
 import { cn } from '@/lib/utils'
-import { Input } from '@/components/ui/Input'
-import { Button } from '@/components/ui/Button'
+import Input from '@/components/ui/Input'
+import Button from '@/components/ui/Button'
 import { eventSchema } from '@/lib/validations/events'
 
 interface EventFormProps {

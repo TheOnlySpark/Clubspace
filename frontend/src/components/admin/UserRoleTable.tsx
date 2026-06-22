@@ -1,7 +1,7 @@
 // src/components/admin/UserRoleTable.tsx
 "use client";
 import * as React from 'react';
-import { Button } from '@/components/ui/Button';
+import Button from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
 

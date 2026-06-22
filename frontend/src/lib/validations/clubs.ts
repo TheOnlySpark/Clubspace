@@ -6,6 +6,7 @@ export const clubSchema = z.object({
   description: z.string().max(500).optional(),
   privacy: z.enum(['public', 'university', 'members']).default('university'),
   join_policy: z.enum(['open', 'invite', 'approval']).default('invite'),
+  university_id: z.string().uuid().optional(),
 });
 
 export const clubIdSchema = z.object({

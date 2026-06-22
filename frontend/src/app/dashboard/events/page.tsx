@@ -2,11 +2,12 @@
 "use client";
 
 import { useState } from 'react'
-import { useAuth, useRole } from '@/hooks/useAuth'
-import { createClient } from '@/lib/supabase/server'
+import { useAuth } from '@/hooks/useAuth'
+import { useRole } from '@/hooks/useRole'
+import { createClient } from '@/lib/supabase/client'
 import EventCard from '@/components/events/EventCard'
 import EventForm from '@/components/events/EventForm'
-import { Button } from '@/components/ui/Button'
+import Button from '@/components/ui/Button'
 import { formatDate } from '@/lib/utils'
 
 export default function EventsPage() {

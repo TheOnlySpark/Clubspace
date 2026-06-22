@@ -1,8 +1,8 @@
 // src/components/admin/UniversitySettings.tsx
 "use client";
 import * as React from 'react';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
 
@@ -46,8 +46,8 @@ export default function UniversitySettings({
         slug: slug.trim(),
         domain_allowlist: domainList
           .split(',')
-          .map((d) => d.trim())
-          .filter((d) => d.length > 0),
+          .map((d: string) => d.trim())
+          .filter((d: string) => d.length > 0),
       };
 
       const { error: updateError } = await supabase

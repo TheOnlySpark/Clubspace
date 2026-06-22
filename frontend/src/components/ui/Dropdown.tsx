@@ -103,6 +103,7 @@ const DropdownContent = React.forwardRef<HTMLDivElement, DropdownContentProps>(
         document.removeEventListener('keydown', handleKeyDown)
         document.removeEventListener('click', handleClickOutside, true)
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open, onClose])
 
     if (!open) return null

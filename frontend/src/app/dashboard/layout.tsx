@@ -1,7 +1,7 @@
 // src/app/dashboard/layout.tsx
 import type { Metadata } from 'next'
-import { Sidebar } from '@/components/layout/Sidebar'
-import { Navbar } from '@/components/layout/Navbar'
+import Sidebar from '@/components/layout/Sidebar'
+import Navbar from '@/components/layout/Navbar'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 

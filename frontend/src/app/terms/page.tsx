@@ -14,7 +14,7 @@ export default function TermsPage() {
             <div className="space-y-4">
               <h2 className="text-xl font-semibold text-primary">1. Acceptance of Terms</h2>
               <p className="text-muted-foreground">
-                By accessing or using ClubSpace ("Service"), you agree to be bound by these Terms of Service. If you do not agree to any part of these terms, you may not use the Service.
+                By accessing or using ClubSpace (&quot;Service&quot;), you agree to be bound by these Terms of Service. If you do not agree to any part of these terms, you may not use the Service.
               </p>
             </div>
 
@@ -56,7 +56,7 @@ export default function TermsPage() {
             <div className="space-y-4">
               <h2 className="text-xl font-semibold text-primary">7. Disclaimer of Warranties</h2>
               <p className="text-muted-foreground">
-                The Service is provided on an "AS IS" and "AS AVAILABLE" basis, without warranties of any kind, either express or implied, including but not limited to warranties of title or implied warranties of merchantability or fitness for a particular purpose.
+                The Service is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis, without warranties of any kind, either express or implied, including but not limited to warranties of title or implied warranties of merchantability or fitness for a particular purpose.
               </p>
             </div>
 

@@ -131,7 +131,7 @@ export async function PATCH(
           university_id: targetUniversityId,
           role: parsed.role,
         },
-        { onConflict: ['user_id', 'university_id'] }
+        { onConflict: 'user_id, university_id' }
       )
       .select()
       .single()

@@ -1,11 +1,13 @@
 // src/app/dashboard/members/page.tsx
+"use client"
 import { useState } from 'react'
-import { useAuth, useRole } from '@/hooks/useAuth'
-import { createClient } from '@/lib/supabase/server'
+import { useAuth } from '@/hooks/useAuth'
+import { useRole } from '@/hooks/useRole'
+import { createClient } from '@/lib/supabase/client'
 import MemberTable from '@/components/members/MemberTable'
 import RoleSelector from '@/components/members/RoleSelector'
 import RemoveMemberModal from '@/components/members/RemoveMemberModal'
-import { Button } from '@/components/ui/Button'
+import Button from '@/components/ui/Button'
 import { formatDate } from '@/lib/utils'
 
 export default function MembersPage() {
@@ -165,7 +167,7 @@ return (
 
       {members.length > 0 ? (
         <MemberTable
-          columns=[
+          columns={[
             {
               accessor: 'first_name',
               header: 'First Name',
@@ -191,7 +193,7 @@ return (
               header: 'Joined',
               sortable: true,
             },
-          ]
+          ]}
           data={members}
           onRowClick={(member) => {
             setSelectedMember(member)

@@ -2,8 +2,8 @@
 "use client"
 import * as React from 'react'
 import { cn } from '@/lib/utils'
-import { Modal } from '@/components/ui/Modal'
-import { Button } from '@/components/ui/Button'
+import Modal from '@/components/ui/Modal'
+import Button from '@/components/ui/Button'
 
 interface RemoveMemberModalProps {
   member: {

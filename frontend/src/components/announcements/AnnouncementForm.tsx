@@ -4,8 +4,8 @@ import * as React from 'react'
 import { useState } from 'react'
 import { z } from 'zod'
 import { cn } from '@/lib/utils'
-import { Input } from '@/components/ui/Input'
-import { Button } from '@/components/ui/Button'
+import Input from '@/components/ui/Input'
+import Button from '@/components/ui/Button'
 import { announcementSchema } from '@/lib/validations/announcements'
 import { createClient } from '@/lib/supabase/client'
 
@@ -20,7 +20,7 @@ export default function AnnouncementForm({
   initialData,
   isEditing = false,
 }: AnnouncementFormProps) {
-  const [formData, setFormData] = useState<z.infer<typeof announcementSchema>>({
+  const [formData, setFormData] = useState<Partial<z.infer<typeof announcementSchema>>>({
     title: '',
     body: '',
     ...(initialData || {}),
@@ -50,7 +50,7 @@ export default function AnnouncementForm({
     } catch (err: any) {
       if (err instanceof z.ZodError) {
         const fieldErrors: Partial<Record<keyof z.infer<typeof announcementSchema>, string>> = {}
-        err.errors.forEach(error => {
+        err.issues.forEach(error => {
           const field = error.path[0] as keyof z.infer<typeof announcementSchema>
           fieldErrors[field] = error.message
         })

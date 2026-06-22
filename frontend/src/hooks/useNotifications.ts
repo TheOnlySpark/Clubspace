@@ -97,6 +97,7 @@ export function useNotifications() {
   // Fetch notifications on mount and when we want to refetch
   useEffect(() => {
     fetchNotifications()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // We could also subscribe to real-time changes, but for simplicity we'll just fetch on mount.

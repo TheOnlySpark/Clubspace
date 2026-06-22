@@ -2,8 +2,8 @@
 "use client"
 import * as React from 'react'
 import { cn } from '@/lib/utils'
-import { Input } from '@/components/ui/Input'
-import { Button } from '@/components/ui/Button'
+import Input from '@/components/ui/Input'
+import Button from '@/components/ui/Button'
 import { Table, Thead, Tbody, Tr, Th, Td } from '@/components/ui/Table'
 
 interface MemberTableProps<T> {

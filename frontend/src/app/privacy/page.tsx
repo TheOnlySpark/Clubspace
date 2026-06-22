@@ -14,7 +14,7 @@ export default function PrivacyPage() {
             <div className="space-y-4">
               <h2 className="text-xl font-semibold text-primary">1. Introduction</h2>
               <p className="text-muted-foreground">
-                ClubSpace ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service.
+                ClubSpace (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service.
               </p>
             </div>
 

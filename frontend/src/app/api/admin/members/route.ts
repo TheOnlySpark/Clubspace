@@ -58,7 +58,7 @@ export async function GET(
 
     // Fetch members (profiles) for the university with their roles
     // We'll join profiles with user_roles to get the role
-    let query = supabase
+    const query = supabase
       .from('profiles')
       .select(`
         id,

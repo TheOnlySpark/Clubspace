@@ -1,7 +1,9 @@
 // src/app/dashboard/superadmin/page.tsx
+"use client"
 import { useEffect, useState } from 'react'
-import { useAuth, useRole } from '@/hooks/useAuth'
-import { Button } from '@/components/ui/Button'
+import { useAuth } from '@/hooks/useAuth'
+import { useRole } from '@/hooks/useRole'
+import Button from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
 
 export default function SuperAdminPage() {
