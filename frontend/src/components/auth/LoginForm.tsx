@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { cn } from '@/lib/utils'
 import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
+import { createClient } from '@/lib/supabase/client'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -26,20 +27,20 @@ export default function LoginForm() {
 
     try {
       const parsed = loginSchema.parse({ email, password })
-      // Call API
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(parsed),
+      // Call Supabase directly
+      const supabase = createClient()
+      const { error: authError } = await supabase.auth.signInWithPassword({
+        email: parsed.email,
+        password: parsed.password,
       })
 
-      if (!res.ok) {
-        const errorData = await res.json()
-        throw new Error(errorData.error || 'Login failed')
+      if (authError) {
+        throw new Error(authError.message)
       }
 
       // On success, redirect to dashboard
       router.push('/dashboard')
+      router.refresh()
     } catch (err: any) {
       setError(err.message ?? 'An unexpected error occurred')
     } finally {
