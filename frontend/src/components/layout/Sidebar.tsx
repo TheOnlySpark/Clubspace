@@ -154,7 +154,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
             </div>
             <div className="space-y-0.5 overflow-hidden">
               <p className="text-sm font-semibold text-foreground truncate">User Profile</p>
-              <p className="text-xs text-primary/80 truncate capitalize">{role.replace('_', ' ')}</p>
+              <p className="text-xs text-primary/80 truncate capitalize">{role ? role.replace('_', ' ') : 'Loading...'}</p>
             </div>
           </div>
         </div>
