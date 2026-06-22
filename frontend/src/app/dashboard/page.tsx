@@ -73,7 +73,7 @@ export default async function DashboardPage() {
       .gte('starts_at', now)
 
     if (!eventsListError) {
-      upcomingEventsCount = eventsCountRaw || 0
+      upcomingEventsCount = eventsCountRaw ?? 0
     }
   }
 
