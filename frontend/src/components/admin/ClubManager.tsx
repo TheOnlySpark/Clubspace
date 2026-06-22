@@ -178,7 +178,7 @@ export default function ClubManager({
       <h2 className="text-lg font-semibold text-primary mb-4">Clubs in University</h2>
 
       {/* Create Club Form */}
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="glass-panel border border-white/10 rounded-xl p-6">
         <h3 className="text-xl font-semibold text-primary mb-4">Create New Club</h3>
         <form onSubmit={handleCreateSubmit} className="space-y-4">
           <div>
@@ -248,44 +248,44 @@ export default function ClubManager({
 
       {/* Clubs List */}
       {clubs.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="glass-panel border border-white/10 rounded-xl p-6">
           <h3 className="text-xl font-semibold text-primary mb-4">Club List</h3>
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-white/10">
+              <thead className="bg-white/5 border-b border-white/10">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Name
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Description
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Privacy
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Join Policy
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="divide-y divide-white/10">
                 {clubs.map((club) => (
-                  <tr key={club.id} className={editingClubId === club.id ? 'bg-blue-50' : ''}>
+                  <tr key={club.id} className={editingClubId === club.id ? 'bg-white/10' : 'hover:bg-white/5 transition-colors'}>
                     {!editingClubId || editingClubId !== club.id ? (
                       <>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
                           {club.name}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                           {club.description || ''}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground capitalize">
                           {club.privacy}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrow text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground capitalize">
                           {club.join_policy}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">

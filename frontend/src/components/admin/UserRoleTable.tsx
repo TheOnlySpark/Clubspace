@@ -99,32 +99,32 @@ export default function UserRoleTable({
       {members.length > 0 && (
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead className="bg-white/5 border-b border-white/10">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Student Number
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Role
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-white/10">
               {members.map((member) => (
-                <tr key={member.id} className={updating === member.id ? 'bg-blue-50' : ''}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <tr key={member.id} className={updating === member.id ? 'bg-white/10' : 'hover:bg-white/5 transition-colors'}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
                     {member.first_name || ''} {member.last_name || ''}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                     {member.student_number || ''}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground capitalize">
                     {member.role}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -133,13 +133,13 @@ export default function UserRoleTable({
                       value={member.role}
                       onChange={(e) => handleRoleChange(member.id, e.target.value)}
                       disabled={updating === member.id}
-                      className="block w-sm rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-file placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="block w-sm rounded-md border border-white/10 bg-white/5 backdrop-blur-md px-3 py-2 text-sm text-foreground ring-offset-file placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      <option value="member">Member</option>
-                      <option value="officer">Officer</option>
-                      <option value="club_admin">Club Admin</option>
-                      <option value="university_admin">University Admin</option>
-                      <option value="super_admin">Super Admin</option>
+                      <option value="member" className="bg-black text-white">Member</option>
+                      <option value="officer" className="bg-black text-white">Officer</option>
+                      <option value="club_admin" className="bg-black text-white">Club Admin</option>
+                      <option value="university_admin" className="bg-black text-white">University Admin</option>
+                      <option value="super_admin" className="bg-black text-white">Super Admin</option>
                     </select>
                     {updating === member.id && (
                       <span className="text-xs text-muted-foreground">Updating...</span>
