@@ -8,17 +8,21 @@ interface DropdownProps {
   className?: string
 }
 
-interface DropdownTriggerProps {
+interface DropdownTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
   className?: string
+  open?: boolean
+  onOpenChange?: () => void
 }
 
-interface DropdownContentProps {
+interface DropdownContentProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string
   children: React.ReactNode
   sideOffset?: number
   align?: 'start' | 'end'
   collisionPadding?: number
+  open?: boolean
+  onClose?: () => void
 }
 
 const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
@@ -60,7 +64,7 @@ Dropdown.displayName = 'Dropdown'
 const DropdownTrigger = React.forwardRef<(HTMLButtonElement | HTMLDivElement) & { __disabledUnderscoreDropdownTrigger?: undefined }, DropdownTriggerProps>(
   ({ className, children, open, onOpenChange, ...props }, ref) => {
     const handleClick = () => {
-      onOpenChange()
+      onOpenChange?.()
     }
 
     return (
@@ -89,12 +93,12 @@ const DropdownContent = React.forwardRef<HTMLDivElement, DropdownContentProps>(
       if (!open) return
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
-          onClose()
+          onClose?.()
         }
       }
       const handleClickOutside = (e: MouseEvent) => {
-        if (ref.current && !ref.current.contains(e.target as Node)) {
-          onClose()
+        if (ref && typeof ref !== 'function' && ref.current && !ref.current.contains(e.target as Node)) {
+          onClose?.()
         }
       }
       document.addEventListener('keydown', handleKeyDown)

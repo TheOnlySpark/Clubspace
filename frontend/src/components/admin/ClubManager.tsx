@@ -197,9 +197,8 @@ export default function ClubManager({
             <label htmlFor="createDescription" className="block text-sm font-medium text-muted-foreground mb-2">
               Description
             </label>
-            <input
+            <textarea
               id="createDescription"
-              type="text"
               value={createDescription}
               onChange={(e) => setCreateDescription(e.target.value)}
               className="block w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-file placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -384,7 +383,7 @@ export default function ClubManager({
                                 Cancel
                               </Button>
                               <Button
-                                variant="primary"
+                                variant="default"
                                 size="sm"
                                 onClick={handleUpdateSubmit}
                                 disabled={updateLoading === club.id}

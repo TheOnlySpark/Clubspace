@@ -3,7 +3,7 @@
 import React from 'react'
 import { cn } from '@/lib/utils'
 
-interface TableProps {
+interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> {
   className?: string
   children: React.ReactNode
 }
@@ -35,7 +35,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
 )
 Table.displayName = 'Table'
 
-interface TheadProps {
+interface TheadProps extends React.HTMLAttributes<HTMLTableSectionElement> {
   className?: string
   children: React.ReactNode
 }
@@ -44,7 +44,7 @@ const Thead = React.forwardRef<HTMLTableSectionElement, TheadProps>(({ className
 ))
 Thead.displayName = 'Thead'
 
-interface TbodyProps {
+interface TbodyProps extends React.HTMLAttributes<HTMLTableSectionElement> {
   className?: string
   children: React.ReactNode
 }
@@ -53,18 +53,18 @@ const Tbody = React.forwardRef<HTMLTableSectionElement, TbodyProps>(({ className
 ))
 Tbody.displayName = 'Tbody'
 
-interface TrProps {
+interface TrProps extends React.HTMLAttributes<HTMLTableRowElement> {
   className?: string
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 const Tr = React.forwardRef<HTMLTableRowElement, TrProps>(({ className, ...props }, ref) => (
   <tr ref={ref} className={cn(' hover:bg-muted/50', className)} {...props} />
 ))
 Tr.displayName = 'Tr'
 
-interface ThProps {
+interface ThProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
   className?: string
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 const Th = React.forwardRef<HTMLTableCellElement, ThProps>(({ className, ...props }, ref) => (
   <th
@@ -78,9 +78,9 @@ const Th = React.forwardRef<HTMLTableCellElement, ThProps>(({ className, ...prop
 ))
 Th.displayName = 'Th'
 
-interface TdProps {
+interface TdProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
   className?: string
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 const Td = React.forwardRef<HTMLTableCellElement, TdProps>(({ className, ...props }, ref) => (
   <td

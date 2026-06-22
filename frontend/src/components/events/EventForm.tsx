@@ -27,6 +27,7 @@ export default function EventForm({
     ends_at: '',
     capacity: undefined,
     status: 'draft',
+    club_id: '',
     ...(initialData || {}),
   })
   const [errors, setErrors] = useState<Partial<Record<keyof z.infer<typeof eventSchema>, string>>>({})

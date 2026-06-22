@@ -1,6 +1,7 @@
 // src/components/events/AttendanceTable.tsx
 "use client"
 import * as React from 'react'
+import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import Button from '@/components/ui/Button'
 import { Table, Thead, Tbody, Tr, Th, Td } from '@/components/ui/Table'
@@ -156,7 +157,7 @@ export default function AttendanceTable({ eventId }: AttendanceTableProps) {
     )
   }
 
-  const isAttending = !!currentUserId && attendees.some((a) => a.id === currentUserId)
+  const isAttending = !!currentUserId && attendees.some((a: any) => a.id === currentUserId)
 
   return (
     <div className="space-y-6">
@@ -189,7 +190,7 @@ export default function AttendanceTable({ eventId }: AttendanceTableProps) {
               </Td>
             </Tr>
           ) : (
-            attendees.map((attendee, index) => (
+            attendees.map((attendee: any, index: number) => (
               <Tr key={index}>
                 <Td>
                   {attendee.first_name} {attendee.last_name}

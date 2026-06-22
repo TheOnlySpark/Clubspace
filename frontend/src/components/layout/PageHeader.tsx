@@ -1,11 +1,13 @@
 // src/components/layout/PageHeader.tsx
 "use client"
+import React from 'react'
 import { cn } from '@/lib/utils'
 
-interface PageHeaderProps {
+interface PageHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string
   description?: string
   className?: string
+  children?: React.ReactNode
 }
 
 const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(

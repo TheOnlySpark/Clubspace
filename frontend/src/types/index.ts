@@ -93,6 +93,7 @@ export type Notification = {
   announcement_id: string;
   read: boolean;
   created_at: string;
+  announcement?: any;
 };
 
 export type InviteLink = {

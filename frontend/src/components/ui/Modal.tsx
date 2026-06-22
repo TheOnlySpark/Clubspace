@@ -13,7 +13,7 @@ interface ModalProps {
 
 const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
   ({ open, onOpenChange, children, className, ...props }, ref) => {
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onOpenChange(false)
       }

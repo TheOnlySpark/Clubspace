@@ -54,12 +54,12 @@ export default function MemberTable<T>({
 
       if (typeof aValue === 'string') {
         return sortConfig.direction === 'asc'
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue)
+          ? aValue.localeCompare(bValue as unknown as string)
+          : (bValue as unknown as string).localeCompare(aValue)
       }
 
       if (typeof aValue === 'number') {
-        return sortConfig.direction === 'asc' ? aValue - bValue : bValue - aValue
+        return sortConfig.direction === 'asc' ? aValue - (bValue as unknown as number) : (bValue as unknown as number) - aValue
       }
 
       return 0
@@ -100,7 +100,7 @@ export default function MemberTable<T>({
           <Tr>
             {columns.map((column) => (
               <Th
-                key={column.accessor}
+                key={String(column.accessor)}
                 onClick={() => column.sortable && handleSort(column.accessor)}
                 className={cn(
                   'cursor-pointer',
@@ -139,8 +139,8 @@ export default function MemberTable<T>({
                 {columns.map((column) => {
                   const value = row[column.accessor]
                   return (
-                    <Td key={column.accessor}>
-                      {typeof value === 'date' ? value.toLocaleDateString() : value}
+                    <Td key={String(column.accessor)}>
+                      {value instanceof Date ? value.toLocaleDateString() : String(value)}
                     </Td>
                   )
                 })}
