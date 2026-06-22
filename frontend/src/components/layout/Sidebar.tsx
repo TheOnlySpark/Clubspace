@@ -4,6 +4,7 @@ import React from 'react'
 import { cn } from '@/lib/utils'
 import { useRole } from '@/hooks/useRole'
 import { usePathname } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 interface SidebarProps {
   className?: string
