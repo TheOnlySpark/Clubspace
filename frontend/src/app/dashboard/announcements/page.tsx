@@ -120,6 +120,7 @@ export default function AnnouncementsPage() {
         .from('club_memberships')
         .select('club_id, clubs!inner(university_id)')
         .eq('user_id', userId)
+        .in('role', ['admin', 'officer'])
         .eq('clubs.university_id', universityId)
 
       if (userClubsError) {

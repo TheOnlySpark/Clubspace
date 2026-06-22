@@ -71,13 +71,6 @@ export type Event = {
   created_at: string;
 };
 
-export type EventAttendance = {
-  id: string;
-  event_id: string;
-  user_id: string;
-  marked_at: string;
-};
-
 export type Announcement = {
   id: string;
   club_id: string;

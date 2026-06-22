@@ -52,18 +52,6 @@ export async function GET(
       throw eventsError
     }
 
-    // Fetch event attendance
-    const { data: attendance, error: attendanceError } = await adminClient
-      .from('event_attendance')
-      .select(`
-        *,
-        events!inner(id, title, description, starts_at, ends_at)
-      `)
-      .eq('user_id', userId)
-
-    if (attendanceError && attendanceError.code !== 'PGRST116') {
-      throw attendanceError
-    }
 
     // Fetch announcements created by the user
     const { data: announcements, error: announcementsError } = await adminClient
@@ -113,7 +101,6 @@ export async function GET(
       profile: profile || null,
       memberships: memberships || [],
       events: events || [],
-      attendance: attendance || [],
       announcements: announcements || [],
       notifications: notifications || [],
       invite_links: invites || [],
