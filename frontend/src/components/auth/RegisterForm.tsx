@@ -39,8 +39,16 @@ export default function RegisterForm() {
       })
 
       if (!res.ok) {
-        const errorData = await res.json()
-        throw new Error(errorData.error || 'Registration failed')
+        let errorMessage = 'Registration failed'
+        const contentType = res.headers.get('content-type')
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await res.json()
+          errorMessage = errorData.error || errorMessage
+        } else {
+          // It's likely an HTML error page from the server crashing
+          errorMessage = 'Server error: Invalid response from server. Please check your configuration.'
+        }
+        throw new Error(errorMessage)
       }
 
       // On success, redirect to verify email page
