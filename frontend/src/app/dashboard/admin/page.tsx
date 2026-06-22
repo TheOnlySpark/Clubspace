@@ -46,6 +46,10 @@ export default function AdminPage() {
 
       const universityId = profile.university_id
 
+      if (!universityId) {
+        throw new Error('You are not associated with any university. Please contact a super admin.')
+      }
+
       // Get the university details
       const { data: universityData, error: universityError } = await supabase
         .from('universities')

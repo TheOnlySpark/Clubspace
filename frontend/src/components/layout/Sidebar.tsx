@@ -148,14 +148,24 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           </ul>
         </nav>
         <div className="flex h-[72px] items-center px-4 mt-auto border-t border-white/5 bg-white/5 backdrop-blur-md">
-          <div className="flex items-center space-x-3 w-full p-2 rounded-xl hover:bg-white/5 transition-colors cursor-pointer">
-            <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-primary to-accent flex items-center justify-center text-white font-bold shadow-lg shadow-primary/20">
+          <div 
+            onClick={async () => {
+              const supabase = createClient()
+              await supabase.auth.signOut()
+              window.location.href = '/auth/login'
+            }}
+            className="flex items-center space-x-3 w-full p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer group"
+          >
+            <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-primary to-accent flex items-center justify-center text-white font-bold shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform">
               U
             </div>
-            <div className="space-y-0.5 overflow-hidden">
-              <p className="text-sm font-semibold text-foreground truncate">User Profile</p>
+            <div className="space-y-0.5 overflow-hidden flex-1">
+              <p className="text-sm font-semibold text-foreground truncate group-hover:text-red-400 transition-colors">Sign Out</p>
               <p className="text-xs text-primary/80 truncate capitalize">{role ? role.replace('_', ' ') : 'Loading...'}</p>
             </div>
+            <svg className="w-5 h-5 text-muted-foreground group-hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
           </div>
         </div>
       </aside>

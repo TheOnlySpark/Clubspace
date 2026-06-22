@@ -30,8 +30,7 @@ export async function GET(
       )
     }
 
-    // Fetch all users with their profiles and roles
-    // We'll join profiles with user_roles to get the role and university
+    // Fetch all users with their profiles
     const { data: users, error: usersError } = await supabase
       .from('profiles')
       .select(`
@@ -40,14 +39,21 @@ export async function GET(
         last_name,
         student_number,
         department_id,
-        user_roles(role),
         universities!inner(id, name)
       `)
       .order('created_at', { ascending: false })
 
-    if (usersError) {
-      throw usersError
-    }
+    if (usersError) throw usersError
+
+    // Fetch user roles separately to avoid PostgREST relationship errors
+    const { data: roles, error: rolesError } = await supabase
+      .from('user_roles')
+      .select('user_id, role')
+
+    if (rolesError) throw rolesError
+
+    // Map roles by user_id for quick lookup
+    const roleMap = new Map(roles.map(r => [r.user_id, r.role]))
 
     // Transform data to flatten the role and university
     const transformed = users.map((user: any) => ({
@@ -56,7 +62,7 @@ export async function GET(
       last_name: user.last_name,
       student_number: user.student_number,
       department_id: user.department_id,
-      role: user.user_roles?.role || 'member',
+      role: roleMap.get(user.id) || 'member',
       university: {
         id: user.universities?.id,
         name: user.universities?.name,

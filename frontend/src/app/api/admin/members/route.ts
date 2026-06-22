@@ -56,9 +56,8 @@ export async function GET(
       )
     }
 
-    // Fetch members (profiles) for the university with their roles
-    // We'll join profiles with user_roles to get the role
-    const query = supabase
+    // Fetch members (profiles) for the university
+    const { data: members, error: membersError } = await supabase
       .from('profiles')
       .select(`
         id,
@@ -66,30 +65,37 @@ export async function GET(
         last_name,
         student_number,
         department_id,
-        user_roles!inner(role)
+        active,
+        created_at,
+        departments(name)
       `)
       .eq('university_id', universityId)
-
-    // If super admin, we might want to fetch all users across universities? We'll restrict to the user's university for consistency.
-    // For super admin managing a specific university, we still need to specify which university.
-    // We'll keep it as the user's university (the one they belong to). If super admin wants to manage another university, they'd need to switch context.
-    // For simplicity, we'll stick to the user's university.
-
-    const { data: members, error: membersError } = await query
       .order('created_at', { ascending: false })
 
     if (membersError) {
       throw membersError
     }
 
-    // Transform data to flatten the role
+    // Fetch roles
+    const { data: roles, error: rolesError } = await supabase
+      .from('user_roles')
+      .select('user_id, role')
+      .eq('university_id', universityId)
+
+    if (rolesError) throw rolesError
+
+    const roleMap = new Map(roles.map(r => [r.user_id, r.role]))
+
+    // Transform data
     const transformed = members.map((member: any) => ({
       id: member.id,
       first_name: member.first_name,
       last_name: member.last_name,
       student_number: member.student_number,
-      department_id: member.department_id,
-      role: member.user_roles?.role || 'member', // fallback to member if missing
+      department: member.departments?.name,
+      active: member.active,
+      created_at: member.created_at,
+      role: roleMap.get(member.id) || 'member', // fallback to member if missing
     }))
 
     return NextResponse.json(transformed, { status: 200 })

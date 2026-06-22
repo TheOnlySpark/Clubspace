@@ -74,11 +74,20 @@ create policy "clubs_delete" on clubs for delete
     where user_id = auth.uid() and role = 'admin'
   ));
 
+create or replace function public.get_user_clubs()
+returns setof uuid
+language sql
+security definer
+set search_path = public
+as $$
+  select club_id from club_memberships where user_id = auth.uid();
+$$;
+
 -- Club Memberships
 create policy "memberships_select" on club_memberships for select
   using (
     user_id = auth.uid() OR
-    club_id in (select club_id from club_memberships where user_id = auth.uid())
+    club_id in (select public.get_user_clubs())
   );
 
 create policy "memberships_insert" on club_memberships for insert
