@@ -77,7 +77,8 @@ export async function PATCH(
       .select('role')
       .eq('user_id', auth.session.user.id)
       .eq('role', 'super_admin')
-      .single()
+      .limit(1)
+      .maybeSingle()
 
     isSuperAdmin = superAdminData?.role === 'super_admin'
 
@@ -88,7 +89,9 @@ export async function PATCH(
         .select('role')
         .eq('user_id', auth.session.user.id)
         .eq('university_id', targetUniversityId)
-        .single()
+        .eq('role', 'university_admin')
+        .limit(1)
+        .maybeSingle()
 
       isUniversityAdmin = uniAdminData?.role === 'university_admin'
     }

@@ -91,11 +91,24 @@ create policy "clubs_delete" on clubs for delete
 
 create or replace function public.get_user_clubs()
 returns setof uuid
-language sql
+language plpgsql
 security definer
 set search_path = public
 as $$
-  select club_id from club_memberships where user_id = auth.uid();
+begin
+  return query select club_id from club_memberships where user_id = auth.uid();
+end;
+$$;
+
+create or replace function public.get_user_admin_clubs()
+returns setof uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  return query select club_id from club_memberships where user_id = auth.uid() and role in ('admin', 'officer');
+end;
 $$;
 
 -- Club Memberships
@@ -109,10 +122,10 @@ create policy "memberships_insert" on club_memberships for insert
   with check (user_id = auth.uid());
 
 create policy "memberships_update" on club_memberships for update
-  using (club_id in (select club_id from club_memberships where user_id = auth.uid() and role in ('admin', 'officer')));
+  using (club_id in (select public.get_user_admin_clubs()));
 
 create policy "memberships_delete" on club_memberships for delete
-  using (user_id = auth.uid() OR club_id in (select club_id from club_memberships where user_id = auth.uid() and role in ('admin', 'officer')));
+  using (user_id = auth.uid() OR club_id in (select public.get_user_admin_clubs()));
 
 -- Events
 create policy "events_select" on events for select

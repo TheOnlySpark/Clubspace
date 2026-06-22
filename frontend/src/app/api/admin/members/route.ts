@@ -32,20 +32,24 @@ export async function GET(
     const universityId = profileData.university_id
 
     // Check if user is university admin or super admin
-    const { data: roleData, error: roleError } = await supabase
+    const { data: roleData } = await supabase
       .from('user_roles')
       .select('role')
       .eq('user_id', session.user.id)
       .eq('university_id', universityId)
-      .single()
+      .eq('role', 'university_admin')
+      .limit(1)
+      .maybeSingle()
 
     const isUniversityAdmin = roleData?.role === 'university_admin'
+    
     const { data: superAdminData } = await supabase
       .from('user_roles')
       .select('role')
       .eq('user_id', session.user.id)
       .eq('role', 'super_admin')
-      .single()
+      .limit(1)
+      .maybeSingle()
 
     const isSuperAdmin = superAdminData?.role === 'super_admin'
 

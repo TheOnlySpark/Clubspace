@@ -73,6 +73,7 @@ export default function AnnouncementForm({
         </label>
         <Input
           id="title"
+          name="title"
           type="text"
           value={formData.title}
           onChange={handleChange}
