@@ -1,7 +1,7 @@
 // src/app/dashboard/events/page.tsx
 "use client";
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { useRole } from '@/hooks/useRole'
 import { createClient } from '@/lib/supabase/client'
@@ -84,6 +84,7 @@ export default function EventsPage() {
 
   // Handle event creation/update
   async function handleEventSubmit(eventData: any) {
+    if (!user) return
     try {
       const supabase = createClient()
 
@@ -186,7 +187,7 @@ export default function EventsPage() {
   }
 
   // Load events on mount
-  React.useEffect(() => {
+  useEffect(() => {
     loadEvents()
   }, [user])
 
@@ -222,7 +223,7 @@ export default function EventsPage() {
           <Button
             variant="outline"
             onClick={() => setShowForm(true)}
-            disabled={!(isClubAdmin || isUniversityAdmin || isSuperAdmin)}
+            disabled={!(isClubAdmin() || isUniversityAdmin() || isSuperAdmin())}
             className="w-full md:w-auto"
           >
             New Event
@@ -245,10 +246,10 @@ export default function EventsPage() {
                   capacity: event.capacity,
                   status: event.status,
                 }}
-                showActions={isClubAdmin || isUniversityAdmin || isSuperAdmin}
+                showActions={isClubAdmin() || isUniversityAdmin() || isSuperAdmin()}
               />
               {/* Action buttons for admin/officer */}
-              {isClubAdmin || isUniversityAdmin || isSuperAdmin && (
+              {(isClubAdmin() || isUniversityAdmin() || isSuperAdmin()) && (
                 <div className="mt-2 flex space-x-2">
                   <Button
                     variant="outline"

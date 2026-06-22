@@ -212,7 +212,7 @@ export async function DELETE(
     // We'll check if the user is a club admin or officer.
     const { data: clubData, error: clubError } = await supabase
       .from('clubs')
-      .select('id')
+      .select('id, university_id')
       .eq('id', inviteData.club_id)
       .single()
 

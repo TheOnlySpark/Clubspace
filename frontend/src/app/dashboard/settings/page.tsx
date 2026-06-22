@@ -74,7 +74,7 @@ export default function SettingsPage() {
       }
 
       // Use the first club as the current club
-      const clubData = userClubs[0].clubs
+      const clubData: any = Array.isArray(userClubs[0].clubs) ? userClubs[0].clubs[0] : userClubs[0].clubs
 
       setClub(clubData)
       // Initialize form values
@@ -131,7 +131,7 @@ export default function SettingsPage() {
       }
 
       // Update the club state
-      setClub(prev => prev ? { ...prev, ...updates } : null)
+      setClub((prev: any) => prev ? { ...prev, ...updates } : null)
       setIsEditingClub(false)
     } catch (err: any) {
       console.error('Error updating club:', err)
@@ -277,7 +277,7 @@ export default function SettingsPage() {
           <Button
             variant="outline"
             onClick={() => setShowGenerator(true)}
-            disabled={!(isClubAdmin || isUniversityAdmin || isSuperAdmin)}
+            disabled={!(isClubAdmin() || isUniversityAdmin() || isSuperAdmin())}
             className="w-full md:w-auto"
           >
             Generate Invite Link
@@ -308,7 +308,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Edit club info (only for admins) */}
-        {isClubAdmin || isUniversityAdmin || isSuperAdmin && (
+        {isClubAdmin() || isUniversityAdmin() || isSuperAdmin() && (
           <div className="mt-6 pt-4 border-t">
             <h3 className="text-lg font-semibold text-primary mb-4">Edit Club Information</h3>
             {clubEditError && <p className="text-sm text-destructive mb-4">{clubEditError}</p>}
@@ -380,7 +380,7 @@ export default function SettingsPage() {
                     Cancel
                   </Button>
                   <Button
-                    variant="primary"
+                    variant="default"
                     onClick={handleUpdateClub}
                     disabled={clubEditLoading}
                     className="w-full md:w-auto"

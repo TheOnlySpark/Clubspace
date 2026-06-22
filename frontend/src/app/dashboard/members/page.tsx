@@ -1,6 +1,6 @@
 // src/app/dashboard/members/page.tsx
 "use client"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { useRole } from '@/hooks/useRole'
 import { createClient } from '@/lib/supabase/client'
@@ -122,7 +122,7 @@ export default function MembersPage() {
   }
 
   // Load members on mount
-  React.useEffect(() => {
+  useEffect(() => {
     loadMembers()
   }, [user])
 
@@ -229,7 +229,7 @@ return (
                 <RoleSelector
                   currentRole={selectedMember.role as any}
                   onRoleChange={(newRole) => handleRoleChange(selectedMember.id, newRole)}
-                  disabled={!(isUniversityAdmin || isSuperAdmin)} // Only university admin or super admin can change roles here
+                  disabled={!(isUniversityAdmin() || isSuperAdmin())} // Only university admin or super admin can change roles here
                 />
               </div>
             </div>

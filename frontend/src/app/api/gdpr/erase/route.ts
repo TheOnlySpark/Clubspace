@@ -43,7 +43,7 @@ export async function POST(
           status: 'complete',
           completed_at: new Date().toISOString(),
         },
-        { onConflict: ['user_id', 'type'] }
+        { onConflict: 'user_id, type' }
       )
 
     if (gdprError) {

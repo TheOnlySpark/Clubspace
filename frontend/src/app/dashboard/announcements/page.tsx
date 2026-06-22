@@ -277,7 +277,7 @@ export default function AnnouncementsPage() {
           <Button
             variant="outline"
             onClick={() => setShowForm(true)}
-            disabled={!(isClubAdmin || isUniversityAdmin || isSuperAdmin)}
+            disabled={!(isClubAdmin() || isUniversityAdmin() || isSuperAdmin())}
             className="w-full md:w-auto"
           >
             New Announcement

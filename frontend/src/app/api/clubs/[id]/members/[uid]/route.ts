@@ -37,19 +37,20 @@ export async function PATCH(
       .update({ role: parsed.role })
       .eq('club_id', clubId)
       .eq('user_id', userId)
+      .select()
+      .single()
 
     if (error) {
+      if (error.code === 'PGRST116') {
+        return NextResponse.json(
+          { error: 'Membership not found' },
+          { status: 404 }
+        )
+      }
       console.error('Error updating member role:', error)
       return NextResponse.json(
         { error: 'Failed to update member role' },
         { status: 500 }
-      )
-    }
-
-    if (data?.length === 0) {
-      return NextResponse.json(
-        { error: 'Membership not found' },
-        { status: 404 }
       )
     }
 

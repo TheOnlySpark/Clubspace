@@ -54,7 +54,7 @@ export default function EventForm({
     } catch (err: any) {
       if (err instanceof z.ZodError) {
         const fieldErrors: Partial<Record<keyof z.infer<typeof eventSchema>, string>> = {}
-        err.errors.forEach(error => {
+        err.issues.forEach(error => {
           const field = error.path[0] as keyof z.infer<typeof eventSchema>
           fieldErrors[field] = error.message
         })

@@ -36,7 +36,7 @@ export default async function DashboardPage() {
   const universityId = profile.university_id
 
   // Fetch clubs count for the user's university
-  const { data: clubsData, error: clubsError } = await supabase
+  const { data: clubsData, error: clubsError, count: clubsCountRaw } = await supabase
     .from('clubs')
     .select('id', { count: 'exact' })
     .eq('university_id', universityId)
@@ -66,26 +66,26 @@ export default async function DashboardPage() {
   // Fetch upcoming events for these clubs
   let upcomingEventsCount = 0
   if (clubIds.length > 0) {
-    const { data: events, error: eventsListError } = await supabase
+    const { data: events, error: eventsListError, count: eventsCountRaw } = await supabase
       .from('events')
       .select('id', { count: 'exact' })
       .in('club_id', clubIds)
       .gte('starts_at', now)
 
     if (!eventsListError) {
-      upcomingEventsCount = events?.count || 0
+      upcomingEventsCount = eventsCountRaw || 0
     }
   }
 
   // Fetch members count for the user's university (profiles with the university_id)
-  const { data: membersData, error: membersError } = await supabase
+  const { data: membersData, error: membersError, count: membersCountRaw } = await supabase
     .from('profiles')
     .select('id', { count: 'exact' })
     .eq('university_id', universityId)
 
   // Fetch clubs count
-  const clubsCount = clubsData?.count || 0
-  const membersCount = membersData?.count || 0
+  const clubsCount = clubsCountRaw || 0
+  const membersCount = membersCountRaw || 0
 
   return (
     <div className="space-y-6">
