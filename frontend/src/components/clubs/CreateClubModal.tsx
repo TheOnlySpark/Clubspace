@@ -107,7 +107,7 @@ export default function CreateClubModal({ isOpen, onClose, onSuccess }: CreateCl
             >
               <option value="public">Public (Visible to everyone)</option>
               <option value="university">University Only (Visible to university members)</option>
-              <option value="private">Private (Hidden, invite only)</option>
+              <option value="members">Private (Hidden, invite only)</option>
             </select>
           </div>
 
@@ -120,7 +120,7 @@ export default function CreateClubModal({ isOpen, onClose, onSuccess }: CreateCl
               className={styles.select}
             >
               <option value="open">Open (Anyone can join)</option>
-              <option value="request">Request (Requires approval)</option>
+              <option value="approval">Request (Requires approval)</option>
               <option value="invite">Invite Only</option>
             </select>
           </div>

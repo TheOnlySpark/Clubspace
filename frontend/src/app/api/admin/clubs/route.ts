@@ -160,11 +160,19 @@ export async function POST(request: Request) {
       }
     }
 
+    // Generate slug
+    const baseSlug = parsed.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)+/g, '')
+    const slug = `${baseSlug}-${Math.floor(Math.random() * 10000)}`
+
     // Insert the club
     const { data, error } = await supabase
       .from('clubs')
       .insert({
         ...parsed,
+        slug,
         university_id: clubUniversityId,
       })
       .select()
@@ -173,7 +181,7 @@ export async function POST(request: Request) {
     if (error) {
       console.error('Error creating club:', error)
       return NextResponse.json(
-        { error: 'Failed to create club' },
+        { error: `Failed to create club: ${error.message || JSON.stringify(error)}` },
         { status: 500 }
       )
     }
