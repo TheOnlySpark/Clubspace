@@ -26,11 +26,16 @@ alter table gdpr_requests enable row level security;
 -- 1. Security Definer Function to avoid infinite recursion
 create or replace function public.get_user_university_id()
 returns uuid
-language sql
+language plpgsql
 security definer
 set search_path = public
 as $$
-  select university_id from profiles where id = auth.uid();
+declare
+  uni_id uuid;
+begin
+  select university_id into uni_id from profiles where id = auth.uid();
+  return uni_id;
+end;
 $$;
 
 -- Enable Row Level Security on all tables
