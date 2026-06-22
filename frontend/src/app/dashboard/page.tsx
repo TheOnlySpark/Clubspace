@@ -124,7 +124,7 @@ export default async function DashboardPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <p className="text-lg font-medium text-foreground mb-1">It's quiet in here...</p>
+          <p className="text-lg font-medium text-foreground mb-1">It&apos;s quiet in here...</p>
           <p className="text-muted-foreground">No recent activity yet. Start by creating a club or joining one!</p>
         </div>
       </div>

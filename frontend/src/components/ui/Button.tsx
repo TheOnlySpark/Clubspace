@@ -13,25 +13,25 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'default', size = 'default', asChild = false, children, disabled = false, type = 'button', ...props }, ref) => {
     const Composed = asChild ? 'span' : 'button'
 
-    // Base classes
-    const baseClasses = 'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'
+    // Base classes with micro-animations
+    const baseClasses = 'inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:scale-95'
 
-    // Variants
+    // Premium Variants
     const variantClasses = {
-      default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-      destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-      outline: 'border border-input hover:bg-accent hover:text-accent-foreground',
-      secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-      ghost: 'hover:bg-accent hover:text-accent-foreground',
-      link: 'underline-offset-4 hover:underline text-primary',
+      default: 'bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] border border-white/10',
+      destructive: 'bg-gradient-to-r from-red-600 to-rose-500 text-white hover:shadow-[0_0_20px_rgba(225,29,72,0.4)] border border-white/10',
+      outline: 'border border-white/20 bg-white/5 backdrop-blur-md text-foreground hover:bg-white/10 hover:border-white/30 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]',
+      secondary: 'bg-white/10 text-foreground backdrop-blur-md hover:bg-white/20 border border-transparent hover:border-white/10',
+      ghost: 'hover:bg-white/10 text-muted-foreground hover:text-foreground',
+      link: 'underline-offset-4 hover:underline text-primary hover:text-accent transition-colors',
     }
 
     // Sizes
     const sizeClasses = {
-      default: 'h-10 px-4 py-2',
-      sm: 'h-9 px-3 rounded-md',
-      lg: 'h-11 px-8 rounded-md',
-      icon: 'h-10 w-10',
+      default: 'h-11 px-5 py-2',
+      sm: 'h-9 px-4 rounded-lg',
+      lg: 'h-12 px-8 rounded-2xl text-base',
+      icon: 'h-11 w-11 rounded-xl',
     }
 
     return React.createElement(
