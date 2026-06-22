@@ -186,6 +186,13 @@ export async function POST(request: Request) {
       )
     }
 
+    // Automatically make the creator a club admin
+    await supabase.from('club_memberships').insert({
+      club_id: data.id,
+      user_id: session.user.id,
+      role: 'admin'
+    })
+
     return NextResponse.json(data, { status: 201 })
   } catch (error: any) {
     if (error instanceof z.ZodError) {
