@@ -1,0 +1,23 @@
+# .env
+.env
+.env.local
+
+# node_modules
+node_modules
+
+# Next.js
+.next
+.out
+.cache
+
+# Production builds
+build
+
+# Misc
+.DS_Store
+Thumbs.db
+
+
+CS_roadmap.md
+clubspace-v1-build-prompt.md
+error_report.md
