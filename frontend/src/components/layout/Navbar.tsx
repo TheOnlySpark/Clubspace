@@ -1,3 +1,4 @@
+// src/components/layout/Navbar.tsx
 "use client"
 import React from 'react'
 import { cn } from '@/lib/utils'
@@ -13,32 +14,30 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
       <header
         ref={ref}
         className={cn(
-          'flex h-16 items-center justify-between px-4 border-b bg-white',
+          'flex h-16 items-center justify-between px-6 border-b border-white/5 glass-panel z-50 sticky top-0',
           className
         )}
         {...props}
       >
         <div className="flex items-center space-x-4">
-          {/* Left side: brand or app name */}
-          <h1 className="text-lg font-semibold text-primary">ClubSpace</h1>
-          {/* Page title could be dynamic */}
-          <h2 className="text-sm font-medium text-muted-foreground">Dashboard</h2>
+          <h1 className="text-lg font-bold text-gradient md:hidden">ClubSpace</h1>
+          <h2 className="hidden md:block text-sm font-medium text-muted-foreground px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">Overview</h2>
         </div>
         <div className="flex items-center space-x-4">
           {/* Notification Bell */}
-          <NotificationBell />
+          <div className="hover:bg-white/10 rounded-full p-1 transition-colors">
+             <NotificationBell />
+          </div>
           {/* User menu placeholder */}
           <div className="relative">
             <button
-              className="flex h-10 w-10 items-center justify-center rounded-md bg-muted hover:bg-muted/80"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-gray-700 to-gray-900 border border-white/10 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
               aria-label="User menu"
             >
-              {/* User avatar placeholder */}
-              <div className="h-6 w-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
+              <div className="text-sm font-semibold text-white">
                 U
               </div>
             </button>
-            {/* Dropdown menu for user - we would use Dropdown from ui */}
           </div>
         </div>
       </header>
