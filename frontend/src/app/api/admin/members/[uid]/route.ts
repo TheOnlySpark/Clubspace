@@ -121,9 +121,10 @@ export async function PATCH(
       )
     }
 
-    // Update the user's role in the user_roles table
-    // We need to upsert: insert if not exists, update if exists
-    const { data, error } = await supabase
+    // Use adminClient for the database write since we have already securely verified all permissions above.
+    // This avoids RLS conflict issues with self-updating user_roles.
+    const { adminClient } = await import('@/lib/supabase/admin')
+    const { data, error } = await adminClient
       .from('user_roles')
       .upsert(
         {
