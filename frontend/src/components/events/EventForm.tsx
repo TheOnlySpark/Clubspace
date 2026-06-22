@@ -78,6 +78,7 @@ export default function EventForm({
         </label>
         <Input
           id="title"
+          name="title"
           type="text"
           value={formData.title}
           onChange={handleChange}
@@ -115,6 +116,7 @@ export default function EventForm({
         </label>
         <Input
           id="location"
+          name="location"
           type="text"
           value={formData.location}
           onChange={handleChange}

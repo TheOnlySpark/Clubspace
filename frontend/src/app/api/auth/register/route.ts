@@ -87,6 +87,7 @@ export async function POST(request: Request) {
         university_id: university.id,
         first_name,
         last_name,
+        email,
       })
 
     if (profileError) {
