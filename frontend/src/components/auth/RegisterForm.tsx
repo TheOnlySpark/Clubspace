@@ -51,8 +51,20 @@ export default function RegisterForm() {
         throw new Error(errorMessage)
       }
 
-      // On success, redirect to verify email page
-      router.push('/auth/verify-email')
+      // On success, automatically log them in
+      const { createClient } = await import('@/lib/supabase/client')
+      const supabase = createClient()
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (signInError) {
+        throw new Error('Registration successful, but failed to log in automatically. Please try logging in manually.')
+      }
+
+      router.push('/dashboard')
+      router.refresh()
     } catch (err: any) {
       setError(err.message ?? 'An unexpected error occurred')
     } finally {

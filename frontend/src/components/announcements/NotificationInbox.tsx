@@ -46,7 +46,7 @@ export default function NotificationInbox({ className }: NotificationInboxProps)
               key={notification.id}
               className={cn(
                 'flex items-start space-x-4 p-4 border rounded-lg shadow-sm',
-                notification.read ? 'bg-white' : 'bg-blue-50',
+                notification.read ? 'bg-white/5' : 'bg-primary/20 border border-primary/30',
                 'hover:bg-blue-100 transition-colors duration-200'
               )}
               onClick={() => markAsRead(notification.id)}

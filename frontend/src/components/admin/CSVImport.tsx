@@ -116,24 +116,24 @@ export default function CSVImport({ className }: CSVImportProps) {
         </Button>
       </form>
 
-      {importStatus && (
+      {report && (
         <div className="glass-panel border border-white/10 rounded-xl p-4 mt-6">
-          <h3 className="text-sm font-medium text-foreground mb-2">Import Status</h3>
-          <p className="text-sm text-muted-foreground">
-            Status: <span className="font-semibold text-primary capitalize">{importStatus.status}</span>
-          </p>
-          {importStatus.report && (
-            <div className="mt-2 space-y-1 text-sm">
-              <p className="text-muted-foreground">Total processed: <span className="text-foreground">{importStatus.report.totalProcessed || 0}</span></p>
-              <p className="text-success">Successful: {importStatus.report.successCount || 0}</p>
-              <p className="text-destructive">Errors: {importStatus.report.errorCount || 0}</p>
-              {importStatus.report.errors?.length > 0 && (
-                <div className="mt-2 max-h-32 overflow-y-auto bg-black/20 p-2 rounded text-xs text-destructive">
-                  {importStatus.report.errors.map((err: any, idx: number) => (
+          <h3 className="text-lg font-semibold text-primary mb-4">Import Report</h3>
+          <div className="space-y-2 text-sm text-muted-foreground">
+            <p><strong className="text-foreground">Total rows:</strong> {report.total}</p>
+            <p><strong className="text-success">Successful:</strong> {report.success}</p>
+            <p><strong className="text-destructive">Errors:</strong> {report.errors?.length || 0}</p>
+            {report.errorDetails && report.errorDetails.length > 0 && (
+              <div className="mt-3 bg-black/20 p-3 rounded-lg border border-white/5">
+                <p className="font-medium text-foreground mb-2">First few errors:</p>
+                <ul className="list-disc list-inside text-sm text-destructive space-y-1">
+                  {report.errorDetails.map((err: any, idx: number) => (
                     <li key={idx}>
                       Email: {err.row?.email} - {err.reason}
                     </li>
                   ))}
+                </ul>
+              </div>
             )}
           </div>
         </div>
