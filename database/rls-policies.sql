@@ -33,6 +33,21 @@ as $$
   select university_id from profiles where id = auth.uid();
 $$;
 
+-- Enable Row Level Security on all tables
+alter table universities enable row level security;
+alter table departments enable row level security;
+alter table user_roles enable row level security;
+alter table profiles enable row level security;
+alter table clubs enable row level security;
+alter table club_memberships enable row level security;
+alter table events enable row level security;
+alter table event_attendance enable row level security;
+alter table announcements enable row level security;
+alter table notifications enable row level security;
+alter table invite_links enable row level security;
+alter table csv_imports enable row level security;
+alter table gdpr_requests enable row level security;
+
 -- Universities
 create policy "universities_select" on universities for select
   using (true);

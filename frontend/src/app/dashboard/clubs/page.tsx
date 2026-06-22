@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/hooks/useAuth'
-import Button from '@/components/ui/Button'
-import { Users, Search, Plus } from 'lucide-react'
 
 export default function ClubsPage() {
   const { user } = useAuth()
@@ -44,7 +42,7 @@ export default function ClubsPage() {
         `)
         .eq('university_id', profile.university_id)
         
-      // Count members using JS to avoid PostgREST complexity
+      // Count members using JS
       const transformedClubs = (clubsData || []).map((club: any) => ({
         id: club.id,
         name: club.name,
@@ -91,7 +89,9 @@ export default function ClubsPage() {
         
         <div className="flex w-full sm:w-auto items-center gap-3">
           <div className="relative flex-1 sm:w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
             <input
               type="text"
               placeholder="Search clubs..."
@@ -101,7 +101,9 @@ export default function ClubsPage() {
             />
           </div>
           <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-            <Plus className="h-4 w-4" />
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
             Create
           </button>
         </div>
@@ -110,7 +112,9 @@ export default function ClubsPage() {
       {/* Clubs Grid */}
       {filteredClubs.length === 0 ? (
         <div className="text-center py-16 bg-blue-50/50 rounded-xl border border-blue-100 border-dashed">
-          <Users className="h-12 w-12 text-blue-300 mx-auto mb-3" />
+          <svg className="h-12 w-12 text-blue-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
           <h3 className="text-lg font-semibold text-blue-900">No clubs found</h3>
           <p className="text-gray-500">Try adjusting your search or create a new club.</p>
         </div>
@@ -128,7 +132,7 @@ export default function ClubsPage() {
                     Member
                   </span>
                 ) : (
-                  <span className="px-2.5 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full shrink-0">
+                  <span className="px-2.5 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full shrink-0 capitalize">
                     {club.privacy}
                   </span>
                 )}
@@ -140,7 +144,9 @@ export default function ClubsPage() {
               
               <div className="flex items-center justify-between pt-4 border-t border-blue-50 mt-auto">
                 <div className="flex items-center text-gray-500 text-sm font-medium">
-                  <Users className="h-4 w-4 mr-1.5" />
+                  <svg className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
                   {club.memberCount} members
                 </div>
                 
