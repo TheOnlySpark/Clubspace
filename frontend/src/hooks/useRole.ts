@@ -22,15 +22,23 @@ export function useRole() {
         .from('user_roles')
         .select('role, university_id')
         .eq('user_id', user.id)
-        .order('created_at', { ascending: false }) // Get the most recent role if multiple
-        .limit(1)
 
       if (error) {
         console.error('Error fetching role:', error)
         setRole(null)
+      } else if (data && data.length > 0) {
+        const roleWeights: Record<string, number> = {
+          super_admin: 1,
+          university_admin: 2,
+          club_admin: 3,
+          officer: 4,
+          member: 5
+        }
+        
+        data.sort((a, b) => (roleWeights[a.role] || 99) - (roleWeights[b.role] || 99))
+        setRole(data[0].role)
       } else {
-        // We'll take the first role (highest priority due to ordering)
-        setRole(data?.[0]?.role ?? null)
+        setRole(null)
       }
       setLoading(false)
     }

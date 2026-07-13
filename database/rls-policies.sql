@@ -171,7 +171,19 @@ as $$
 declare
   r text;
 begin
-  select role into r from user_roles where user_id = auth.uid() order by created_at desc limit 1;
+  select role into r 
+  from user_roles 
+  where user_id = auth.uid() 
+  order by 
+    case role
+      when 'super_admin' then 1
+      when 'university_admin' then 2
+      when 'club_admin' then 3
+      when 'officer' then 4
+      else 5
+    end asc,
+    created_at desc 
+  limit 1;
   return coalesce(r, 'member');
 end;
 $$;
