@@ -86,7 +86,7 @@ export async function GET(request: Request) {
 
     if (error) {
       console.error('Error fetching announcements:', error)
-      return NextResponse.json({ error: 'Failed to fetch announcements' }, { status: 500 })
+      return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
     // Enrich with joined names
