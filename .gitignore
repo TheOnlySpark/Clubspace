@@ -26,3 +26,4 @@ generate_metadata_and_favicon.py
 announcement-module-spec.md
 database/migrations/002_announcements_v2.sql
 database/migrations/003_fix_role_ordering.sql
+database/migrations/004_simplify_announcements_insert.sql

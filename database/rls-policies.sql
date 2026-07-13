@@ -221,24 +221,13 @@ create policy "announcements_insert" on announcements for insert
   with check (
     author_id = auth.uid()
     and (
-      -- Officer/Club Admin: club-wide only, must be member of that club
-      (
-        public.get_user_role() in ('officer', 'club_admin')
-        and visibility = 'club'
-        and club_id in (select public.get_user_clubs())
-      )
+      (visibility = 'club' and club_id is not null)
       or
-      -- University Admin / Super Admin: club-wide or university-wide
-      (
-        public.get_user_role() in ('university_admin', 'super_admin')
-        and visibility in ('club', 'university')
-      )
+      (visibility = 'university' and public.get_user_role() in ('university_admin', 'super_admin'))
+      or 
+      (visibility = 'public' and public.get_user_role() in ('university_admin', 'super_admin'))
     )
-    and (
-      -- Officers can only land in pending_approval, never publish directly
-      (public.get_user_role() = 'officer' and status in ('draft', 'pending_approval'))
-      or (public.get_user_role() != 'officer' and status in ('draft', 'published'))
-    )
+    and status in ('draft', 'pending_approval', 'published')
   );
 
 -- Update: authors can edit drafts, admins can approve/reject
