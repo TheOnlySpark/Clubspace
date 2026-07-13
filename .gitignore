@@ -23,3 +23,5 @@ clubspace-v1-build-prompt.md
 error_report.md
 database/storage.sql
 generate_metadata_and_favicon.py
+announcement-module-spec.md
+database/migrations/002_announcements_v2.sql

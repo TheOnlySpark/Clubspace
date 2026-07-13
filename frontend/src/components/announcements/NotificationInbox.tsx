@@ -1,70 +1,50 @@
 // src/components/announcements/NotificationInbox.tsx
 "use client"
 import * as React from 'react'
-import { cn } from '@/lib/utils'
-import { formatDate } from '@/lib/utils'
-import { useNotifications } from '@/hooks/useNotifications'
+import { cn, formatDate } from '@/lib/utils'
+import { useAnnouncements } from '@/hooks/useAnnouncements'
 
 interface NotificationInboxProps {
   className?: string
 }
 
 export default function NotificationInbox({ className }: NotificationInboxProps) {
-  const { notifications, unreadCount, loading, error, markAsRead, markAllAsRead } = useNotifications()
+  const { announcements, loading, error, markAsRead } = useAnnouncements({
+    status: 'published',
+    limit: 10,
+  })
 
   if (loading) {
-    return <div className="text-center py-4">Loading notifications...</div>
+    return <div className="text-center py-4 text-slate-400">Loading...</div>
   }
 
   if (error) {
-    return <div className="text-center py-4 text-destructive">Error loading notifications</div>
+    return <div className="text-center py-4 text-red-400">Error loading notifications</div>
   }
 
   return (
     <div className={cn('space-y-4', className)}>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-primary">Notifications</h2>
-        <div className="flex items-center space-x-2">
-          <span className="bg-primary text-primary-foreground px-2 py-1 rounded text-xs font-medium">
-            {unreadCount}
-          </span>
-          <button
-            onClick={markAllAsRead}
-            className="text-sm text-muted-foreground hover:text-primary"
-          >
-            Mark all as read
-          </button>
-        </div>
+        <h2 className="text-lg font-semibold text-slate-100">Recent Announcements</h2>
       </div>
 
-      {notifications.length === 0 ? (
-        <p className="text-muted-foreground text-center py-8">No notifications</p>
+      {announcements.length === 0 ? (
+        <p className="text-slate-500 text-center py-8">No recent announcements</p>
       ) : (
         <div className="space-y-3">
-          {notifications.map((notification) => (
+          {announcements.map((announcement) => (
             <div
-              key={notification.id}
-              className={cn(
-                'flex items-start space-x-4 p-4 border rounded-lg shadow-sm',
-                notification.read ? 'bg-white/5' : 'bg-primary/20 border border-primary/30',
-                'hover:bg-blue-100 transition-colors duration-200'
-              )}
-              onClick={() => markAsRead(notification.id)}
+              key={announcement.id}
+              className="flex items-start gap-3 p-3 rounded-lg border border-slate-700 bg-slate-800/50 hover:bg-slate-800 transition-colors cursor-pointer"
+              onClick={() => markAsRead(announcement.id)}
             >
-              {/* Placeholder for notification icon */}
-              <div className="h-8 w-8 flex items-center justify-center bg-primary text-primary-foreground rounded-full">
-                🔔
+              <div className="h-8 w-8 flex items-center justify-center bg-blue-600/20 text-blue-400 rounded-full shrink-0 text-sm">
+                📢
               </div>
-              <div className="flex-1 space-y-2">
-                <div className="flex justify-between items-start">
-                  <h3 className="font-medium text-primary">{notification.announcement?.title || 'Announcement'}</h3>
-                  <p className="text-xs text-muted-foreground">
-                    {formatDate(notification.created_at)}
-                  </p>
-                </div>
-                <p className="text-sm text-muted-foreground line-clamp-3">
-                  {notification.announcement?.body || 'No announcement details'}
-                </p>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-medium text-slate-200 truncate">{announcement.title}</h3>
+                <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{announcement.body}</p>
+                <p className="text-xs text-slate-600 mt-1">{formatDate(announcement.created_at)}</p>
               </div>
             </div>
           ))}

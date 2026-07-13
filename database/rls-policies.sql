@@ -156,22 +156,120 @@ create policy "attendance_select" on event_attendance for select
 create policy "attendance_insert" on event_attendance for insert
   with check (user_id = auth.uid());
 
--- Announcements
-create policy "announcements_select" on announcements for select
-  using (club_id in (select club_id from club_memberships where user_id = auth.uid()));
+-- Announcements (v2)
+alter table announcement_reads enable row level security;
+alter table announcement_audit_log enable row level security;
+alter table announcement_settings enable row level security;
 
+-- Helper: get user's role string
+create or replace function public.get_user_role()
+returns text
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  r text;
+begin
+  select role into r from user_roles where user_id = auth.uid() order by created_at desc limit 1;
+  return coalesce(r, 'member');
+end;
+$$;
+
+-- Select: published within scope
+create policy "announcements_select_published" on announcements for select
+  using (
+    status = 'published'
+    and (
+      visibility = 'public'
+      or (visibility = 'university' and university_id = public.get_user_university_id())
+      or (visibility = 'club' and club_id in (select public.get_user_clubs()))
+    )
+  );
+
+-- Select: own drafts/rejected
+create policy "announcements_select_own" on announcements for select
+  using (
+    author_id = auth.uid()
+    and status in ('draft', 'pending_approval', 'rejected')
+  );
+
+-- Select: pending approval (for club admins+ of that club)
+create policy "announcements_select_pending" on announcements for select
+  using (
+    status = 'pending_approval'
+    and (
+      club_id in (select club_id from club_memberships where user_id = auth.uid() and role = 'admin')
+      or public.get_user_role() in ('university_admin', 'super_admin')
+    )
+  );
+
+-- Insert: role-gated visibility and status enforcement
 create policy "announcements_insert" on announcements for insert
-  with check (club_id in (select club_id from club_memberships where user_id = auth.uid() and role in ('admin', 'officer')));
+  with check (
+    author_id = auth.uid()
+    and (
+      -- Officer/Club Admin: club-wide only, must be member of that club
+      (
+        public.get_user_role() in ('officer', 'club_admin')
+        and visibility = 'club'
+        and club_id in (select public.get_user_clubs())
+      )
+      or
+      -- University Admin / Super Admin: club-wide or university-wide
+      (
+        public.get_user_role() in ('university_admin', 'super_admin')
+        and visibility in ('club', 'university')
+      )
+    )
+    and (
+      -- Officers can only land in pending_approval, never publish directly
+      (public.get_user_role() = 'officer' and status in ('draft', 'pending_approval'))
+      or (public.get_user_role() != 'officer' and status in ('draft', 'published'))
+    )
+  );
 
--- Notifications
-create policy "notifications_select" on notifications for select
+-- Update: authors can edit drafts, admins can approve/reject
+create policy "announcements_update" on announcements for update
+  using (
+    author_id = auth.uid()
+    or club_id in (select club_id from club_memberships where user_id = auth.uid() and role = 'admin')
+    or public.get_user_role() in ('university_admin', 'super_admin')
+  );
+
+-- Delete: club admin (own club), university admin, super admin
+create policy "announcements_delete" on announcements for delete
+  using (
+    club_id in (select club_id from club_memberships where user_id = auth.uid() and role = 'admin')
+    or public.get_user_role() in ('university_admin', 'super_admin')
+  );
+
+-- Announcement Reads
+create policy "reads_select" on announcement_reads for select
   using (user_id = auth.uid());
 
-create policy "notifications_update" on notifications for update
-  using (user_id = auth.uid());
+create policy "reads_insert" on announcement_reads for insert
+  with check (user_id = auth.uid());
 
-create policy "notifications_delete" on notifications for delete
-  using (user_id = auth.uid());
+-- Announcement Audit Log
+create policy "audit_insert" on announcement_audit_log for insert
+  with check (actor_id = auth.uid());
+
+create policy "audit_select" on announcement_audit_log for select
+  using (
+    actor_id = auth.uid()
+    or public.get_user_role() in ('club_admin', 'university_admin', 'super_admin')
+  );
+
+-- Announcement Settings
+create policy "settings_select" on announcement_settings for select
+  using (university_id = public.get_user_university_id());
+
+create policy "settings_update" on announcement_settings for update
+  using (
+    university_id = public.get_user_university_id()
+    and public.get_user_role() in ('university_admin', 'super_admin')
+  );
 
 -- Invite Links
 create policy "invites_select" on invite_links for select

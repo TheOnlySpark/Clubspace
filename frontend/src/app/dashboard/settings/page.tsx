@@ -7,6 +7,7 @@ import { useRole } from '@/hooks/useRole'
 import { createClient } from '@/lib/supabase/client'
 import InviteGenerator from '@/components/invites/InviteGenerator'
 import InviteTable from '@/components/invites/InviteTable'
+import AnnouncementSettingsPanel from '@/components/announcements/AnnouncementSettingsPanel'
 import Button from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
 import { formatDate } from '@/lib/utils'
@@ -453,6 +454,11 @@ export default function SettingsPage() {
         {gdprError && <p className="text-sm text-destructive">{gdprError}</p>}
         {gdprSuccess && <p className="text-sm text-success">{gdprSuccess}</p>}
       </div>
+
+      {/* Announcement Settings Section */}
+      {(isUniversityAdmin() || isSuperAdmin()) && (
+        <AnnouncementSettingsPanel />
+      )}
     </div>
   )
 }

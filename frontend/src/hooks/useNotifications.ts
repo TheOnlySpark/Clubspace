@@ -1,20 +1,28 @@
 // src/hooks/useNotifications.ts
-import { useState, useEffect } from 'react'
+// Updated to use announcement_reads instead of the old notifications table.
+// This hook now tracks unread published announcements for the current user.
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import type { Notification } from '@/types/index'
+
+interface NotificationItem {
+  id: string
+  title: string
+  body: string
+  created_at: string
+  is_read: boolean
+}
 
 export function useNotifications() {
-  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [notifications, setNotifications] = useState<NotificationItem[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   const supabase = createClient()
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     setLoading(true)
     try {
-      // Get the current user's notifications
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) {
         setNotifications([])
@@ -23,84 +31,78 @@ export function useNotifications() {
         return
       }
 
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('*', { count: 'exact' })
-        .eq('user_id', session.user.id)
+      // Get recent published announcements the user can see (RLS handles scoping)
+      const { data: announcements, error: annError } = await supabase
+        .from('announcements')
+        .select('id, title, body, created_at')
+        .eq('status', 'published')
         .order('created_at', { ascending: false })
+        .limit(20)
 
-      if (error) {
-        throw error
-      }
+      if (annError) throw annError
 
-      setNotifications(data || [])
-      setUnreadCount(
-        (data || []).filter((n) => !n.read).length
-      )
+      // Get which ones the user has already read
+      const ids = (announcements || []).map(a => a.id)
+      const { data: reads } = await supabase
+        .from('announcement_reads')
+        .select('announcement_id')
+        .eq('user_id', session.user.id)
+        .in('announcement_id', ids.length > 0 ? ids : ['00000000-0000-0000-0000-000000000000'])
+
+      const readSet = new Set((reads || []).map(r => r.announcement_id))
+
+      const items: NotificationItem[] = (announcements || []).map(a => ({
+        id: a.id,
+        title: a.title,
+        body: a.body,
+        created_at: a.created_at,
+        is_read: readSet.has(a.id),
+      }))
+
+      setNotifications(items)
+      setUnreadCount(items.filter(n => !n.is_read).length)
       setError(null)
     } catch (err: any) {
       console.error('Error fetching notifications:', err)
-      setError(err.message ?? 'Failed to fetch notifications')
+      setError(err.message ?? 'Failed to fetch')
       setNotifications([])
       setUnreadCount(0)
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
-  const markAsRead = async (notificationId: string) => {
-    try {
-      const { error } = await supabase
-        .from('notifications')
-        .update({ read: true })
-        .eq('id', notificationId)
-
-      if (error) {
-        throw error
-      }
-
-      // Update the notifications list optimistically
-      setNotifications(prev =>
-        prev.map(n =>
-          n.id === notificationId ? { ...n, read: true } : n
-        )
-      )
-      setUnreadCount(prev => Math.max(0, prev - 1))
-    } catch (err: any) {
-      console.error('Error marking notification as read:', err)
-      // Optionally show a toast or something
-    }
-  }
-
-  const markAllAsRead = async () => {
+  const markAsRead = async (announcementId: string) => {
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) return
 
-      const { error } = await supabase
-        .from('notifications')
-        .update({ read: true })
-        .eq('user_id', session.user.id)
+      await supabase
+        .from('announcement_reads')
+        .upsert(
+          { announcement_id: announcementId, user_id: session.user.id, read_at: new Date().toISOString() },
+          { onConflict: 'announcement_id,user_id' }
+        )
 
-      if (error) {
-        throw error
-      }
-
-      setNotifications(prev => prev.map(n => ({ ...n, read: true })))
-      setUnreadCount(0)
+      setNotifications(prev =>
+        prev.map(n => n.id === announcementId ? { ...n, is_read: true } : n)
+      )
+      setUnreadCount(prev => Math.max(0, prev - 1))
     } catch (err: any) {
-      console.error('Error marking all notifications as read:', err)
+      console.error('Error marking as read:', err)
     }
   }
 
-  // Fetch notifications on mount and when we want to refetch
+  const markAllAsRead = async () => {
+    const unread = notifications.filter(n => !n.is_read)
+    for (const n of unread) {
+      await markAsRead(n.id)
+    }
+  }
+
   useEffect(() => {
     fetchNotifications()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  // We could also subscribe to real-time changes, but for simplicity we'll just fetch on mount.
-  // In a real app, we might want to subscribe to insert/update on notifications.
+  }, [fetchNotifications])
 
   return {
     notifications,

@@ -57,23 +57,20 @@ export async function GET(
     const { data: announcements, error: announcementsError } = await adminClient
       .from('announcements')
       .select('*')
-      .eq('sent_by', userId)
+      .eq('author_id', userId)
 
     if (announcementsError && announcementsError.code !== 'PGRST116') {
       throw announcementsError
     }
 
-    // Fetch notifications
-    const { data: notifications, error: notificationsError } = await adminClient
-      .from('notifications')
-      .select(`
-        *,
-        announcements!inner(id, title, body)
-      `)
+    // Fetch announcement read receipts
+    const { data: announcementReads, error: readsError } = await adminClient
+      .from('announcement_reads')
+      .select('*')
       .eq('user_id', userId)
 
-    if (notificationsError && notificationsError.code !== 'PGRST116') {
-      throw notificationsError
+    if (readsError && readsError.code !== 'PGRST116') {
+      throw readsError
     }
 
     // Fetch invite links created by the user
@@ -102,7 +99,7 @@ export async function GET(
       memberships: memberships || [],
       events: events || [],
       announcements: announcements || [],
-      notifications: notifications || [],
+      announcement_reads: announcementReads || [],
       invite_links: invites || [],
       gdpr_requests: gdprRequests || [],
     }

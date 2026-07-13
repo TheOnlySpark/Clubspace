@@ -73,20 +73,49 @@ export type Event = {
 
 export type Announcement = {
   id: string;
-  club_id: string;
+  university_id: string;
+  club_id: string | null;
+  author_id: string;
   title: string;
   body: string;
-  sent_by: string | null;
-  sent_at: string;
+  status: 'draft' | 'pending_approval' | 'published' | 'archived' | 'rejected';
+  visibility: 'club' | 'university' | 'public';
+  pinned: boolean;
+  publish_at: string | null;
+  expires_at: string | null;
+  approved_by: string | null;
+  approved_at: string | null;
+  rejection_reason: string | null;
+  created_at: string;
+  updated_at: string;
+  // Joined fields
+  club_name?: string;
+  author_name?: string;
 };
 
-export type Notification = {
-  id: string;
-  user_id: string;
+export type AnnouncementRead = {
   announcement_id: string;
-  read: boolean;
+  user_id: string;
+  read_at: string;
+};
+
+export type AnnouncementAuditLog = {
+  id: string;
+  announcement_id: string;
+  actor_id: string;
+  action: string;
+  metadata: Record<string, any> | null;
   created_at: string;
-  announcement?: any;
+};
+
+export type AnnouncementSettings = {
+  university_id: string;
+  require_approval_for_officers: boolean;
+  max_pinned_per_club: number;
+  allow_club_public_visibility: boolean;
+  retention_days: number;
+  branding_color: string;
+  updated_at: string;
 };
 
 export type InviteLink = {
