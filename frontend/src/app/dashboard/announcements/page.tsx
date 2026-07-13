@@ -23,7 +23,7 @@ export default function AnnouncementsPage() {
   const canApprove = isClubAdmin() || isUniversityAdmin() || isSuperAdmin()
 
   // Fetch based on active tab
-  const statusFilter = activeTab === 'drafts' ? 'draft' : activeTab === 'pending' ? 'pending_approval' : undefined
+  const statusFilter = activeTab === 'all' ? 'published' : activeTab === 'drafts' ? 'draft' : activeTab === 'pending' ? 'pending_approval' : undefined
   const {
     announcements,
     loading,
