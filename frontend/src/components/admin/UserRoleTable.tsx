@@ -98,8 +98,8 @@ export default function UserRoleTable({
 
       {members.length > 0 && (
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-slate-50 border-b border-slate-200">
+          <table className="min-w-full divide-y divide-slate-700">
+            <thead className="bg-slate-800 border-b border-slate-700">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Name
@@ -115,9 +115,9 @@ export default function UserRoleTable({
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200">
+            <tbody className="divide-y divide-slate-700">
               {members.map((member) => (
-                <tr key={member.id} className={updating === member.id ? 'bg-slate-100' : 'hover:bg-slate-50 transition-colors'}>
+                <tr key={member.id} className={updating === member.id ? 'bg-slate-700' : 'hover:bg-slate-800 transition-colors'}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
                     {member.first_name || ''} {member.last_name || ''}
                   </td>
@@ -133,13 +133,13 @@ export default function UserRoleTable({
                       value={member.role}
                       onChange={(e) => handleRoleChange(member.id, e.target.value)}
                       disabled={updating === member.id}
-                      className="block w-sm rounded-md border border-slate-300 bg-white backdrop-blur-md px-3 py-2 text-sm text-foreground ring-offset-file placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="block w-sm rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-foreground ring-offset-file placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      <option value="member" className="bg-white text-slate-900">Member</option>
-                      <option value="officer" className="bg-white text-slate-900">Officer</option>
-                      <option value="club_admin" className="bg-white text-slate-900">Club Admin</option>
-                      <option value="university_admin" className="bg-white text-slate-900">University Admin</option>
-                      <option value="super_admin" className="bg-white text-slate-900">Super Admin</option>
+                      <option value="member" className="bg-slate-900 text-slate-100">Member</option>
+                      <option value="officer" className="bg-slate-900 text-slate-100">Officer</option>
+                      <option value="club_admin" className="bg-slate-900 text-slate-100">Club Admin</option>
+                      <option value="university_admin" className="bg-slate-900 text-slate-100">University Admin</option>
+                      <option value="super_admin" className="bg-slate-900 text-slate-100">Super Admin</option>
                     </select>
                     {updating === member.id && (
                       <span className="text-xs text-muted-foreground">Updating...</span>

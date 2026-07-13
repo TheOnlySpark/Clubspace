@@ -10,14 +10,14 @@
 }
 
 .modal {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  background-color: #1e293b;
+  border: 1px solid #334155;
   border-radius: 1rem;
   width: 100%;
   max-width: 32rem;
   padding: 1.5rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  color: #0f172a;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  color: #f8fafc;
 }
 
 .header {
@@ -31,7 +31,7 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0;
-  color: #0f172a;
+  color: #f8fafc;
 }
 
 .closeButton {
@@ -47,7 +47,7 @@
 }
 
 .closeButton:hover {
-  color: #0f172a;
+  color: #f8fafc;
 }
 
 .formGroup {
@@ -58,7 +58,7 @@
   display: block;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #475569;
+  color: #94a3b8;
   margin-bottom: 0.5rem;
 }
 
@@ -67,10 +67,10 @@
 .select {
   width: 100%;
   padding: 0.5rem 0.75rem;
-  background-color: #e2e8f0;
-  border: 1px solid #e2e8f0;
+  background-color: #0f172a;
+  border: 1px solid #334155;
   border-radius: 0.75rem;
-  color: #0f172a;
+  color: #f8fafc;
   font-size: 0.875rem;
   font-family: inherit;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -95,13 +95,13 @@
   gap: 0.75rem;
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid #334155;
 }
 
 .cancelButton {
   background: transparent;
-  border: 1px solid #cbd5e1;
-  color: #475569;
+  border: 1px solid #475569;
+  color: #94a3b8;
   padding: 0.5rem 1rem;
   border-radius: 0.75rem;
   font-size: 0.875rem;
@@ -111,7 +111,7 @@
 }
 
 .cancelButton:hover {
-  background-color: #f1f5f9;
+  background-color: #334155;
 }
 
 .submitButton {

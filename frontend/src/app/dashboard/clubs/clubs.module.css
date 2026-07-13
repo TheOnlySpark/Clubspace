@@ -2,7 +2,7 @@
   min-height: calc(100vh - 8rem);
   padding: 2rem;
   background-color: transparent;
-  color: #0f172a;
+  color: #f8fafc;
 }
 
 .header {
@@ -24,13 +24,13 @@
 .title {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #f8fafc;
   margin: 0;
   font-family: var(--font-heading);
 }
 
 .subtitle {
-  color: #475569;
+  color: #94a3b8;
   margin-top: 0.25rem;
   font-size: 0.875rem;
 }
@@ -73,9 +73,9 @@
   width: 100%;
   padding: 0.5rem 1rem 0.5rem 2.5rem;
   border-radius: 1rem;
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  color: #0f172a;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  color: #f8fafc;
   font-size: 0.875rem;
   transition: all 0.2s ease;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -122,9 +122,9 @@
 .emptyState {
   text-align: center;
   padding: 4rem 1rem;
-  background-color: #ffffff;
+  background-color: #1e293b;
   border-radius: 1rem;
-  border: 1px dashed #cbd5e1;
+  border: 1px dashed #334155;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
@@ -138,12 +138,12 @@
 .emptyTitle {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #0f172a;
+  color: #f8fafc;
   margin-bottom: 0.25rem;
 }
 
 .emptySubtitle {
-  color: #64748b;
+  color: #94a3b8;
   font-size: 0.875rem;
 }
 
@@ -166,8 +166,8 @@
 }
 
 .card {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  background-color: #1e293b;
+  border: 1px solid #334155;
   border-radius: 1rem;
   padding: 1.25rem;
   display: flex;
@@ -177,8 +177,8 @@
 
 .card:hover {
   transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1);
-  border-color: #cbd5e1;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  border-color: #475569;
 }
 
 .cardHeader {
@@ -191,7 +191,7 @@
 .cardTitle {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #f8fafc;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -219,7 +219,7 @@
 }
 
 .cardDescription {
-  color: #475569;
+  color: #94a3b8;
   font-size: 0.875rem;
   margin-bottom: 1.5rem;
   flex: 1;
@@ -235,7 +235,7 @@
   align-items: center;
   justify-content: space-between;
   padding-top: 1rem;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid #334155;
   margin-top: auto;
 }
 

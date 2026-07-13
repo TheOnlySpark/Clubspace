@@ -4,46 +4,28 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* Airy blue mesh background */
-  background: linear-gradient(135deg, #e2e8f0 0%, #bae6fd 100%);
-  color: #0f172a;
+  /* Background handled globally via body */
+  background: transparent;
+  color: #f8fafc;
   padding: 2rem;
   font-family: 'Inter', sans-serif;
   overflow: hidden;
   position: relative;
 }
 
-/* Subtle animated background glow */
-.container::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, transparent 50%);
-  animation: rotateGlow 20s linear infinite;
-  pointer-events: none;
-}
 
-@keyframes rotateGlow {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 
 .contentWrapper {
   position: relative;
   z-index: 10;
   max-width: 36rem;
   text-align: center;
-  /* Glassmorphism panel */
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  /* Solid panel */
+  background: #1e293b;
+  border: 1px solid #334155;
   border-radius: 24px;
   padding: 4rem 3rem;
-  box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   animation: floatUp 1s ease-out forwards;
   opacity: 0;
   transform: translateY(20px);
@@ -70,7 +52,7 @@
 
 .subtitle {
   font-size: 1.25rem;
-  color: #475569;
+  color: #94a3b8;
   margin-bottom: 3rem;
   font-weight: 400;
   line-height: 1.6;
@@ -136,31 +118,31 @@
 
 .btnOutline {
   background: transparent;
-  color: #0f172a;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btnOutline:hover {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.4);
   transform: translateY(-4px) scale(1.02);
 }
 
 .footer {
   font-size: 0.875rem;
   color: #64748b;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   padding-top: 2rem;
   margin-top: 2rem;
 }
 
 .footerLink {
-  color: #475569;
+  color: #94a3b8;
   text-decoration: underline;
   text-underline-offset: 4px;
   transition: color 0.2s;
 }
 
 .footerLink:hover {
-  color: #0f172a;
+  color: #f8fafc;
 }
