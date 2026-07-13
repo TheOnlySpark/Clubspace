@@ -60,6 +60,37 @@ export default async function DashboardPage() {
     upcomingEventsCount = eCount || 0
   }
 
+  // Fetch recent announcements for "Recent Activity"
+  let recentAnnouncements: any[] = []
+  if (universityId) {
+    const { data } = await supabase
+      .from('announcements')
+      .select(`
+        id,
+        title,
+        created_at,
+        clubs(name)
+      `)
+      .eq('status', 'published')
+      .order('created_at', { ascending: false })
+      .limit(5)
+    recentAnnouncements = data || []
+  } else {
+    // Global admin gets all recent announcements
+    const { data } = await adminClient
+      .from('announcements')
+      .select(`
+        id,
+        title,
+        created_at,
+        clubs(name)
+      `)
+      .eq('status', 'published')
+      .order('created_at', { ascending: false })
+      .limit(5)
+    recentAnnouncements = data || []
+  }
+
   const isGlobal = !universityId
 
   return (
@@ -118,15 +149,39 @@ export default async function DashboardPage() {
           <h3 className="text-xl font-semibold text-foreground">Recent Activity</h3>
           <button className="text-sm text-primary hover:text-primary/80 transition-colors">View all</button>
         </div>
-        <div className="flex flex-col items-center justify-center py-12 text-center">
-          <div className="w-16 h-16 bg-muted/20 rounded-full flex items-center justify-center mb-4">
-            <svg className="w-8 h-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+        
+        {recentAnnouncements.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="w-16 h-16 bg-muted/20 rounded-full flex items-center justify-center mb-4">
+              <svg className="w-8 h-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <p className="text-lg font-medium text-foreground mb-1">It&apos;s quiet in here...</p>
+            <p className="text-muted-foreground">No recent activity yet. Start by creating a club or joining one!</p>
           </div>
-          <p className="text-lg font-medium text-foreground mb-1">It&apos;s quiet in here...</p>
-          <p className="text-muted-foreground">No recent activity yet. Start by creating a club or joining one!</p>
-        </div>
+        ) : (
+          <div className="space-y-4">
+            {recentAnnouncements.map((announcement) => (
+              <div key={announcement.id} className="flex items-start gap-4 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:border-slate-600 transition-colors">
+                <div className="w-10 h-10 rounded-full bg-blue-900/30 flex items-center justify-center shrink-0">
+                  <span className="text-xl">📢</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-slate-100 truncate">
+                    {announcement.title}
+                  </p>
+                  <p className="text-xs text-slate-400 mt-1">
+                    {announcement.clubs?.name || 'University-wide'}
+                  </p>
+                </div>
+                <div className="text-xs text-slate-500 whitespace-nowrap">
+                  {new Date(announcement.created_at).toLocaleDateString()}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
