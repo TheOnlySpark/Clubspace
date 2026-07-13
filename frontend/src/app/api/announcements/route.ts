@@ -166,8 +166,8 @@ export async function POST(request: Request) {
       }
     }
 
-    // Insert
-    const { data: newAnnouncement, error: insertError } = await supabase
+    // Insert using adminClient to bypass RLS (since we already strictly validated everything above)
+    const { data: newAnnouncement, error: insertError } = await adminClient
       .from('announcements')
       .insert({
         university_id: profile.university_id,
