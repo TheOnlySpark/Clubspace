@@ -186,7 +186,7 @@ export async function POST(request: Request) {
 
     if (insertError || !newAnnouncement) {
       console.error('Error inserting announcement:', insertError)
-      return NextResponse.json({ error: 'Failed to create announcement' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to create announcement', details: insertError }, { status: 500 })
     }
 
     // Audit log
