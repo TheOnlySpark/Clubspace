@@ -1,8 +1,8 @@
 .pageContainer {
   min-height: calc(100vh - 8rem);
   padding: 2rem;
-  background-color: #0f111a;
-  color: #f8fafc;
+  background-color: transparent;
+  color: #0f172a;
 }
 
 .header {
@@ -24,13 +24,13 @@
 .title {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: #0f172a;
   margin: 0;
   font-family: var(--font-heading);
 }
 
 .subtitle {
-  color: #94a3b8;
+  color: #475569;
   margin-top: 0.25rem;
   font-size: 0.875rem;
 }
@@ -66,18 +66,19 @@
   transform: translateY(-50%);
   height: 1rem;
   width: 1rem;
-  color: #64748b;
+  color: #94a3b8;
 }
 
 .searchInput {
   width: 100%;
   padding: 0.5rem 1rem 0.5rem 2.5rem;
-  border-radius: 0.5rem;
-  background-color: #1e293b;
-  border: 1px solid #334155;
-  color: #f8fafc;
+  border-radius: 1rem;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
   font-size: 0.875rem;
   transition: all 0.2s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .searchInput:focus {
@@ -90,24 +91,27 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #3b82f6;
+  background-color: #2563eb;
   color: #ffffff;
   padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   font-size: 0.875rem;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
 }
 
 .createButton:hover {
-  background-color: #2563eb;
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 .createButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
 }
 
 .buttonIcon {
@@ -118,27 +122,28 @@
 .emptyState {
   text-align: center;
   padding: 4rem 1rem;
-  background-color: #1e293b;
-  border-radius: 0.75rem;
-  border: 1px dashed #334155;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px dashed #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .emptyIcon {
   height: 3rem;
   width: 3rem;
-  color: #475569;
+  color: #94a3b8;
   margin: 0 auto 0.75rem;
 }
 
 .emptyTitle {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #f8fafc;
+  color: #0f172a;
   margin-bottom: 0.25rem;
 }
 
 .emptySubtitle {
-  color: #94a3b8;
+  color: #64748b;
   font-size: 0.875rem;
 }
 
@@ -161,19 +166,19 @@
 }
 
 .card {
-  background-color: #1e293b;
-  border: 1px solid #334155;
-  border-radius: 0.75rem;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-  border-color: #475569;
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1);
+  border-color: #cbd5e1;
 }
 
 .cardHeader {
@@ -186,7 +191,7 @@
 .cardTitle {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: #0f172a;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -203,18 +208,18 @@
 }
 
 .badgeMember {
-  background-color: rgba(16, 185, 129, 0.15);
-  color: #34d399;
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #059669;
 }
 
 .badgePrivacy {
-  background-color: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
+  background-color: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
   text-transform: capitalize;
 }
 
 .cardDescription {
-  color: #94a3b8;
+  color: #475569;
   font-size: 0.875rem;
   margin-bottom: 1.5rem;
   flex: 1;
@@ -230,14 +235,14 @@
   align-items: center;
   justify-content: space-between;
   padding-top: 1rem;
-  border-top: 1px solid #334155;
+  border-top: 1px solid #f1f5f9;
   margin-top: auto;
 }
 
 .memberCount {
   display: flex;
   align-items: center;
-  color: #94a3b8;
+  color: #64748b;
   font-size: 0.875rem;
   font-weight: 500;
 }
@@ -251,7 +256,7 @@
 .joinButton {
   background: none;
   border: none;
-  color: #60a5fa;
+  color: #2563eb;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
@@ -260,5 +265,5 @@
 }
 
 .joinButton:hover {
-  color: #93c5fd;
+  color: #1d4ed8;
 }
