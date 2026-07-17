@@ -58,7 +58,7 @@ export default function InviteLinkCard({
       <div className="flex items-start space-x-4">
         {/* Placeholder for invite icon */}
         <div className="h-10 w-10 rounded bg-muted flex items-center justify-center">
-          🔗
+          <img src="/icons/link.svg" alt="Link" className="w-5 h-5 invert opacity-70" />
         </div>
         <div className="flex-1">
           <h3 className="font-semibold text-primary">Invite Link</h3>
@@ -68,15 +68,15 @@ export default function InviteLinkCard({
           </p>
           <div className="mt-2 flex flex-wrap gap-4 text-xs text-muted-foreground">
             <div className="flex items-center">
-              <span>📅</span>
+              <span className="flex items-center justify-center mr-1"><img src="/icons/calendar.svg" alt="Calendar" className="w-4 h-4 invert opacity-70" /></span>
               <span>Created: {formatDate(invite.created_at)}</span>
             </div>
             <div className="flex items-center">
-              <span>⏰</span>
+              <span className="flex items-center justify-center mr-1"><img src="/icons/clock.svg" alt="Clock" className="w-4 h-4 invert opacity-70" /></span>
               <span>Expires: {formatDate(invite.expires_at)}</span>
             </div>
             <div className="flex items-center">
-              <span>🔢</span>
+              <span className="flex items-center justify-center mr-1"><img src="/icons/hash.svg" alt="Uses" className="w-4 h-4 invert opacity-70" /></span>
               <span>
                 Uses: {invite.use_count}/{invite.max_uses ?? '∞'}
               </span>

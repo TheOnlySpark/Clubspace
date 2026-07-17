@@ -51,7 +51,9 @@ export default function AnnouncementList({
   if (announcements.length === 0) {
     return (
       <div className="text-center py-12 text-slate-400">
-        <div className="text-4xl mb-3">📭</div>
+        <div className="flex justify-center mb-3">
+          <img src="/icons/empty.svg" alt="Empty" className="w-10 h-10 invert opacity-40" />
+        </div>
         <p className="text-lg font-medium">No announcements yet</p>
         <p className="text-sm text-slate-500 mt-1">Create one to get started</p>
       </div>
@@ -81,8 +83,8 @@ export default function AnnouncementList({
           <div className="flex items-start justify-between gap-3 mb-3">
             <div className="flex items-center gap-2 flex-wrap">
               {announcement.pinned && (
-                <span className="text-xs bg-blue-900/40 text-blue-300 px-2 py-0.5 rounded-full font-medium">
-                  📌 Pinned
+                <span className="flex items-center gap-1 text-xs bg-blue-900/40 text-blue-300 px-2 py-0.5 rounded-full font-medium">
+                  <img src="/icons/pin.svg" alt="Pinned" className="w-3 h-3 invert opacity-70" /> Pinned
                 </span>
               )}
               <span className={cn('text-xs px-2 py-0.5 rounded-full font-medium', STATUS_STYLES[announcement.status])}>
@@ -107,10 +109,10 @@ export default function AnnouncementList({
 
           {/* Footer */}
           <div className="flex items-center justify-between pt-3 border-t border-slate-700">
-            <div className="flex items-center gap-3 text-xs text-slate-500">
-              {announcement.club_name && <span>🏛️ {announcement.club_name}</span>}
-              <span>👤 {announcement.author_name || 'Unknown'}</span>
-              <span>📅 {formatDate(announcement.created_at)}</span>
+            <div className="flex items-center gap-4 text-xs text-slate-500">
+              {announcement.club_name && <span className="flex items-center gap-1"><img src="/icons/club.svg" alt="Club" className="w-3.5 h-3.5 opacity-60 invert" /> {announcement.club_name}</span>}
+              <span className="flex items-center gap-1"><img src="/icons/user.svg" alt="Author" className="w-3.5 h-3.5 opacity-60 invert" /> {announcement.author_name || 'Unknown'}</span>
+              <span className="flex items-center gap-1"><img src="/icons/calendar.svg" alt="Date" className="w-3.5 h-3.5 opacity-60 invert" /> {formatDate(announcement.created_at)}</span>
             </div>
 
             {/* Actions */}

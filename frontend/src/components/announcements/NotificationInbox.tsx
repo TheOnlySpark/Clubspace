@@ -39,7 +39,7 @@ export default function NotificationInbox({ className }: NotificationInboxProps)
               onClick={() => markAsRead(announcement.id)}
             >
               <div className="h-8 w-8 flex items-center justify-center bg-blue-600/20 text-blue-400 rounded-full shrink-0 text-sm">
-                📢
+                <img src="/icons/announcement.svg" alt="Announcement" className="w-4 h-4" />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-medium text-slate-200 truncate">{announcement.title}</h3>

@@ -178,7 +178,13 @@ export default async function DashboardPage() {
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
                   announcement.pinned ? 'bg-blue-900/50' : 'bg-blue-900/30'
                 }`}>
-                  <span className="text-xl">{announcement.pinned ? '📌' : '📢'}</span>
+                  <div className="flex items-center justify-center">
+                    {announcement.pinned ? (
+                      <img src="/icons/pin.svg" alt="Pinned" className="w-5 h-5 invert opacity-70" />
+                    ) : (
+                      <img src="/icons/announcement.svg" alt="Announcement" className="w-5 h-5 invert opacity-70" />
+                    )}
+                  </div>
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">

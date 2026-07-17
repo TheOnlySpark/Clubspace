@@ -24,7 +24,9 @@ export default function ApprovalQueue({ className }: ApprovalQueueProps) {
   if (announcements.length === 0) {
     return (
       <div className="text-center py-12 text-slate-400">
-        <div className="text-3xl mb-2">✅</div>
+        <div className="flex justify-center mb-2">
+          <img src="/icons/check.svg" alt="Done" className="w-8 h-8 invert opacity-40" />
+        </div>
         <p className="font-medium">No pending approvals</p>
         <p className="text-sm text-slate-500 mt-1">All caught up!</p>
       </div>

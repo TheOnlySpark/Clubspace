@@ -30,7 +30,7 @@ export default function EventCard({
         <div className="flex items-start space-x-4">
           {/* Placeholder for event image/icon */}
           <div className="h-10 w-10 rounded bg-muted flex items-center justify-center">
-            📅
+            <img src="/icons/calendar.svg" alt="Calendar" className="w-5 h-5 invert opacity-70" />
           </div>
           <div className="flex-1">
             <h3 className="font-semibold text-primary">{event.title}</h3>
@@ -39,11 +39,11 @@ export default function EventCard({
             </p>
             <div className="mt-2 flex flex-wrap gap-4 text-xs text-muted-foreground">
               <div className="flex items-center">
-                <span>📍</span>
+                <span className="flex items-center justify-center mr-1"><img src="/icons/location.svg" alt="Location" className="w-4 h-4 invert opacity-70" /></span>
                 <span>{event.location || 'TBD'}</span>
               </div>
               <div className="flex items-center">
-                <span>🕒</span>
+                <span className="flex items-center justify-center mr-1"><img src="/icons/clock.svg" alt="Time" className="w-4 h-4 invert opacity-70" /></span>
                 <span>
                   {startDate.toLocaleDateString(undefined, {
                     year: 'numeric',
@@ -61,7 +61,7 @@ export default function EventCard({
               </div>
               {event.capacity && (
                 <div className="flex items-center">
-                  <span>👥</span>
+                  <span className="flex items-center justify-center mr-1"><img src="/icons/members.svg" alt="Members" className="w-4 h-4 invert opacity-70" /></span>
                   <span>{event.capacity} capacity</span>
                 </div>
               )}

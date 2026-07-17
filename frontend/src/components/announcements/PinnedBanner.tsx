@@ -27,7 +27,7 @@ export default function PinnedBanner({ clubId, className }: PinnedBannerProps) {
       className
     )}>
       <div className="flex items-start gap-3">
-        <span className="text-lg">📌</span>
+        <span className="flex items-center justify-center"><img src="/icons/pin.svg" alt="Pinned" className="w-5 h-5 invert opacity-70" /></span>
         <div className="flex-1 min-w-0">
           <h3 className="text-sm font-semibold text-blue-200">{pinned.title}</h3>
           <p className="text-xs text-slate-400 mt-1 line-clamp-2">{pinned.body}</p>
