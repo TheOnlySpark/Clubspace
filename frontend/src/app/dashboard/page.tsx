@@ -37,16 +37,16 @@ export default async function DashboardPage() {
   if (universityId) {
     const { count: cCount } = await supabase.from('clubs').select('*', { count: 'exact', head: true }).eq('university_id', universityId)
     const { count: mCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('university_id', universityId)
-    
+
     // Get clubs to get events
     const { data: clubs } = await supabase.from('clubs').select('id').eq('university_id', universityId)
     const clubIds = clubs?.map((c) => c.id) || []
-    
+
     if (clubIds.length > 0) {
       const { count: eCount } = await supabase.from('events').select('*', { count: 'exact', head: true }).in('club_id', clubIds).gte('starts_at', new Date().toISOString())
       upcomingEventsCount = eCount || 0
     }
-    
+
     clubsCount = cCount || 0
     membersCount = mCount || 0
   } else {
@@ -54,7 +54,7 @@ export default async function DashboardPage() {
     const { count: cCount } = await adminClient.from('clubs').select('*', { count: 'exact', head: true })
     const { count: mCount } = await adminClient.from('profiles').select('*', { count: 'exact', head: true })
     const { count: eCount } = await adminClient.from('events').select('*', { count: 'exact', head: true }).gte('starts_at', new Date().toISOString())
-    
+
     clubsCount = cCount || 0
     membersCount = mCount || 0
     upcomingEventsCount = eCount || 0
@@ -98,7 +98,7 @@ export default async function DashboardPage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-4xl font-bold tracking-tight text-gradient">Dashboard</h1>
         <p className="text-muted-foreground text-lg">
-          Welcome back, {session.user.user_metadata?.first_name || 'User'}! 
+          Welcome back, {session.user.user_metadata?.first_name || 'User'}!
           {isGlobal ? " Here is the global platform overview." : " Here is what's happening at your university."}
         </p>
       </div>
@@ -149,7 +149,7 @@ export default async function DashboardPage() {
           <h3 className="text-xl font-semibold text-foreground">Recent Activity</h3>
           <button className="text-sm text-primary hover:text-primary/80 transition-colors">View all</button>
         </div>
-        
+
         {recentAnnouncements.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <div className="w-16 h-16 bg-muted/20 rounded-full flex items-center justify-center mb-4">
