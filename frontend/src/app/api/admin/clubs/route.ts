@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { requireAuth } from '@/lib/api-helpers'
 import { createClient } from '@/lib/supabase/server'
-import { adminClient } from '@/lib/supabase/admin'
 import { clubSchema } from '@/lib/validations/clubs'
 
 export async function GET(
@@ -169,7 +168,7 @@ export async function POST(request: Request) {
     const slug = `${baseSlug}-${Math.floor(Math.random() * 10000)}`
 
     // Insert the club
-    const { data, error } = await adminClient
+    const { data, error } = await supabase
       .from('clubs')
       .insert({
         ...parsed,
@@ -188,7 +187,7 @@ export async function POST(request: Request) {
     }
 
     // Automatically make the creator a club admin
-    await adminClient.from('club_memberships').insert({
+    await supabase.from('club_memberships').insert({
       club_id: data.id,
       user_id: session.user.id,
       role: 'admin'
