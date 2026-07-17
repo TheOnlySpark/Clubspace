@@ -139,7 +139,7 @@ export default function PublicClubPage() {
             <div className="space-y-4">
               <div className="flex items-center">
                 <span className="flex-shrink-0 h-8 w-8 rounded bg-primary/10 flex items-center justify-center text-primary">
-                  👥
+                  <img src="/icons/members.svg" alt="Members" className="w-5 h-5" />
                 </span>
                 <div className="ml-4">
                   <p className="font-medium text-muted-foreground">Privacy</p>
@@ -148,7 +148,7 @@ export default function PublicClubPage() {
               </div>
               <div className="flex items-center">
                 <span className="flex-shrink-0 h-8 w-8 rounded bg-primary/10 flex items-center justify-center">
-                  🔐
+                  <img src="/icons/privacy.svg" alt="Privacy" className="w-5 h-5" />
                 </span>
                 <div className="ml-4">
                   <p className="font-medium text-muted-foreground">Join Policy</p>
@@ -167,7 +167,7 @@ export default function PublicClubPage() {
                   <div key={event.id} className="bg-white rounded-lg shadow-md p-4 hover:shadow-md transition-shadow">
                     <div className="flex items-start space-x-4">
                       <div className="flex-shrink-0 h-10 w-10 rounded bg-primary/10 flex items-center justify-center">
-                        📅
+                        <img src="/icons/calendar.svg" alt="Calendar" className="w-5 h-5" />
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-primary">{event.title}</h3>

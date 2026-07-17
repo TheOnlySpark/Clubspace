@@ -2,7 +2,6 @@
 "use client"
 import React, { useState, useRef, useEffect } from 'react'
 import { cn } from '@/lib/utils'
-import NotificationBell from './NotificationBell'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
@@ -47,8 +46,6 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
           <h2 className="hidden md:block text-sm font-medium text-slate-300 px-3 py-1 rounded-full bg-slate-800 border border-slate-700">Overview</h2>
         </div>
         <div className="flex items-center space-x-4">
-          <NotificationBell />
-          
           <div className="relative" ref={menuRef}>
             <button
               onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
