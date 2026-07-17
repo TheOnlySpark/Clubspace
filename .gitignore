@@ -30,3 +30,4 @@ database/migrations/004_simplify_announcements_insert.sql
 database/migrations/005_apply_announcement_policies.sql
 club-module-spec.md
 database/migrations/006_club_module.sql
+database/migrations/007_enforce_strict_rls.sql
