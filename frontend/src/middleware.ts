@@ -74,8 +74,17 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/dashboard/:path*',
-    '/admin/:path*',
-    '/superadmin/:path*'
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - icons (public icons)
+     * - auth (authentication routes)
+     * - privacy (privacy policy)
+     * - terms (terms of service)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico|icons|auth|privacy|terms).*)',
   ],
 }
