@@ -11,11 +11,10 @@ export async function POST(
     const auth = await requireAuth()
     if ('error' in auth) return auth.error
 
-    const { supabase } = auth
     const userId = auth.session.user.id
 
-    // Fetch announcement
-    const { data: announcement, error: fetchError } = await supabase
+    // Use adminClient to bypass RLS — we do our own permission checks below
+    const { data: announcement, error: fetchError } = await adminClient
       .from('announcements')
       .select('id, club_id, pinned, university_id')
       .eq('id', params.id)
@@ -26,14 +25,14 @@ export async function POST(
     }
 
     // Check permission
-    const { data: membership } = await supabase
+    const { data: membership } = await adminClient
       .from('club_memberships')
       .select('role')
       .eq('club_id', announcement.club_id)
       .eq('user_id', userId)
       .single()
 
-    const { data: roleData } = await supabase
+    const { data: roleData } = await adminClient
       .from('user_roles')
       .select('role')
       .eq('user_id', userId)
@@ -60,7 +59,7 @@ export async function POST(
 
       const maxPinned = settings?.max_pinned_per_club ?? 1
 
-      const { count } = await supabase
+      const { count } = await adminClient
         .from('announcements')
         .select('id', { count: 'exact', head: true })
         .eq('club_id', announcement.club_id)
@@ -74,7 +73,7 @@ export async function POST(
       }
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await adminClient
       .from('announcements')
       .update({ pinned: newPinned })
       .eq('id', params.id)

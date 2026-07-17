@@ -5,8 +5,11 @@ import { requireAuth } from '@/lib/api-helpers'
 import { adminClient } from '@/lib/supabase/admin'
 import { announcementUpdateSchema } from '@/lib/validations/announcements'
 
-async function getAnnouncementAndPermissions(supabase: any, announcementId: string, userId: string) {
-  const { data: announcement, error } = await supabase
+async function getAnnouncementAndPermissions(announcementId: string, userId: string) {
+  // Use adminClient to bypass RLS for permission checks — RLS SELECT policies
+  // block higher-privilege admins (university_admin, super_admin) from seeing
+  // club-scoped announcements when they aren't club members.
+  const { data: announcement, error } = await adminClient
     .from('announcements')
     .select('*, clubs(name, university_id), profiles!announcements_author_id_fkey(first_name, last_name)')
     .eq('id', announcementId)
@@ -16,14 +19,14 @@ async function getAnnouncementAndPermissions(supabase: any, announcementId: stri
 
   const isAuthor = announcement.author_id === userId
 
-  const { data: membership } = await supabase
+  const { data: membership } = await adminClient
     .from('club_memberships')
     .select('role')
     .eq('club_id', announcement.club_id)
     .eq('user_id', userId)
     .single()
 
-  const { data: roleData } = await supabase
+  const { data: roleData } = await adminClient
     .from('user_roles')
     .select('role')
     .eq('user_id', userId)
@@ -54,7 +57,7 @@ export async function GET(
     if ('error' in auth) return auth.error
 
     const { supabase } = auth
-    const { id: announcementId } = params
+    const announcementId = params.id
 
     if (!announcementId) {
       return NextResponse.json({ error: 'Announcement ID is required' }, { status: 400 })
@@ -106,13 +109,12 @@ export async function PATCH(
     const auth = await requireAuth()
     if ('error' in auth) return auth.error
 
-    const { supabase } = auth
-    const { id: announcementId } = params
+    const announcementId = params.id
     const body = await request.json()
     const parsed = announcementUpdateSchema.parse(body)
 
     const { announcement, canEdit } = await getAnnouncementAndPermissions(
-      supabase, announcementId, auth.session.user.id
+      announcementId, auth.session.user.id
     )
 
     if (!announcement) {
@@ -128,7 +130,8 @@ export async function PATCH(
       return NextResponse.json({ error: 'Can only edit draft or rejected announcements' }, { status: 400 })
     }
 
-    const { data, error } = await supabase
+    // Use adminClient to bypass RLS — permissions already verified above
+    const { data, error } = await adminClient
       .from('announcements')
       .update(parsed)
       .eq('id', announcementId)
@@ -166,11 +169,10 @@ export async function DELETE(
     const auth = await requireAuth()
     if ('error' in auth) return auth.error
 
-    const { supabase } = auth
-    const { id: announcementId } = params
+    const announcementId = params.id
 
     const { announcement, canDelete } = await getAnnouncementAndPermissions(
-      supabase, announcementId, auth.session.user.id
+      announcementId, auth.session.user.id
     )
 
     if (!announcement) {
@@ -183,10 +185,15 @@ export async function DELETE(
 
     // For published announcements, archive instead of hard-delete (audit trail preservation)
     if (announcement.status === 'published') {
-      await supabase
+      const { error: archiveError, count } = await adminClient
         .from('announcements')
         .update({ status: 'archived' })
         .eq('id', announcementId)
+
+      if (archiveError) {
+        console.error('Error archiving announcement:', archiveError)
+        return NextResponse.json({ error: 'Failed to archive announcement' }, { status: 500 })
+      }
 
       await adminClient.from('announcement_audit_log').insert({
         announcement_id: announcementId,
@@ -197,8 +204,9 @@ export async function DELETE(
       return NextResponse.json({ message: 'Announcement archived' }, { status: 200 })
     }
 
-    // Hard-delete drafts/rejected
-    const { error } = await supabase
+    // Hard-delete drafts/rejected — use adminClient since RLS SELECT
+    // policies may prevent the user-scoped client from seeing non-published items
+    const { error } = await adminClient
       .from('announcements')
       .delete()
       .eq('id', announcementId)

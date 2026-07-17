@@ -68,10 +68,12 @@ export default async function DashboardPage() {
       .select(`
         id,
         title,
+        pinned,
         created_at,
         clubs(name)
       `)
       .eq('status', 'published')
+      .order('pinned', { ascending: false })
       .order('created_at', { ascending: false })
       .limit(5)
     recentAnnouncements = data || []
@@ -82,10 +84,12 @@ export default async function DashboardPage() {
       .select(`
         id,
         title,
+        pinned,
         created_at,
         clubs(name)
       `)
       .eq('status', 'published')
+      .order('pinned', { ascending: false })
       .order('created_at', { ascending: false })
       .limit(5)
     recentAnnouncements = data || []
@@ -163,14 +167,30 @@ export default async function DashboardPage() {
         ) : (
           <div className="space-y-4">
             {recentAnnouncements.map((announcement) => (
-              <div key={announcement.id} className="flex items-start gap-4 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:border-slate-600 transition-colors">
-                <div className="w-10 h-10 rounded-full bg-blue-900/30 flex items-center justify-center shrink-0">
-                  <span className="text-xl">📢</span>
+              <div
+                key={announcement.id}
+                className={`flex items-start gap-4 p-4 rounded-xl border transition-colors ${
+                  announcement.pinned
+                    ? 'bg-blue-900/20 border-blue-600/40 hover:border-blue-500'
+                    : 'bg-slate-800/50 border-slate-700/50 hover:border-slate-600'
+                }`}
+              >
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                  announcement.pinned ? 'bg-blue-900/50' : 'bg-blue-900/30'
+                }`}>
+                  <span className="text-xl">{announcement.pinned ? '📌' : '📢'}</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-100 truncate">
-                    {announcement.title}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium text-slate-100 truncate">
+                      {announcement.title}
+                    </p>
+                    {announcement.pinned && (
+                      <span className="text-xs bg-blue-900/40 text-blue-300 px-1.5 py-0.5 rounded-full font-medium shrink-0">
+                        Pinned
+                      </span>
+                    )}
+                  </div>
                   <p className="text-xs text-slate-400 mt-1">
                     {announcement.clubs?.name || 'University-wide'}
                   </p>
