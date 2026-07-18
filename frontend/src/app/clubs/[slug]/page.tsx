@@ -4,15 +4,14 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { formatDate } from '@/lib/utils'
-import GoogleCalendarButton from '@/components/events/GoogleCalendarButton'
+
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
 export default function PublicClubPage() {
   const { slug } = useParams()
   const [club, setClub] = useState<any | null>(null)
-  const [events, setEvents] = useState<any[]>([])
+
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -43,27 +42,13 @@ export default function PublicClubPage() {
 
       setClub(clubData)
 
-      // Fetch upcoming events for this club
-      const now = new Date().toISOString()
-      const { data: eventsData, error: eventsError } = await supabase
-        .from('events')
-        .select('*')
-        .eq('club_id', clubData.id)
-        .eq('status', 'published')
-        .gte('starts_at', now)
-        .order('starts_at', { ascending: true })
 
-      if (eventsError) {
-        throw eventsError
-      }
-
-      setEvents(eventsData || [])
       setError(null)
     } catch (err: any) {
       console.error('Error loading club data:', err)
       setError(err.message ?? 'Failed to load club data')
       setClub(null)
-      setEvents([])
+
     } finally {
       setLoading(false)
     }
@@ -158,38 +143,7 @@ export default function PublicClubPage() {
             </div>
           </div>
 
-          {/* Upcoming Events */}
-          {events.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold text-primary mb-4">Upcoming Events</h2>
-              <div className="space-y-4">
-                {events.map((event) => (
-                  <div key={event.id} className="bg-white rounded-lg shadow-md p-4 hover:shadow-md transition-shadow">
-                    <div className="flex items-start space-x-4">
-                      <div className="flex-shrink-0 h-10 w-10 rounded bg-primary/10 flex items-center justify-center">
-                        <img src="/icons/calendar.svg" alt="Calendar" className="w-5 h-5" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-primary">{event.title}</h3>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {event.location || 'Location not specified'}
-                        </p>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {formatDate(event.starts_at)} • {formatDate(event.ends_at)}
-                        </p>
-                        <p className="text-muted-foreground mt-2 line-clamp-2">
-                          {event.description || 'No description available'}
-                        </p>
-                        <div className="mt-3">
-                          <GoogleCalendarButton event={event} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+
 
           {/* Call to Action - Link to join (would require auth) */}
           <div className="text-center">

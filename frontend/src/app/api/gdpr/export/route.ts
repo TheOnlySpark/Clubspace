@@ -42,15 +42,7 @@ export async function GET(
       throw membershipsError
     }
 
-    // Fetch events created by the user
-    const { data: events, error: eventsError } = await adminClient
-      .from('events')
-      .select('*')
-      .eq('created_by', userId)
-
-    if (eventsError && eventsError.code !== 'PGRST116') {
-      throw eventsError
-    }
+    
 
 
     // Fetch announcements created by the user
@@ -97,7 +89,7 @@ export async function GET(
     const userData = {
       profile: profile || null,
       memberships: memberships || [],
-      events: events || [],
+      
       announcements: announcements || [],
       announcement_reads: announcementReads || [],
       invite_links: invites || [],

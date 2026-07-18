@@ -149,10 +149,7 @@ export default function SuperAdminPage() {
               <h3 className="text-lg font-semibold text-primary mb-2">Clubs</h3>
               <p className="text-2xl font-bold text-primary">{overview.clubs}</p>
             </div>
-            <div>
-              <h3 className="text-lg font-semibold text-primary mb-2">Events</h3>
-              <p className="text-2xl font-bold text-primary">{overview.events}</p>
-            </div>
+
             <div>
               <h3 className="text-lg font-semibold text-primary mb-2">Announcements</h3>
               <p className="text-2xl font-bold text-primary">{overview.announcements}</p>

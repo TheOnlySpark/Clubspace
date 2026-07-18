@@ -31,21 +31,14 @@ export default async function DashboardPage() {
 
   // Fetch stats
   let clubsCount = 0
-  let upcomingEventsCount = 0
+
   let membersCount = 0
 
   if (universityId) {
     const { count: cCount } = await supabase.from('clubs').select('*', { count: 'exact', head: true }).eq('university_id', universityId)
     const { count: mCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('university_id', universityId)
 
-    // Get clubs to get events
-    const { data: clubs } = await supabase.from('clubs').select('id').eq('university_id', universityId)
-    const clubIds = clubs?.map((c) => c.id) || []
 
-    if (clubIds.length > 0) {
-      const { count: eCount } = await supabase.from('events').select('*', { count: 'exact', head: true }).in('club_id', clubIds).gte('starts_at', new Date().toISOString())
-      upcomingEventsCount = eCount || 0
-    }
 
     clubsCount = cCount || 0
     membersCount = mCount || 0
@@ -53,11 +46,9 @@ export default async function DashboardPage() {
     // If no university_id, fetch global stats for super_admin using adminClient to bypass RLS
     const { count: cCount } = await adminClient.from('clubs').select('*', { count: 'exact', head: true })
     const { count: mCount } = await adminClient.from('profiles').select('*', { count: 'exact', head: true })
-    const { count: eCount } = await adminClient.from('events').select('*', { count: 'exact', head: true }).gte('starts_at', new Date().toISOString())
-
     clubsCount = cCount || 0
     membersCount = mCount || 0
-    upcomingEventsCount = eCount || 0
+
   }
 
   // Fetch recent announcements for "Recent Activity"
@@ -121,18 +112,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* Card 2 */}
-        <div className="glass-card rounded-2xl p-6 hover-lift relative overflow-hidden group">
-          <div className="absolute -right-6 -top-6 w-24 h-24 bg-accent/20 rounded-full blur-2xl group-hover:bg-accent/30 transition-colors" />
-          <h3 className="text-lg font-medium text-muted-foreground mb-2 relative z-10">Upcoming Events</h3>
-          <p className="text-4xl font-bold text-foreground relative z-10">{upcomingEventsCount}</p>
-          <div className="mt-4 flex items-center text-sm text-emerald-400 relative z-10">
-            <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
-            <span>Starting soon</span>
-          </div>
-        </div>
+
 
         {/* Card 3 */}
         <div className="glass-card rounded-2xl p-6 hover-lift relative overflow-hidden group">

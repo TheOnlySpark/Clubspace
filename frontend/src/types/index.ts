@@ -57,19 +57,7 @@ export type ClubMembership = {
   joined_at: string;
 };
 
-export type Event = {
-  id: string;
-  club_id: string;
-  title: string;
-  description: string | null;
-  location: string | null;
-  starts_at: string;
-  ends_at: string;
-  capacity: number | null;
-  status: 'draft' | 'published' | 'cancelled';
-  created_by: string | null;
-  created_at: string;
-};
+
 
 export type Announcement = {
   id: string;

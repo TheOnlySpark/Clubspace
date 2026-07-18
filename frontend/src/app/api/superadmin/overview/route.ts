@@ -46,22 +46,14 @@ export async function GET(
       .select('id', { count: 'exact' })
       .single()
 
-    // We'll also get counts of events, announcements, etc. if needed
-    const eventsCount = await supabase
-      .from('events')
-      .select('id', { count: 'exact' })
-      .single()
-
     const announcementsCount = await supabase
       .from('announcements')
-      .select('id', { count: 'exact' })
-      .single()
+      .select('*', { count: 'exact', head: true })
 
     return NextResponse.json({
       universities: universitiesCount.count ?? 0,
       users: usersCount.count ?? 0,
       clubs: clubsCount.count ?? 0,
-      events: eventsCount.count ?? 0,
       announcements: announcementsCount.count ?? 0,
     }, { status: 200 })
   } catch (error: any) {
