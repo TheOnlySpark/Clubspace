@@ -174,31 +174,6 @@ export default function SettingsPage() {
     }
   }
 
-  // Handle GDPR data export
-  const handleGdprExport = async () => {
-    setGdprLoading(true)
-    setGdprError(null)
-    setGdprSuccess(null)
-    try {
-      // Trigger download via API endpoint
-      const response = await fetch('/api/gdpr/export', {
-        method: 'GET',
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to export data')
-      }
-
-      // The API will return a file download, we just need to handle success
-      setGdprSuccess('Data export initiated. Check your downloads.')
-    } catch (err: any) {
-      setGdprError(err.message ?? 'Failed to export data')
-    } finally {
-      setGdprLoading(false)
-    }
-  }
-
   // Handle GDPR data erasure
   const handleGdprErase = async () => {
     setGdprLoading(true)
@@ -435,17 +410,10 @@ export default function SettingsPage() {
           Data & Privacy
         </h2>
         <p className="text-muted-foreground mb-4">
-          Export your data or request erasure in accordance with GDPR and POPIA regulations.
+          Request erasure in accordance with GDPR and POPIA regulations.
         </p>
         <div className="space-y-4">
-          <Button
-            variant="outline"
-            onClick={handleGdprExport}
-            disabled={gdprLoading}
-            className="w-full md:w-auto"
-          >
-            {gdprLoading ? 'Exporting...' : 'Export My Data'}
-          </Button>
+
           <Button
             variant="destructive"
             onClick={handleGdprErase}
