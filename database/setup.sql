@@ -466,9 +466,10 @@ BEGIN
   SELECT id INTO target_user_id FROM auth.users WHERE email = target_email;
   
   IF target_user_id IS NOT NULL THEN
-    IF NOT EXISTS (SELECT 1 FROM user_roles WHERE user_id = target_user_id AND role = 'super_admin') THEN
-      INSERT INTO user_roles (id, user_id, role)
-      VALUES (gen_random_uuid(), target_user_id, 'super_admin');
-    END IF;
+    -- The registration process already creates a 'member' role for the user.
+    -- We just need to upgrade that role to 'super_admin'.
+    UPDATE user_roles 
+    SET role = 'super_admin' 
+    WHERE user_id = target_user_id;
   END IF;
 END $$;
