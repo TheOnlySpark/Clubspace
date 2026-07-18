@@ -26,6 +26,7 @@ export type UserRole = {
 export type Profile = {
   id: string;
   university_id: string | null;
+  email: string | null;
   first_name: string | null;
   last_name: string | null;
   student_number: string | null;

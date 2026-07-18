@@ -1,4 +1,6 @@
--- ==============================================================================
+import os
+
+sql_content = """-- ==============================================================================
 -- CLUBSPACE V1 DATABASE SCHEMA (Refactored)
 -- ==============================================================================
 
@@ -471,3 +473,9 @@ BEGIN
     END IF;
   END IF;
 END $$;
+"""
+
+with open('setup.sql', 'w') as f:
+    f.write(sql_content)
+
+print("setup.sql successfully rewritten!")
