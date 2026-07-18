@@ -24,7 +24,7 @@ create table departments (
 
 create table user_roles (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid references auth.users(id) on delete cascade,
+  user_id uuid references profiles(id) on delete cascade,
   university_id uuid references universities(id) on delete cascade,
   role text not null check (role in ('super_admin','university_admin','club_admin','officer','member')),
   created_at timestamptz default now(),
@@ -61,7 +61,7 @@ create table clubs (
 create table club_memberships (
   id uuid primary key default gen_random_uuid(),
   club_id uuid references clubs(id) on delete cascade,
-  user_id uuid references auth.users(id) on delete cascade,
+  user_id uuid references profiles(id) on delete cascade,
   role text default 'member' check (role in ('admin','officer','member')),
   joined_at timestamptz default now(),
   unique(club_id, user_id)
@@ -116,7 +116,7 @@ create table announcement_settings (
 
 create table notifications (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid references auth.users(id) on delete cascade,
+  user_id uuid references profiles(id) on delete cascade,
   announcement_id uuid references announcements(id) on delete cascade,
   read boolean default false,
   created_at timestamptz default now()
@@ -130,14 +130,14 @@ create table invite_links (
   max_uses integer,
   use_count integer default 0,
   revoked boolean default false,
-  created_by uuid references auth.users(id),
+  created_by uuid references profiles(id),
   created_at timestamptz default now()
 );
 
 create table csv_imports (
   id uuid primary key default gen_random_uuid(),
   university_id uuid references universities(id) on delete cascade,
-  uploaded_by uuid references auth.users(id),
+  uploaded_by uuid references profiles(id),
   status text default 'pending' check (status in ('pending','processing','complete','failed')),
   report jsonb default '{}',
   created_at timestamptz default now()
@@ -145,7 +145,7 @@ create table csv_imports (
 
 create table gdpr_requests (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid references auth.users(id) on delete cascade,
+  user_id uuid references profiles(id) on delete cascade,
   type text check (type in ('export','erasure')),
   status text default 'pending' check (status in ('pending','processing','complete')),
   created_at timestamptz default now(),

@@ -79,16 +79,16 @@ export async function POST(request: Request) {
 
     const userId = authData.user.id
 
-    // Create profile
+    // Update profile (which was auto-created by the DB trigger)
     const { error: profileError } = await adminClient
       .from('profiles')
-      .insert({
-        id: userId,
+      .update({
         university_id: university.id,
         first_name,
         last_name,
         email,
       })
+      .eq('id', userId)
 
     if (profileError) {
       console.error('Error creating profile:', profileError)
