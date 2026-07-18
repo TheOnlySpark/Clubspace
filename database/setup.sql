@@ -452,14 +452,15 @@ create policy "Users can delete club banners in own folder" on storage.objects f
 -- ==============================================================================
 
 INSERT INTO universities (name, slug, domain_allowlist)
-SELECT 'Test University', 'test-university', ARRAY['gmail.com']
+SELECT '[YOUR_UNIVERSITY_NAME]', '[YOUR_UNIVERSITY_SLUG]', ARRAY['[YOUR_DOMAIN_HERE]']
 WHERE NOT EXISTS (
-    SELECT 1 FROM universities WHERE 'gmail.com' = ANY(domain_allowlist)
+    SELECT 1 FROM universities WHERE '[YOUR_DOMAIN_HERE]' = ANY(domain_allowlist)
 );
 
 DO $$
 DECLARE
-  target_email text := 'you@gmail.com'; 
+  -- Replace this with the email of the user you want to make a Super Admin
+  target_email text := '[SUPER_ADMIN_EMAIL]'; 
   target_user_id uuid;
 BEGIN
   SELECT id INTO target_user_id FROM auth.users WHERE email = target_email;
