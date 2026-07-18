@@ -71,32 +71,35 @@ export default function SettingsPage() {
       }
 
       if (userClubs.length === 0) {
-        throw new Error('You are not a member of any club in this university')
+        // Not a member of any club. This is fine for Super Admins who just want to access global settings.
+        setClub(null)
+        setInvites([])
+        setError(null)
+      } else {
+        // Use the first club as the current club
+        const clubData: any = Array.isArray(userClubs[0].clubs) ? userClubs[0].clubs[0] : userClubs[0].clubs
+
+        setClub(clubData)
+        // Initialize form values
+        setEditClubName(clubData.name || '')
+        setEditClubDescription(clubData.description || '')
+        setEditClubPrivacy(clubData.privacy || 'university')
+        setEditClubJoinPolicy(clubData.join_policy || 'invite')
+
+        // Fetch invites for this club
+        const { data: invitesData, error: invitesError } = await supabase
+          .from('invite_links')
+          .select('*')
+          .eq('club_id', clubData.id)
+          .order('created_at', { ascending: false })
+
+        if (invitesError) {
+          throw invitesError
+        }
+
+        setInvites(invitesData)
+        setError(null)
       }
-
-      // Use the first club as the current club
-      const clubData: any = Array.isArray(userClubs[0].clubs) ? userClubs[0].clubs[0] : userClubs[0].clubs
-
-      setClub(clubData)
-      // Initialize form values
-      setEditClubName(clubData.name || '')
-      setEditClubDescription(clubData.description || '')
-      setEditClubPrivacy(clubData.privacy || 'university')
-      setEditClubJoinPolicy(clubData.join_policy || 'invite')
-
-      // Fetch invites for this club
-      const { data: invitesData, error: invitesError } = await supabase
-        .from('invite_links')
-        .select('*')
-        .eq('club_id', clubData.id)
-        .order('created_at', { ascending: false })
-
-      if (invitesError) {
-        throw invitesError
-      }
-
-      setInvites(invitesData)
-      setError(null)
     } catch (err: any) {
       console.error('Error loading club data:', err)
       setError(err.message ?? 'Failed to load club data')
@@ -254,21 +257,7 @@ export default function SettingsPage() {
     )
   }
 
-  if (!club) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6 py-12">
-        <div className="w-full max-w-md space-y-6 text-center">
-          <h2 className="text-2xl font-bold text-primary">No club found</h2>
-          <p className="text-muted-foreground">
-            You are not a member of any club. Please join a club to access settings.
-          </p>
-          <a href="/dashboard/clubs" className="font-medium text-primary hover:underline">
-            Go to clubs
-          </a>
-        </div>
-      </div>
-    )
-  }
+  // Removed the early return for !club so that admins can still see their global settings
 
   return (
     <div className="space-y-8">
@@ -286,8 +275,9 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* Club Info Section */}
-      <div className="bg-white rounded-lg shadow-md p-6">
+      {/* Club Info Section (Only visible if in a club) */}
+      {club && (
+        <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-xl font-semibold text-primary mb-4">Club Information</h2>
         <div className="space-y-4">
           <div>
@@ -406,8 +396,10 @@ export default function SettingsPage() {
           </div>
         )}
       </div>
+      )}
 
-      {/* Invite Links Section */}
+      {/* Invite Links Section (Only visible if in a club) */}
+      {club && (
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-xl font-semibold text-primary mb-4">Invite Links</h2>
         {showGenerator && (
@@ -425,6 +417,7 @@ export default function SettingsPage() {
           onCopy={handleCopyInvite}
         />
       </div>
+      )}
 
       {/* GDPR Actions Section */}
       <div className="bg-white rounded-lg shadow-md p-6">
