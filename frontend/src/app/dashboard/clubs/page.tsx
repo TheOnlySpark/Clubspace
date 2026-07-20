@@ -99,6 +99,29 @@ export default function ClubsPage() {
     setSelectedClub(club)
   }
 
+  const handleJoinClub = async (club: ClubCard) => {
+    if (club.join_policy !== 'open') {
+      alert('This club requires an invite link or approval to join.')
+      return
+    }
+
+    try {
+      const res = await fetch(`/api/clubs/${club.id}/join`, {
+        method: 'POST',
+      })
+      const data = await res.json()
+      
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to join club')
+      }
+      
+      // Successfully joined, refresh the clubs list
+      fetchClubs()
+    } catch (err: any) {
+      alert(err.message)
+    }
+  }
+
   if (loading) {
     return (
       <div className={styles.pageContainer} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -195,7 +218,7 @@ export default function ClubsPage() {
                     Manage
                   </button>
                 ) : (
-                  <button className={styles.joinButton}>
+                  <button className={styles.joinButton} onClick={() => handleJoinClub(club)}>
                     Join Club
                   </button>
                 )}
