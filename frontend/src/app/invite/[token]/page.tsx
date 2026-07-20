@@ -53,6 +53,7 @@ export default function InvitePage({ params }: { params: { token: string } }) {
         throw new Error(data.error || 'Failed to join club')
       }
       // Redirect to the club page or dashboard
+      router.refresh()
       router.push(`/dashboard/clubs`) // Or specific club if page exists
     } catch (err: any) {
       setError(err.message)

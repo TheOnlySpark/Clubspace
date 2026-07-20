@@ -1,6 +1,7 @@
 // src/app/api/invites/accept/route.ts
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
+import { revalidatePath } from 'next/cache'
 import { requireAuth } from '@/lib/api-helpers'
 import { adminClient } from '@/lib/supabase/admin'
 
@@ -84,7 +85,7 @@ export async function POST(request: Request) {
     if (insertError) {
       console.error('Error inserting club membership from invite:', insertError)
       return NextResponse.json(
-        { error: 'Failed to join the club' },
+        { error: insertError.message || 'Failed to join the club' },
         { status: 500 }
       )
     }
@@ -99,6 +100,8 @@ export async function POST(request: Request) {
       console.error('Error incrementing invite use_count:', updateError)
       // Non-fatal, we can still return success
     }
+
+    revalidatePath('/dashboard/clubs')
 
     return NextResponse.json(
       { message: 'Successfully joined the club', club_id: invite.club_id },
