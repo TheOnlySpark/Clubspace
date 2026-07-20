@@ -65,14 +65,14 @@ export async function POST(request: Request) {
     if (authError) {
       console.error('Error creating user:', authError)
       return NextResponse.json(
-        { error: 'Failed to create user' },
+        { error: authError.message || 'Failed to create user' },
         { status: 500 }
       )
     }
 
     if (!authData.user) {
       return NextResponse.json(
-        { error: 'Failed to create user' },
+        { error: 'Failed to create user: No user data returned' },
         { status: 500 }
       )
     }
