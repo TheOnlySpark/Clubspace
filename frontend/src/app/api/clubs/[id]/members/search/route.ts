@@ -51,7 +51,7 @@ export async function GET(
       .select('id, first_name, last_name, email, avatar_url, student_number')
       .eq('university_id', club.university_id)
       .eq('active', true)
-      .or(`first_name.ilike.${searchTerm},last_name.ilike.${searchTerm},email.ilike.${searchTerm},student_number.ilike.${searchTerm}`)
+      .or(`first_name.ilike."${searchTerm}",last_name.ilike."${searchTerm}",email.ilike."${searchTerm}",student_number.ilike."${searchTerm}"`)
       .limit(10)
 
     if (profileError) {
