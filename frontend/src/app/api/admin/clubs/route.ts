@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { requireAuth } from '@/lib/api-helpers'
 import { createClient } from '@/lib/supabase/server'
+import { adminClient } from '@/lib/supabase/admin'
 import { clubSchema } from '@/lib/validations/clubs'
 
 export async function GET(
@@ -192,12 +193,17 @@ export async function POST(request: Request) {
       )
     }
 
-    // Automatically make the creator a club admin
-    await supabase.from('club_memberships').insert({
+    // Automatically make the creator a club admin (use adminClient to bypass RLS)
+    const { error: membershipError } = await adminClient.from('club_memberships').insert({
       club_id: data.id,
       user_id: session.user.id,
       role: 'admin'
     })
+    
+    if (membershipError) {
+      console.error('Error adding initial club admin:', membershipError)
+      // We don't fail the club creation, but we should log this.
+    }
 
     return NextResponse.json(data, { status: 201 })
   } catch (error: any) {

@@ -57,7 +57,7 @@ export default function ClubsPage() {
         description,
         privacy,
         join_policy,
-        club_memberships!inner(user_id)
+        club_memberships(user_id)
       `)
       .eq('university_id', profile.university_id)
       
