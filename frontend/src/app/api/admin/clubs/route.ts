@@ -167,11 +167,17 @@ export async function POST(request: Request) {
       .replace(/(^-|-$)+/g, '')
     const slug = `${baseSlug}-${Math.floor(Math.random() * 10000)}`
 
+    const { name, description, privacy, join_policy, banner_url } = parsed
+
     // Insert the club
     const { data, error } = await supabase
       .from('clubs')
       .insert({
-        ...parsed,
+        name,
+        description,
+        privacy,
+        join_policy,
+        banner_url,
         slug,
         university_id: clubUniversityId,
       })

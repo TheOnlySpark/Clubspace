@@ -122,8 +122,14 @@ export async function PATCH(
     }
 
     const body = await request.json()
-    // Partial update - we'll allow updating any field except id, university_id, etc.
     const parsed = clubSchema.partial().parse(body)
+
+    const allowedUpdates: any = {}
+    if ('name' in parsed) allowedUpdates.name = parsed.name
+    if ('description' in parsed) allowedUpdates.description = parsed.description
+    if ('privacy' in parsed) allowedUpdates.privacy = parsed.privacy
+    if ('join_policy' in parsed) allowedUpdates.join_policy = parsed.join_policy
+    if ('banner_url' in parsed) allowedUpdates.banner_url = parsed.banner_url
 
     // Get the club to check ownership
     const { data: clubData, error: clubError } = await supabase
@@ -203,7 +209,7 @@ export async function PATCH(
     // Update the club
     const { data, error } = await supabase
       .from('clubs')
-      .update(parsed)
+      .update(allowedUpdates)
       .eq('id', clubId)
       .select()
       .single()

@@ -81,12 +81,14 @@ export async function PATCH(
     }
 
     const body = await request.json()
-    // Partial update - we'll allow updating any field except id, university_id, etc.
     const parsed = clubSchema.partial().parse(body)
 
-    // Prevent updating status or slug via this general PATCH endpoint
-    if ('status' in parsed) delete parsed.status
-    if ('slug' in parsed) delete parsed.slug
+    const allowedUpdates: any = {}
+    if ('name' in parsed) allowedUpdates.name = parsed.name
+    if ('description' in parsed) allowedUpdates.description = parsed.description
+    if ('privacy' in parsed) allowedUpdates.privacy = parsed.privacy
+    if ('join_policy' in parsed) allowedUpdates.join_policy = parsed.join_policy
+    if ('banner_url' in parsed) allowedUpdates.banner_url = parsed.banner_url
 
     // Verify the user has permission to update this club
     const { data: clubData, error: clubError } = await adminClient
@@ -152,7 +154,7 @@ export async function PATCH(
     // Update the club using adminClient to bypass RLS since University Admins might not be members
     const { data, error } = await adminClient
       .from('clubs')
-      .update(parsed)
+      .update(allowedUpdates)
       .eq('id', clubId)
       .select()
       .single()
