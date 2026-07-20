@@ -5,16 +5,29 @@ import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/hooks/useAuth'
 import { useRole } from '@/hooks/useRole'
 import CreateClubModal from '@/components/clubs/CreateClubModal'
+import ClubModal from '@/components/clubs/ClubModal'
 import styles from './clubs.module.css'
+
+type ClubCard = {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+  privacy: 'public' | 'university' | 'members'
+  join_policy: 'open' | 'invite' | 'approval'
+  memberCount: number
+  isMember: boolean
+}
 
 export default function ClubsPage() {
   const { user } = useAuth()
   const { isAdmin } = useRole()
-  const [clubs, setClubs] = useState<any[]>([])
+  const [clubs, setClubs] = useState<ClubCard[]>([])
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
   const [universityId, setUniversityId] = useState<string | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [selectedClub, setSelectedClub] = useState<ClubCard | null>(null)
 
   const fetchClubs = async () => {
     if (!user) return
@@ -40,20 +53,24 @@ export default function ClubsPage() {
       .select(`
         id,
         name,
+        slug,
         description,
         privacy,
+        join_policy,
         club_memberships!inner(user_id)
       `)
       .eq('university_id', profile.university_id)
       
     // Count members using JS
-    const transformedClubs = (clubsData || []).map((club: any) => ({
+    const transformedClubs: ClubCard[] = (clubsData || []).map((club: any) => ({
       id: club.id,
       name: club.name,
+      slug: club.slug || '',
       description: club.description,
-      privacy: club.privacy,
+      privacy: club.privacy || 'university',
+      join_policy: club.join_policy || 'invite',
       memberCount: club.club_memberships?.length || 0,
-      isMember: club.club_memberships?.some((m: any) => m.user_id === user.id) || false
+      isMember: club.club_memberships?.some((m: any) => m.user_id === user.id) || false,
     }))
 
     setClubs(transformedClubs)
@@ -66,9 +83,20 @@ export default function ClubsPage() {
 
   const filteredClubs = clubs.filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
 
-  const handleClubCreated = (newClub: any) => {
-    // Re-fetch to get accurate data, or just optimistically add to the list
+  const handleClubCreated = () => {
     fetchClubs()
+  }
+
+  const handleClubUpdated = () => {
+    fetchClubs()
+    // If we just deleted a club, selectedClub would be stale — check
+    if (selectedClub && !clubs.find(c => c.id === selectedClub.id)) {
+      setSelectedClub(null)
+    }
+  }
+
+  const handleManageClub = (club: ClubCard) => {
+    setSelectedClub(club)
   }
 
   if (loading) {
@@ -114,7 +142,7 @@ export default function ClubsPage() {
           </div>
           
           {isAdmin() && (
-            <button onClick={() => setIsModalOpen(true)} className={styles.createButton}>
+            <button onClick={() => setIsCreateModalOpen(true)} className={styles.createButton}>
               <svg className={styles.buttonIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
@@ -162,7 +190,11 @@ export default function ClubsPage() {
                   {club.memberCount} members
                 </div>
                 
-                {!club.isMember && (
+                {club.isMember || isAdmin() ? (
+                  <button className={styles.joinButton} onClick={() => handleManageClub(club)}>
+                    Manage
+                  </button>
+                ) : (
                   <button className={styles.joinButton}>
                     Join Club
                   </button>
@@ -175,10 +207,20 @@ export default function ClubsPage() {
 
       {/* Create Club Modal */}
       <CreateClubModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+        isOpen={isCreateModalOpen} 
+        onClose={() => setIsCreateModalOpen(false)} 
         onSuccess={handleClubCreated}
       />
+
+      {/* Club Management Modal */}
+      {selectedClub && (
+        <ClubModal
+          club={selectedClub}
+          isOpen={!!selectedClub}
+          onClose={() => setSelectedClub(null)}
+          onUpdated={handleClubUpdated}
+        />
+      )}
     </div>
   )
 }
