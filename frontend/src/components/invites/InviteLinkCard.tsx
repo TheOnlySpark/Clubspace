@@ -27,9 +27,17 @@ export default function InviteLinkCard({
 }: InviteLinkCardProps) {
   const [copied, setCopied] = React.useState(false)
 
+  const [origin, setOrigin] = React.useState('')
+
+  React.useEffect(() => {
+    setOrigin(window.location.origin)
+  }, [])
+
+  const fullLink = origin ? `${origin}/invite/${invite.token}` : `/invite/${invite.token}`
+
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(invite.token)
+      await navigator.clipboard.writeText(fullLink)
       onCopy(invite.token)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
@@ -63,8 +71,7 @@ export default function InviteLinkCard({
         <div className="flex-1">
           <h3 className="font-semibold text-primary">Invite Link</h3>
           <p className="mt-1 text-sm text-muted-foreground word-break-break-all">
-            {/* We would normally show the full URL, but for now just show the token */}
-            https://yourdomain.com/auth/register?token={invite.token}
+            {fullLink}
           </p>
           <div className="mt-2 flex flex-wrap gap-4 text-xs text-muted-foreground">
             <div className="flex items-center">

@@ -2,7 +2,7 @@
 "use client"
 import * as React from 'react'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { z } from 'zod'
 import { cn } from '@/lib/utils'
 import Input from '@/components/ui/Input'
@@ -23,6 +23,8 @@ export default function RegisterForm() {
   const [error, setError] = React.useState<string | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const next = searchParams.get('next')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -63,7 +65,7 @@ export default function RegisterForm() {
         throw new Error('Registration successful, but failed to log in automatically. Please try logging in manually.')
       }
 
-      router.push('/dashboard')
+      router.push(next || '/dashboard')
       router.refresh()
     } catch (err: any) {
       setError(err.message ?? 'An unexpected error occurred')
