@@ -1,5 +1,6 @@
 // src/app/auth/login/page.tsx
 "use client"
+import * as React from 'react'
 import LoginForm from '@/components/auth/LoginForm'
 
 export default function LoginPage() {
@@ -20,7 +21,9 @@ export default function LoginPage() {
         </div>
         
         <div className="relative z-10">
-          <LoginForm />
+          <React.Suspense fallback={<div className="flex justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+            <LoginForm />
+          </React.Suspense>
         </div>
         
         <p className="text-center text-sm text-muted-foreground mt-8 relative z-10">

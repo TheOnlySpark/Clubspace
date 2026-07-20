@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 // src/app/api/invites/resolve/route.ts
 import { NextResponse } from 'next/server'
 import { adminClient } from '@/lib/supabase/admin'

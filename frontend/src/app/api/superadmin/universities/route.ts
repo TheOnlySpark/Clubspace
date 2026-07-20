@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 // src/app/api/superadmin/universities/route.ts
 import { NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/api-helpers'

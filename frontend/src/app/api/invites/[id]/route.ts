@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 // src/app/api/invites/[id]/route.ts
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
