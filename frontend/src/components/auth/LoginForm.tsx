@@ -81,7 +81,7 @@ export default function LoginForm() {
         className={cn('w-full', error ? 'border-destructive' : '')}
         autoComplete="current-password"
         />
-        <p className="mt-2 text-xs text-muted-foreground text-right">
+        <p className="mt-2 text-xs text-muted-foreground text-center">
           Forgot your password? Please contact your administrator.
         </p>
       </div>
