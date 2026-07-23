@@ -12,7 +12,7 @@ ClubSpace is a production-ready, open-source platform for managing university st
 - **Notifications**: Real-time notification system with unread counts
 - **GDPR Compliance**: Data export and erasure requests
 - **University Administration**: Domain allowlist management, university-wide oversight
-- **Super Admin Panel**: Platform-wide oversight of all universities and users
+- **Security & Session Management**: Global 15-minute inactivity auto-logout with native secure JWT-based session handling
 - **Public Pages**: Public club pages showing events and club information
 - **Responsive Design**: Built with Tailwind CSS, works on mobile and desktop
 
