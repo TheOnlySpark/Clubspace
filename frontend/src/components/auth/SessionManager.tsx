@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
-const INACTIVITY_TIMEOUT_MS = 45 * 1000 // 45 seconds (temporary for testing)
+const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000 // 15 minutes
 
 export default function SessionManager() {
   const router = useRouter()
