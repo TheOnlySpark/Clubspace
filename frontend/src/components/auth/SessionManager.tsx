@@ -14,8 +14,14 @@ export default function SessionManager() {
     const supabase = createClient()
 
     const handleLogout = async () => {
-      await supabase.auth.signOut()
-      router.push('/auth/login?reason=timeout')
+      console.log('Inactivity timeout reached! Logging out...')
+      try {
+        await supabase.auth.signOut()
+      } catch (err) {
+        console.error('Logout error:', err)
+      } finally {
+        window.location.href = '/auth/login?reason=timeout'
+      }
     }
 
     const resetTimeout = () => {
@@ -28,21 +34,21 @@ export default function SessionManager() {
 
     const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart']
     
-    // Throttle the activity listener so we aren't clearing/setting timeouts 100x a second on mouse move
-    let throttleTimer: NodeJS.Timeout | null = null
+    // Throttle the activity listener using a timestamp
+    let lastActivity = Date.now()
     const handleActivity = () => {
-      if (throttleTimer) return
-      throttleTimer = setTimeout(() => {
+      const now = Date.now()
+      // Only reset the timer if it's been at least 1 second since the last reset
+      if (now - lastActivity > 1000) {
+        lastActivity = now
         resetTimeout()
-        throttleTimer = null
-      }, 1000) // Throttle to max 1 update per second
+      }
     }
 
     events.forEach(event => window.addEventListener(event, handleActivity))
 
     return () => {
       if (timeoutId) clearTimeout(timeoutId)
-      if (throttleTimer) clearTimeout(throttleTimer)
       events.forEach(event => window.removeEventListener(event, handleActivity))
     }
   }, [router])
