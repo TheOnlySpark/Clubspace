@@ -116,7 +116,9 @@ export default function MemberListModal({
                 </Tr>
               </Thead>
               <Tbody>
-                {members.map((member) => (
+                {members.map((member) => {
+                  if (!member) return null;
+                  return (
                   <Tr key={member.membership_id}>
                     <Td>
                       <div className="flex items-center gap-3">
@@ -128,26 +130,26 @@ export default function MemberListModal({
                           />
                         ) : (
                           <div className="w-8 h-8 rounded-full bg-blue-100 text-electric-blue flex items-center justify-center text-xs font-bold">
-                            {(member.first_name?.[0] || '') + (member.last_name?.[0] || '')}
+                            {(member?.first_name?.[0] || '') + (member?.last_name?.[0] || '')}
                           </div>
                         )}
                         <div>
                           <p className="font-medium text-navy text-sm">
-                            {member.first_name} {member.last_name}
+                            {member?.first_name} {member?.last_name}
                           </p>
-                          <p className="text-xs text-gray-500">{member.email}</p>
+                          <p className="text-xs text-gray-500">{member?.email}</p>
                         </div>
                       </div>
                     </Td>
                     <Td className="text-sm text-gray-700">
-                      {member.course_name || 'N/A'}
+                      {member?.course_name || 'N/A'}
                     </Td>
                     <Td className="text-sm text-gray-700">{clubName}</Td>
                     <Td>
                       {isAdminOrSuperAdmin ? (
                         <select
                           className="bg-gray-50 border border-gray-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
-                          value={member.role}
+                          value={member?.role}
                           onChange={(e) => handleRoleChange(member.user_id, e.target.value)}
                         >
                           <option value="member">Member</option>
@@ -156,12 +158,12 @@ export default function MemberListModal({
                         </select>
                       ) : (
                         <span className="capitalize text-sm font-medium text-gray-700">
-                          {member.role}
+                          {member?.role}
                         </span>
                       )}
                     </Td>
                   </Tr>
-                ))}
+                )})}
               </Tbody>
             </Table>
           )}

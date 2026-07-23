@@ -54,12 +54,12 @@ export async function GET(
       user_id: m.user_id,
       role: m.role,
       joined_at: m.joined_at,
-      first_name: m.profiles.first_name,
-      last_name: m.profiles.last_name,
-      email: m.profiles.email,
-      avatar_url: m.profiles.avatar_url,
-      student_number: m.profiles.student_number,
-      course_name: m.profiles.departments?.name || null,
+      first_name: m.profiles?.first_name,
+      last_name: m.profiles?.last_name,
+      email: m.profiles?.email,
+      avatar_url: m.profiles?.avatar_url,
+      student_number: m.profiles?.student_number,
+      course_name: m.profiles?.departments?.name || null,
     }))
 
     return NextResponse.json({ members }, { status: 200 })
