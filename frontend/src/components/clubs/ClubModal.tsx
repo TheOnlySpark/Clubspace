@@ -448,7 +448,6 @@ export default function ClubModal({ club, isOpen, onClose, onUpdated }: ClubModa
                     value={formData.privacy}
                     onChange={handleFormChange}
                   >
-                    <option value="public">Public — Visible to everyone</option>
                     <option value="university">University — Visible to members</option>
                     <option value="members">Private — Hidden, invite only</option>
                   </select>
@@ -463,7 +462,7 @@ export default function ClubModal({ club, isOpen, onClose, onUpdated }: ClubModa
                     value={formData.join_policy}
                     onChange={handleFormChange}
                   >
-                    <option value="open">Open — Anyone can join</option>
+                    <option value="open">Open — University Members Only</option>
                     <option value="approval">Approval — Requires approval</option>
                     <option value="invite">Invite Only</option>
                   </select>
