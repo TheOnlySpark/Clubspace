@@ -75,7 +75,7 @@ const DropdownTrigger = React.forwardRef<(HTMLButtonElement | HTMLDivElement) & 
         disabled={props.disabled}
         aria-expanded={open}
         className={cn(
-          'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-white/10 focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+          'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
           className
         )}
         {...props}
@@ -119,7 +119,7 @@ const DropdownContent = React.forwardRef<HTMLDivElement, DropdownContentProps>(
         aria-orientation="vertical"
         aria-label="dropdown"
         className={cn(
-          'absolute z-50 min-w-[8rem] overflow-hidden rounded-md border border-white/10 glass-panel p-1 text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+          'absolute z-50 min-w-[8rem] overflow-hidden rounded-md border border-border solid-panel p-1 text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
           className
         )}
         {...props}

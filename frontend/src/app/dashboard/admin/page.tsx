@@ -143,7 +143,7 @@ export default function AdminPage() {
         </div>
       </div>
 
-      <div className="glass-panel border border-white/10 rounded-xl p-6">
+      <div className="solid-panel border border-border rounded-xl p-6">
         <h2 className="text-xl font-semibold text-primary mb-4">University Overview</h2>
         <div className="space-y-4">
           <div>
@@ -165,21 +165,21 @@ export default function AdminPage() {
         </div>
       </div>
 
-      <div className="glass-panel border border-white/10 rounded-xl p-6">
+      <div className="solid-panel border border-border rounded-xl p-6">
         <h2 className="text-xl font-semibold text-primary mb-4">Manage University</h2>
         <div className="space-y-4">
           <UniversitySettings university={university} onUpdate={fetchUniversity} />
         </div>
       </div>
 
-      <div className="glass-panel border border-white/10 rounded-xl p-6">
+      <div className="solid-panel border border-border rounded-xl p-6">
         <h2 className="text-xl font-semibold text-primary mb-4">Clubs Management</h2>
         <ClubManager universityId={university.id} onClubUpdate={() => {
           // TODO: refresh clubs list if needed
         }} />
       </div>
 
-      <div className="glass-panel border border-white/10 rounded-xl p-6">
+      <div className="solid-panel border border-border rounded-xl p-6">
         <h2 className="text-xl font-semibold text-primary mb-4">User Roles</h2>
         <UserRoleTable universityId={university.id} onRoleUpdate={() => {
           // TODO: refresh roles if needed

@@ -134,7 +134,7 @@ export default function SuperAdminPage() {
 
       {/* Overview Section */}
       {overview && (
-        <div className="glass-panel border border-white/10 rounded-xl p-6">
+        <div className="solid-panel border border-border rounded-xl p-6">
           <h2 className="text-xl font-semibold text-primary mb-4">Platform Overview</h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -159,14 +159,14 @@ export default function SuperAdminPage() {
       )}
 
       {/* Universities Section */}
-      <div className="glass-panel border border-white/10 rounded-xl p-6">
+      <div className="solid-panel border border-border rounded-xl p-6">
         <h2 className="text-xl font-semibold text-primary mb-4">Universities</h2>
         {universities.length === 0 ? (
           <p className="text-center py-4 text-muted-foreground">No universities found.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-white/5 border-b border-white/10">
+              <thead className="bg-background border-b border-border">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Name
@@ -181,7 +181,7 @@ export default function SuperAdminPage() {
               </thead>
               <tbody className="divide-y divide-white/10">
                 {universities.map((uni) => (
-                  <tr key={uni.id} className="hover:bg-white/5 transition-colors">
+                  <tr key={uni.id} className="hover:bg-background transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
                       {uni.name}
                     </td>
@@ -200,14 +200,14 @@ export default function SuperAdminPage() {
       </div>
 
       {/* Users Section */}
-      <div className="glass-panel border border-white/10 rounded-xl p-6">
+      <div className="solid-panel border border-border rounded-xl p-6">
         <h2 className="text-xl font-semibold text-primary mb-4">Users</h2>
         {users.length === 0 ? (
           <p className="text-center py-4 text-muted-foreground">No users found.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-white/5 border-b border-white/10">
+              <thead className="bg-background border-b border-border">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Name
@@ -225,7 +225,7 @@ export default function SuperAdminPage() {
               </thead>
               <tbody className="divide-y divide-white/10">
                 {users.map((user) => (
-                  <tr key={user.id} className="hover:bg-white/5 transition-colors">
+                  <tr key={user.id} className="hover:bg-background transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
                       {user.first_name || ''} {user.last_name || ''}
                     </td>

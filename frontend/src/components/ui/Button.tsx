@@ -18,11 +18,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     // Premium Variants
     const variantClasses = {
-      default: 'bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] border border-white/10',
-      destructive: 'bg-gradient-to-r from-red-600 to-rose-500 text-white hover:shadow-[0_0_20px_rgba(225,29,72,0.4)] border border-white/10',
-      outline: 'border border-white/20 bg-white/5 backdrop-blur-md text-foreground hover:bg-white/10 hover:border-white/30 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]',
-      secondary: 'bg-white/10 text-foreground backdrop-blur-md hover:bg-white/20 border border-transparent hover:border-white/10',
-      ghost: 'hover:bg-white/10 text-muted-foreground hover:text-foreground',
+      default: 'bg-primary text-white hover:bg-primary/90',
+      destructive: 'bg-red-600 text-white hover:bg-red-700',
+      outline: 'border border-border bg-background hover:bg-accent hover:text-accent-foreground text-foreground',
+      secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+      ghost: 'hover:bg-accent hover:text-accent-foreground text-muted-foreground hover:text-foreground',
       link: 'underline-offset-4 hover:underline text-primary hover:text-accent transition-colors',
     }
 

@@ -49,9 +49,9 @@ export default function RoleSelector({
       <DropdownTrigger
         disabled={disabled}
         className={cn(
-          'w-full flex items-center justify-between px-3 py-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-md shadow-sm text-left text-foreground',
+          'w-full flex items-center justify-between px-3 py-2 bg-background border border-border rounded-md text-left text-foreground',
           disabled && 'opacity-50',
-          !disabled && 'hover:bg-gray-50'
+          !disabled && 'hover:bg-accent hover:text-accent-foreground'
         )}
       >
         <span className="text-left flex-1">

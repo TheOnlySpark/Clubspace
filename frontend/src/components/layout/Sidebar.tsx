@@ -102,12 +102,12 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       <aside
         ref={ref}
         className={cn(
-          'flex h-full flex-col w-64 glass-panel border-r border-white/10',
+          'flex h-full flex-col w-64 bg-background border-r border-border',
           className
         )}
         {...props}
       >
-        <div className="flex h-16 items-center px-6 border-b border-white/5">
+        <div className="flex h-16 items-center px-6 border-b border-border">
           <h2 className="text-xl font-bold text-gradient">ClubSpace</h2>
         </div>
         <nav className="flex-1 overflow-y-auto mt-4">
@@ -123,8 +123,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
                       className={cn(
                         'flex w-full items-center rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200',
                         isActive 
-                          ? 'bg-primary/20 text-primary-foreground border border-primary/30 shadow-[0_0_15px_rgba(59,130,246,0.15)]' 
-                          : 'text-muted-foreground hover:bg-white/5 hover:text-foreground'
+                          ? 'bg-primary text-primary-foreground' 
+                          : 'text-muted-foreground hover:bg-accent hover:text-foreground'
                       )}
                     >
                       <span className={cn("mr-3", isActive ? "text-primary-foreground" : "text-muted-foreground")}>{item.icon}</span>
@@ -135,16 +135,16 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
               })}
           </ul>
         </nav>
-        <div className="flex h-[72px] items-center px-4 mt-auto border-t border-white/5 bg-white/5 backdrop-blur-md">
+        <div className="flex h-[72px] items-center px-4 mt-auto border-t border-border bg-background">
           <div 
             onClick={async () => {
               const supabase = createClient()
               await supabase.auth.signOut()
               window.location.href = '/auth/login'
             }}
-            className="flex items-center space-x-3 w-full p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer group"
+            className="flex items-center space-x-3 w-full p-2 rounded-xl hover:bg-accent transition-colors cursor-pointer group"
           >
-            <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-primary to-accent flex items-center justify-center text-white font-bold shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform">
+            <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold group-hover:scale-105 transition-transform">
               U
             </div>
             <div className="space-y-0.5 overflow-hidden flex-1">

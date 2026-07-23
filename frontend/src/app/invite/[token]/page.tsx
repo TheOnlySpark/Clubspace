@@ -81,7 +81,7 @@ export default function InvitePage({ params }: { params: { token: string } }) {
   if (error || !invite) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4">
-        <div className="w-full max-w-md space-y-6 glass-card p-8 text-center rounded-[2rem]">
+        <div className="w-full max-w-md space-y-6 solid-card p-8 text-center rounded-[2rem]">
           <div className="w-16 h-16 bg-destructive/10 text-destructive rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -102,7 +102,7 @@ export default function InvitePage({ params }: { params: { token: string } }) {
       {/* Decorative background */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-full max-h-[800px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="w-full max-w-md space-y-8 glass-card p-8 md:p-10 rounded-[2rem] animate-in fade-in zoom-in-95 duration-500 relative z-10 text-center">
+      <div className="w-full max-w-md space-y-8 solid-card p-8 md:p-10 rounded-[2rem] animate-in fade-in zoom-in-95 duration-500 relative z-10 text-center">
         {invite.clubs.banner_url ? (
           <img
             src={invite.clubs.banner_url}

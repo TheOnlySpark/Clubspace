@@ -178,7 +178,7 @@ export default function ClubManager({
       <h2 className="text-lg font-semibold text-primary mb-4">Clubs in University</h2>
 
       {/* Create Club Form */}
-      <div className="glass-panel border border-white/10 rounded-xl p-6">
+      <div className="solid-panel border border-border rounded-xl p-6">
         <h3 className="text-xl font-semibold text-primary mb-4">Create New Club</h3>
         <form onSubmit={handleCreateSubmit} className="space-y-4">
           <div>
@@ -248,11 +248,11 @@ export default function ClubManager({
 
       {/* Clubs List */}
       {clubs.length > 0 && (
-        <div className="glass-panel border border-white/10 rounded-xl p-6">
+        <div className="solid-panel border border-border rounded-xl p-6">
           <h3 className="text-xl font-semibold text-primary mb-4">Club List</h3>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-white/10">
-              <thead className="bg-white/5 border-b border-white/10">
+              <thead className="bg-background border-b border-border">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Name
@@ -273,7 +273,7 @@ export default function ClubManager({
               </thead>
               <tbody className="divide-y divide-white/10">
                 {clubs.map((club) => (
-                  <tr key={club.id} className={editingClubId === club.id ? 'bg-white/10' : 'hover:bg-white/5 transition-colors'}>
+                  <tr key={club.id} className={editingClubId === club.id ? 'bg-accent' : 'hover:bg-background transition-colors'}>
                     {!editingClubId || editingClubId !== club.id ? (
                       <>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">

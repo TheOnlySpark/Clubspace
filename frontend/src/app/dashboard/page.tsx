@@ -100,7 +100,7 @@ export default async function DashboardPage() {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* Card 1 */}
-        <div className="glass-card rounded-2xl p-6 hover-lift relative overflow-hidden group">
+        <div className="solid-card rounded-2xl p-6 hover-lift relative overflow-hidden group">
           <div className="absolute -right-6 -top-6 w-24 h-24 bg-primary/20 rounded-full blur-2xl group-hover:bg-primary/30 transition-colors" />
           <h3 className="text-lg font-medium text-muted-foreground mb-2 relative z-10">Total Clubs</h3>
           <p className="text-4xl font-bold text-foreground relative z-10">{clubsCount}</p>
@@ -115,7 +115,7 @@ export default async function DashboardPage() {
 
 
         {/* Card 3 */}
-        <div className="glass-card rounded-2xl p-6 hover-lift relative overflow-hidden group">
+        <div className="solid-card rounded-2xl p-6 hover-lift relative overflow-hidden group">
           <div className="absolute -right-6 -top-6 w-24 h-24 bg-emerald-500/20 rounded-full blur-2xl group-hover:bg-emerald-500/30 transition-colors" />
           <h3 className="text-lg font-medium text-muted-foreground mb-2 relative z-10">Total Members</h3>
           <p className="text-4xl font-bold text-foreground relative z-10">{membersCount}</p>
@@ -128,7 +128,7 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div className="glass-card rounded-2xl p-8 hover-lift">
+      <div className="solid-card rounded-2xl p-8 hover-lift">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-xl font-semibold text-foreground">Recent Activity</h3>
           <button className="text-sm text-primary hover:text-primary/80 transition-colors">View all</button>

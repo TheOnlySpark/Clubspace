@@ -43,13 +43,13 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
         onClick={handleClick}
         className={cn(
           'fixed inset-0 z-50 flex min-h-[calc(100%-3.5rem)] items-center justify-center px-4 py-6 sm:p-0',
-          'bg-black/50 backdrop-blur-sm',
+          'bg-black/80',
           className
         )}
         {...props}
       >
         <div className={cn(
-          'relative w-full max-w-lg rounded-lg bg-popover p-6 shadow-lg transition-all',
+          'relative w-full max-w-lg rounded-lg bg-popover border border-border p-6 transition-all',
           'data-[state=open]:animate-in',
           'data-[state=closed]:animate-out',
           'data-[state=closed]:fade-out-0',

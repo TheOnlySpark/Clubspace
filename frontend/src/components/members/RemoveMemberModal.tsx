@@ -31,7 +31,7 @@ export default function RemoveMemberModal({
 
   return (
     <Modal open={open} onOpenChange={onOpenChange}>
-      <div className="glass-panel border border-white/10 rounded-xl shadow-xl p-6 w-full max-w-md">
+      <div className="solid-panel border border-border rounded-xl shadow-xl p-6 w-full max-w-md">
         <h2 className="text-xl font-semibold text-primary mb-4">
           Remove member
         </h2>

@@ -117,7 +117,7 @@ export default function CSVImport({ className }: CSVImportProps) {
       </form>
 
       {report && (
-        <div className="glass-panel border border-white/10 rounded-xl p-4 mt-6">
+        <div className="solid-panel border border-border rounded-xl p-4 mt-6">
           <h3 className="text-lg font-semibold text-primary mb-4">Import Report</h3>
           <div className="space-y-2 text-sm text-muted-foreground">
             <p><strong className="text-foreground">Total rows:</strong> {report.total}</p>

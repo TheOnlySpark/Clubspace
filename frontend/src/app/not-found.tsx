@@ -7,7 +7,7 @@ export default function NotFound() {
       {/* Decorative background */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-full max-h-[800px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="w-full max-w-md space-y-8 glass-card p-8 md:p-10 rounded-[2rem] animate-in fade-in zoom-in-95 duration-500 relative z-10 text-center">
+      <div className="w-full max-w-md space-y-8 solid-card p-8 md:p-10 rounded-[2rem] animate-in fade-in zoom-in-95 duration-500 relative z-10 text-center">
         <div className="flex items-center justify-center space-x-2">
           <h1 className="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/50 tracking-tighter">
             404
