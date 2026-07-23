@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     const { data: authData, error: authError } = await adminClient.auth.admin.createUser({
       email,
       password,
-      email_confirm: true, // We'll handle email verification separately; for now auto confirm
+      email_confirm: false, // Enforce email verification
       user_metadata: {
         first_name,
         last_name,
@@ -116,8 +116,18 @@ export async function POST(request: Request) {
       )
     }
 
+    // Trigger the confirmation email
+    const { error: emailError } = await adminClient.auth.resend({
+      type: 'signup',
+      email: email,
+    })
+
+    if (emailError) {
+      console.error('Error sending confirmation email:', emailError)
+    }
+
     return NextResponse.json(
-      { message: 'User registered successfully' },
+      { message: 'User registered successfully. Please check your email to verify your account.' },
       { status: 201 }
     )
   } catch (error: any) {
