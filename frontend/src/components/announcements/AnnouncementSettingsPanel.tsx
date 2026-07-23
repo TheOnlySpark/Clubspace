@@ -78,7 +78,7 @@ export default function AnnouncementSettingsPanel() {
       )}
 
       {/* Require approval for officers */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <p className="text-sm font-medium text-slate-200">Require approval for Officers</p>
           <p className="text-xs text-slate-500">Officers must submit drafts for Club Admin approval</p>
@@ -86,7 +86,7 @@ export default function AnnouncementSettingsPanel() {
         <button
           type="button"
           onClick={() => setSettings(prev => prev ? { ...prev, require_approval_for_officers: !prev.require_approval_for_officers } : prev)}
-          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+          className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${
             settings.require_approval_for_officers ? 'bg-blue-600' : 'bg-slate-600'
           }`}
         >
@@ -97,7 +97,7 @@ export default function AnnouncementSettingsPanel() {
       </div>
 
       {/* Allow club public visibility */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <p className="text-sm font-medium text-slate-200">Allow public visibility for clubs</p>
           <p className="text-xs text-slate-500">Clubs can publish announcements visible outside the university</p>
@@ -105,7 +105,7 @@ export default function AnnouncementSettingsPanel() {
         <button
           type="button"
           onClick={() => setSettings(prev => prev ? { ...prev, allow_club_public_visibility: !prev.allow_club_public_visibility } : prev)}
-          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+          className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${
             settings.allow_club_public_visibility ? 'bg-blue-600' : 'bg-slate-600'
           }`}
         >

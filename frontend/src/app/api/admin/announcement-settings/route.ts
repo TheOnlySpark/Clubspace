@@ -72,7 +72,8 @@ export async function PATCH(request: Request) {
     }
 
     // Upsert settings
-    const { data, error } = await supabase
+    const { adminClient } = await import('@/lib/supabase/admin')
+    const { data, error } = await adminClient
       .from('announcement_settings')
       .upsert(
         {
