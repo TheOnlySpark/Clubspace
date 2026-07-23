@@ -62,9 +62,14 @@ export default function AnnouncementList({
 
   const handleReject = async (id: string) => {
     if (onReject) {
-      await onReject(id, rejectReason)
-      setRejectingId(null)
-      setRejectReason('')
+      try {
+        await onReject(id, rejectReason)
+        setRejectingId(null)
+        setRejectReason('')
+      } catch (err: any) {
+        console.error('Rejection failed:', err)
+        alert(err.message || 'Failed to reject announcement')
+      }
     }
   }
 

@@ -64,7 +64,8 @@ export async function POST(
       .single()
 
     if (error) {
-      return NextResponse.json({ error: 'Failed to approve' }, { status: 500 })
+      console.error('Supabase update error on approve:', error)
+      return NextResponse.json({ error: error.message || 'Failed to approve' }, { status: 500 })
     }
 
     await adminClient.from('announcement_audit_log').insert({
