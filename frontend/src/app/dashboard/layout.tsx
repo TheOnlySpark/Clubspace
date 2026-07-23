@@ -4,6 +4,7 @@ import Sidebar from '@/components/layout/Sidebar'
 import Navbar from '@/components/layout/Navbar'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import SessionManager from '@/components/auth/SessionManager'
 
 export const metadata: Metadata = {
   title: 'ClubSpace Dashboard',
@@ -25,6 +26,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex flex-col min-h-screen">
+      <SessionManager />
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
