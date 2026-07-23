@@ -34,7 +34,10 @@ export async function GET(
           last_name,
           email,
           avatar_url,
-          student_number
+          student_number,
+          departments(
+            name
+          )
         )
       `)
       .eq('club_id', clubId)
@@ -56,6 +59,7 @@ export async function GET(
       email: m.profiles.email,
       avatar_url: m.profiles.avatar_url,
       student_number: m.profiles.student_number,
+      course_name: m.profiles.departments?.name || null,
     }))
 
     return NextResponse.json({ members }, { status: 200 })
