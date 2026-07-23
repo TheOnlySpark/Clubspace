@@ -40,29 +40,59 @@ export default function ClubsPage() {
       .eq('id', user.id)
       .single()
 
-    if (!profile?.university_id) {
-      setLoading(false)
-      return
+    setUniversityId(profile?.university_id || null)
+
+    const allClubsMap = new Map()
+
+    if (profile?.university_id) {
+      // Fetch all public/university clubs for this university
+      const { data: uniClubs } = await supabase
+        .from('clubs')
+        .select(`
+          id,
+          name,
+          slug,
+          description,
+          privacy,
+          join_policy,
+          club_memberships(user_id)
+        `)
+        .eq('university_id', profile.university_id)
+        
+      if (uniClubs) {
+        uniClubs.forEach((club: any) => allClubsMap.set(club.id, club))
+      }
     }
 
-    setUniversityId(profile.university_id)
-
-    // Fetch all public/university clubs for this university
-    const { data: clubsData } = await supabase
-      .from('clubs')
+    // Always fetch clubs the user is a member of
+    const { data: memberClubsData } = await supabase
+      .from('club_memberships')
       .select(`
-        id,
-        name,
-        slug,
-        description,
-        privacy,
-        join_policy,
-        club_memberships(user_id)
+        club_id,
+        clubs (
+          id,
+          name,
+          slug,
+          description,
+          privacy,
+          join_policy,
+          club_memberships(user_id)
+        )
       `)
-      .eq('university_id', profile.university_id)
+      .eq('user_id', user.id)
+
+    if (memberClubsData) {
+      memberClubsData.forEach((mc: any) => {
+        if (mc.clubs && !allClubsMap.has(mc.clubs.id)) {
+          allClubsMap.set(mc.clubs.id, mc.clubs)
+        }
+      })
+    }
+
+    const clubsData = Array.from(allClubsMap.values())
       
     // Count members using JS
-    const transformedClubs: ClubCard[] = (clubsData || []).map((club: any) => ({
+    const transformedClubs: ClubCard[] = clubsData.map((club: any) => ({
       id: club.id,
       name: club.name,
       slug: club.slug || '',
@@ -130,12 +160,12 @@ export default function ClubsPage() {
     )
   }
 
-  if (!universityId) {
+  if (!universityId && clubs.length === 0) {
     return (
       <div className={styles.pageContainer} style={{ display: 'flex', justifyContent: 'center', paddingTop: '4rem' }}>
         <div style={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '0.75rem', padding: '2rem', textAlign: 'center', maxWidth: '32rem', width: '100%' }}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#f8fafc', marginBottom: '0.5rem' }}>No University Found</h2>
-          <p style={{ color: '#94a3b8' }}>You must be associated with a university to view clubs.</p>
+          <p style={{ color: '#94a3b8' }}>You must be associated with a university or invited to a club to view clubs.</p>
         </div>
       </div>
     )
