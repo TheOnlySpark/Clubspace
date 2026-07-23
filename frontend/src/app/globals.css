@@ -3,26 +3,26 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0f172a;
-  --color-foreground: #f8fafc;
+  --color-background: #121212;
+  --color-foreground: #e4e4e7;
   --color-primary: #3b82f6;
   --color-primary-foreground: #ffffff;
-  --color-secondary: #1e293b;
-  --color-secondary-foreground: #f8fafc;
+  --color-secondary: #27272a;
+  --color-secondary-foreground: #e4e4e7;
   --color-accent: #60a5fa;
-  --color-muted: #334155;
-  --color-muted-foreground: #94a3b8;
-  --color-border: #334155;
-  --color-card: #1e293b;
-  --color-card-foreground: #f8fafc;
+  --color-muted: #3f3f46;
+  --color-muted-foreground: #a1a1aa;
+  --color-border: #27272a;
+  --color-card: #18181b;
+  --color-card-foreground: #e4e4e7;
   
   --font-sans: 'Inter', sans-serif;
   --font-heading: 'Outfit', sans-serif;
 }
 
 :root {
-  --background: #0f172a;
-  --foreground: #f8fafc;
+  --background: #121212;
+  --foreground: #e4e4e7;
 }
 
 * {
@@ -75,15 +75,15 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Solid Flat utilities */
 .solid-card {
-  background-color: #1e293b;
-  border: 1px solid #334155;
+  background-color: #18181b;
+  border: 1px solid #27272a;
   border-radius: 1rem;
 }
 
 .solid-panel {
-  background-color: #1e293b;
-  border-right: 1px solid #334155;
-  border-bottom: 1px solid #334155;
+  background-color: #18181b;
+  border-right: 1px solid #27272a;
+  border-bottom: 1px solid #27272a;
 }
 
 /* Smooth micro-animations */
