@@ -110,8 +110,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         <div className="flex h-16 items-center px-6 border-b border-border">
           <h2 className="text-xl font-bold text-gradient">ClubSpace</h2>
         </div>
-        <nav className="flex-1 overflow-y-auto mt-4">
-          <ul className="space-y-2 px-3">
+        <nav className="flex-1 overflow-y-auto mt-6">
+          <ul className="space-y-1.5 px-4">
             {navItems
               .filter((item) => item.available())
               .map((item, index) => {
@@ -123,8 +123,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
                       className={cn(
                         'flex w-full items-center rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200',
                         isActive 
-                          ? 'bg-primary text-primary-foreground' 
-                          : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                          ? 'bg-primary text-primary-foreground shadow-sm' 
+                          : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground'
                       )}
                     >
                       <span className={cn("mr-3", isActive ? "text-primary-foreground" : "text-muted-foreground")}>{item.icon}</span>
@@ -135,7 +135,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
               })}
           </ul>
         </nav>
-        <div className="flex h-[72px] items-center px-4 mt-auto border-t border-border bg-background">
+        <div className="flex h-[80px] items-center px-4 mt-auto border-t border-border bg-background">
           <div 
             onClick={async () => {
               const supabase = createClient()
