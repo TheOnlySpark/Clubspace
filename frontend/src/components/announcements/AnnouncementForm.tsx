@@ -18,30 +18,38 @@ interface AnnouncementFormProps {
   onCancel?: () => void
 }
 
+const formControlClasses = "block w-full rounded-lg border bg-slate-900 border-slate-700 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors";
+
 export default function AnnouncementForm({
   onSubmit,
-  initialData,
+  initialData = {},
   isEditing = false,
   onCancel,
 }: AnnouncementFormProps) {
   const { user } = useAuth()
   const { role, isUniversityAdmin, isSuperAdmin } = useRole()
+  
   const [clubs, setClubs] = useState<Array<{ id: string; name: string }>>([])
   const [formData, setFormData] = useState({
-    title: initialData?.title || '',
-    body: initialData?.body || '',
-    club_id: initialData?.club_id || '',
-    visibility: initialData?.visibility || 'club' as const,
-    status: initialData?.status || 'draft' as const,
-    publish_at: initialData?.publish_at || '',
-    expires_at: initialData?.expires_at || '',
+    title: initialData.title || '',
+    body: initialData.body || '',
+    club_id: initialData.club_id || '',
+    visibility: initialData.visibility || 'club',
+    status: initialData.status || 'draft',
+    publish_at: initialData.publish_at || '',
+    expires_at: initialData.expires_at || '',
   })
+  
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
+
+  const { title, body, club_id, visibility, status, publish_at, expires_at } = formData
+  const canSelectUniversity = isUniversityAdmin() || isSuperAdmin()
 
   // Fetch user's clubs
   useEffect(() => {
     if (!user) return
+
     const fetchClubs = async () => {
       const supabase = createClient()
       const { data } = await supabase
@@ -50,18 +58,22 @@ export default function AnnouncementForm({
         .eq('user_id', user.id)
         .in('role', ['admin', 'officer'])
 
-      if (data) {
-        const mapped = data.map((m: any) => ({ id: (m.clubs as any).id, name: (m.clubs as any).name }))
-        setClubs(mapped)
-        if (!formData.club_id && mapped.length > 0) {
-          setFormData(prev => ({ ...prev, club_id: mapped[0].id }))
-        }
+      if (!data) return
+
+      const mappedClubs = data.map((m: any) => ({
+        id: m.clubs.id,
+        name: m.clubs.name,
+      }))
+      
+      setClubs(mappedClubs)
+      
+      if (!club_id && mappedClubs.length > 0) {
+        setFormData(prev => ({ ...prev, club_id: mappedClubs[0].id }))
       }
     }
+    
     fetchClubs()
-  }, [user])
-
-  const canSelectUniversity = isUniversityAdmin() || isSuperAdmin()
+  }, [user, club_id])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -77,26 +89,32 @@ export default function AnnouncementForm({
     try {
       const dataToSubmit = {
         ...formData,
-        club_id: formData.visibility === 'university' ? null : formData.club_id,
-        publish_at: formData.publish_at || null,
-        expires_at: formData.expires_at || null,
+        club_id: visibility === 'university' ? null : club_id,
+        publish_at: publish_at || null,
+        expires_at: expires_at || null,
       }
+      
       const parsed = announcementCreateSchema.parse(dataToSubmit)
       await onSubmit(parsed)
     } catch (err: any) {
       if (err instanceof z.ZodError) {
-        const fieldErrors: Record<string, string> = {}
-        err.issues.forEach(issue => {
-          const field = issue.path[0] as string
-          fieldErrors[field] = issue.message
-        })
+        const fieldErrors = err.issues.reduce((acc, issue) => {
+          const key = String(issue.path[0])
+          acc[key] = issue.message
+          return acc
+        }, {} as Record<string, string>)
         setErrors(fieldErrors)
       } else {
-        setErrors({ _form: err.message || 'An error occurred' })
+        setErrors({ _form: err.message || 'An unexpected error occurred' })
       }
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const submitForApproval = () => {
+    setFormData(prev => ({ ...prev, status: 'pending_approval' }))
+    document.querySelector('form')?.requestSubmit()
   }
 
   return (
@@ -110,18 +128,18 @@ export default function AnnouncementForm({
       {/* Title */}
       <div>
         <label htmlFor="title" className="mb-2 block text-sm font-medium text-slate-300">
-          Title <span className="text-slate-500">({formData.title.length}/150)</span>
+          Title <span className="text-slate-500">({title.length}/150)</span>
         </label>
         <Input
           id="title"
           name="title"
           type="text"
-          value={formData.title}
+          value={title}
           onChange={handleChange}
           placeholder="Announcement title"
           maxLength={150}
           required
-          className={cn('w-full', errors.title ? 'border-red-500' : '')}
+          className={cn('w-full', errors.title && 'border-red-500')}
         />
         {errors.title && <p className="mt-1 text-sm text-red-400">{errors.title}</p>}
       </div>
@@ -129,27 +147,23 @@ export default function AnnouncementForm({
       {/* Body */}
       <div>
         <label htmlFor="body" className="mb-2 block text-sm font-medium text-slate-300">
-          Body <span className="text-slate-500">({formData.body.length}/5000)</span>
+          Body <span className="text-slate-500">({body.length}/5000)</span>
         </label>
         <textarea
           id="body"
           name="body"
-          value={formData.body}
+          value={body}
           onChange={handleChange}
           placeholder="Write your announcement..."
           maxLength={5000}
           rows={8}
-          className={cn(
-            'block w-full rounded-lg border bg-slate-900 border-slate-700 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors',
-            errors.body ? 'border-red-500' : ''
-          )}
+          className={cn(formControlClasses, errors.body && 'border-red-500')}
         />
         {errors.body && <p className="mt-1 text-sm text-red-400">{errors.body}</p>}
       </div>
 
       {/* Club & Visibility Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* Visibility */}
         <div>
           <label htmlFor="visibility" className="mb-2 block text-sm font-medium text-slate-300">
             Visibility
@@ -157,17 +171,16 @@ export default function AnnouncementForm({
           <select
             id="visibility"
             name="visibility"
-            value={formData.visibility}
+            value={visibility}
             onChange={handleChange}
-            className="block w-full rounded-lg border bg-slate-900 border-slate-700 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={formControlClasses}
           >
             <option value="club">Club only</option>
             {canSelectUniversity && <option value="university">University-wide</option>}
           </select>
         </div>
 
-        {/* Club Selector (hidden if university-wide) */}
-        {formData.visibility === 'club' && (
+        {visibility === 'club' && (
           <div>
             <label htmlFor="club_id" className="mb-2 block text-sm font-medium text-slate-300">
               Club
@@ -175,9 +188,9 @@ export default function AnnouncementForm({
             <select
               id="club_id"
               name="club_id"
-              value={formData.club_id}
+              value={club_id}
               onChange={handleChange}
-              className="block w-full rounded-lg border bg-slate-900 border-slate-700 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={formControlClasses}
             >
               {clubs.map(club => (
                 <option key={club.id} value={club.id}>{club.name}</option>
@@ -198,7 +211,7 @@ export default function AnnouncementForm({
             id="publish_at"
             name="publish_at"
             type="datetime-local"
-            value={formData.publish_at}
+            value={publish_at}
             onChange={handleChange}
             className="w-full"
           />
@@ -211,7 +224,7 @@ export default function AnnouncementForm({
             id="expires_at"
             name="expires_at"
             type="datetime-local"
-            value={formData.expires_at}
+            value={expires_at}
             onChange={handleChange}
             className="w-full"
           />
@@ -225,7 +238,7 @@ export default function AnnouncementForm({
             ? 'Saving...'
             : isEditing
               ? 'Update'
-              : formData.status === 'published'
+              : status === 'published'
                 ? 'Publish'
                 : 'Save Draft'}
         </Button>
@@ -234,12 +247,7 @@ export default function AnnouncementForm({
             type="button"
             variant="outline"
             disabled={isLoading}
-            onClick={() => {
-              setFormData(prev => ({ ...prev, status: 'pending_approval' }))
-              // trigger submit
-              const form = document.querySelector('form')
-              form?.requestSubmit()
-            }}
+            onClick={submitForApproval}
           >
             Submit for Approval
           </Button>
