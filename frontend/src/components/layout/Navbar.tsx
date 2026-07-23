@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@/hooks/useAuth'
 
 interface NavbarProps {
   className?: string
@@ -15,6 +16,12 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
     const menuRef = useRef<HTMLDivElement>(null)
     const router = useRouter()
     const supabase = createClient()
+    const { user } = useAuth()
+
+    const userInitial = user?.user_metadata?.full_name?.charAt(0) 
+      || user?.user_metadata?.name?.charAt(0)
+      || user?.email?.charAt(0)?.toUpperCase() 
+      || 'U';
 
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -52,8 +59,8 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
               className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 border border-blue-200 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
               aria-label="User menu"
             >
-              <div className="text-sm font-semibold text-white">
-                U
+              <div className="text-sm font-semibold text-white uppercase">
+                {userInitial}
               </div>
             </button>
 

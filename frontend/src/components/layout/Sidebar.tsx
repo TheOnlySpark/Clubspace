@@ -3,6 +3,7 @@
 import React from 'react'
 import { cn } from '@/lib/utils'
 import { useRole } from '@/hooks/useRole'
+import { useAuth } from '@/hooks/useAuth'
 import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
@@ -13,7 +14,13 @@ interface SidebarProps {
 const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
   ({ className, ...props }, ref) => {
     const { role, isClubAdmin, isUniversityAdmin, isSuperAdmin } = useRole()
+    const { user } = useAuth()
     const pathname = usePathname()
+
+    const userInitial = user?.user_metadata?.full_name?.charAt(0) 
+      || user?.user_metadata?.name?.charAt(0)
+      || user?.email?.charAt(0)?.toUpperCase() 
+      || 'U';
 
     const navItems = [
       {
@@ -151,8 +158,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
             }}
             className="flex items-center space-x-3 w-full p-2 rounded-xl hover:bg-accent transition-colors cursor-pointer group"
           >
-            <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold group-hover:scale-105 transition-transform">
-              U
+            <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold group-hover:scale-105 transition-transform uppercase">
+              {userInitial}
             </div>
             <div className="space-y-0.5 overflow-hidden flex-1">
               <p className="text-sm font-semibold text-foreground truncate group-hover:text-red-400 transition-colors">Sign Out</p>
