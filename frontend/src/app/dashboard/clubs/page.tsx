@@ -33,6 +33,8 @@ export default function ClubsPage() {
     if (!user) return
     const supabase = createClient()
 
+    console.log('fetchClubs starting for user:', user.id)
+
     // Get user's university
     const { data: profile } = await supabase
       .from('profiles')
@@ -41,6 +43,7 @@ export default function ClubsPage() {
       .single()
 
     setUniversityId(profile?.university_id || null)
+    console.log('user university_id:', profile?.university_id)
 
     const allClubsMap = new Map()
 
@@ -62,10 +65,11 @@ export default function ClubsPage() {
       if (uniClubs) {
         uniClubs.forEach((club: any) => allClubsMap.set(club.id, club))
       }
+      console.log('uniClubs fetched:', uniClubs?.length)
     }
 
     // Always fetch clubs the user is a member of
-    const { data: memberClubsData } = await supabase
+    const { data: memberClubsData, error: memberClubsError } = await supabase
       .from('club_memberships')
       .select(`
         club_id,
@@ -81,15 +85,25 @@ export default function ClubsPage() {
       `)
       .eq('user_id', user.id)
 
+    console.log('memberClubsData:', memberClubsData, 'error:', memberClubsError)
+
     if (memberClubsData) {
       memberClubsData.forEach((mc: any) => {
+        // Log each mc
+        console.log('processing mc:', mc)
         if (mc.clubs && !allClubsMap.has(mc.clubs.id)) {
           allClubsMap.set(mc.clubs.id, mc.clubs)
+        } else if (Array.isArray(mc.clubs) && mc.clubs.length > 0) {
+           // Handle if it comes back as array
+           mc.clubs.forEach((c: any) => {
+             if (c && !allClubsMap.has(c.id)) allClubsMap.set(c.id, c)
+           })
         }
       })
     }
 
     const clubsData = Array.from(allClubsMap.values())
+    console.log('final clubsData length:', clubsData.length)
       
     // Count members using JS
     const transformedClubs: ClubCard[] = clubsData.map((club: any) => ({
@@ -103,6 +117,7 @@ export default function ClubsPage() {
       isMember: club.club_memberships?.some((m: any) => m.user_id === user.id) || false,
     }))
 
+    console.log('transformedClubs:', transformedClubs)
     setClubs(transformedClubs)
     setLoading(false)
   }
