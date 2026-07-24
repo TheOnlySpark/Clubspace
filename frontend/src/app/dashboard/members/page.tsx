@@ -8,22 +8,34 @@ import MemberTable from '@/components/members/MemberTable'
 import RoleSelector from '@/components/members/RoleSelector'
 import RemoveMemberModal from '@/components/members/RemoveMemberModal'
 import Button from '@/components/ui/Button'
-import { formatDate } from '@/lib/utils'
+
+interface Member {
+  id: string
+  first_name: string | null
+  last_name: string | null
+  email: string | null
+  course: string | null
+  role: string
+  created_at: string
+}
 
 export default function MembersPage() {
   const { user } = useAuth()
   const { role: userRole, isUniversityAdmin, isSuperAdmin } = useRole()
-  const [members, setMembers] = useState<Array<any>>([])
+  const [members, setMembers] = useState<Member[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [selectedMember, setSelectedMember] = useState<any | null>(null)
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null)
   const [removeModalOpen, setRemoveModalOpen] = useState(false)
+
+  const canChangeRoles = isUniversityAdmin() || isSuperAdmin()
 
   // Fetch members for the user's university
   async function loadMembers() {
     if (!user) return
 
     setLoading(true)
+    setError(null)
     try {
       const supabase = createClient()
 
@@ -34,35 +46,50 @@ export default function MembersPage() {
         .eq('id', user.id)
         .single()
 
-      if (profileError || !profile) {
-        throw new Error('Profile not found')
+      if (profileError || !profile?.university_id) {
+        throw new Error('Could not determine your university.')
       }
 
       const universityId = profile.university_id
 
-      // Get all profiles for this university
-      const { data, error } = await supabase
+      // Get all profiles for this university with their roles
+      const { data: profilesData, error: profilesError } = await supabase
         .from('profiles')
-        .select('id, first_name, last_name, email, created_at, user_roles!inner(role)')
+        .select('id, first_name, last_name, email, course, created_at')
         .eq('university_id', universityId)
         .order('created_at', { ascending: false })
 
-      if (error) {
-        throw error
+      if (profilesError) throw profilesError
+
+      // Fetch roles separately to avoid the inner join crash
+      const userIds = (profilesData || []).map((p: any) => p.id)
+      let rolesMap: Record<string, string> = {}
+
+      if (userIds.length > 0) {
+        const { data: rolesData, error: rolesError } = await supabase
+          .from('user_roles')
+          .select('user_id, role')
+          .in('user_id', userIds)
+
+        if (!rolesError && rolesData) {
+          for (const r of rolesData) {
+            rolesMap[r.user_id] = r.role
+          }
+        }
       }
 
-      // Format the data for the table
-      const formattedMembers = data.map((member: any) => ({
+      // Merge profiles + roles
+      const formattedMembers: Member[] = (profilesData || []).map((member: any) => ({
         id: member.id,
         first_name: member.first_name,
         last_name: member.last_name,
         email: member.email,
-        role: member.user_roles.role || 'member',
+        course: member.course,
+        role: rolesMap[member.id] || 'member',
         created_at: member.created_at,
       }))
 
       setMembers(formattedMembers)
-      setError(null)
     } catch (err: any) {
       console.error('Error loading members:', err)
       setError(err.message ?? 'Failed to load members')
@@ -72,8 +99,10 @@ export default function MembersPage() {
     }
   }
 
-  // Handle role change
+  // Handle role change — only uni admin / super admin
   async function handleRoleChange(memberId: string, newRole: string) {
+    if (!canChangeRoles) return
+
     try {
       const supabase = createClient()
       const { error } = await supabase
@@ -81,56 +110,63 @@ export default function MembersPage() {
         .update({ role: newRole })
         .eq('user_id', memberId)
 
-      if (error) {
-        throw error
-      }
+      if (error) throw error
 
-      // Update the members list optimistically
+      // Update optimistically
       setMembers(prev =>
         prev.map(member =>
           member.id === memberId ? { ...member, role: newRole } : member
         )
       )
+      // Update selected member if it's the same one
+      if (selectedMember?.id === memberId) {
+        setSelectedMember(prev => prev ? { ...prev, role: newRole } : null)
+      }
     } catch (err: any) {
       console.error('Error changing role:', err)
-      // TODO: show error toast
       alert('Failed to change role: ' + err.message)
     }
   }
 
-  // Handle remove member
+  // Handle remove member — removes from club_memberships only
   async function handleRemoveMember(memberId: string) {
     try {
       const supabase = createClient()
+
+      // Delete all club memberships for this user (club-level removal only)
       const { error } = await supabase
-        .from('user_roles')
+        .from('club_memberships')
         .delete()
         .eq('user_id', memberId)
 
-      if (error) {
-        throw error
-      }
+      if (error) throw error
 
-      // Remove from members list
-      setMembers(prev => prev.filter(member => member.id !== memberId))
+      // Refresh the list to show updated data
+      await loadMembers()
       setRemoveModalOpen(false)
+      setSelectedMember(null)
     } catch (err: any) {
       console.error('Error removing member:', err)
-      // TODO: show error toast
       alert('Failed to remove member: ' + err.message)
     }
   }
 
   // Load members on mount
   useEffect(() => {
-    loadMembers()
+    if (user) {
+      loadMembers()
+    }
   }, [user])
 
   if (loading) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6 py-12">
-        <div className="w-full max-w-md space-y-6 text-center">
-          <h2 className="text-2xl font-bold text-primary">Loading members...</h2>
+      <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-4xl font-bold tracking-tight text-gradient">Members</h1>
+          <p className="text-muted-foreground text-lg">Loading members...</p>
+        </div>
+        <div className="solid-card rounded-2xl p-12 flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
       </div>
     )
@@ -138,112 +174,110 @@ export default function MembersPage() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6 py-12">
-        <div className="w-full max-w-md space-y-6 text-center">
-          <h2 className="text-2xl font-bold text-primary">Error</h2>
-          <p className="text-muted-foreground">{error}</p>
-          <a href="/dashboard" className="font-medium text-primary hover:underline">
-            Go back to dashboard
-          </a>
+      <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-4xl font-bold tracking-tight text-gradient">Members</h1>
+        </div>
+        <div className="solid-card rounded-2xl p-8 text-center">
+          <p className="text-destructive font-medium mb-2">Something went wrong</p>
+          <p className="text-muted-foreground text-sm mb-4">{error}</p>
+          <Button onClick={loadMembers} variant="outline">Try again</Button>
         </div>
       </div>
-    );
-}
+    )
+  }
 
-return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-bold text-primary">Members</h1>
-        <div className="flex items-center space-x-3 mt-4 sm:mt-0">
-          <Button
-            variant="outline"
-            onClick={loadMembers}
-            className="hidden sm:block"
-          >
-            Refresh
-          </Button>
+  return (
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-4xl font-bold tracking-tight text-gradient">Members</h1>
+          <p className="text-muted-foreground text-lg">
+            {members.length} member{members.length !== 1 ? 's' : ''} at your university
+          </p>
         </div>
+        <Button variant="outline" onClick={loadMembers}>
+          Refresh
+        </Button>
       </div>
 
       {members.length > 0 ? (
         <MemberTable
           columns={[
-            {
-              accessor: 'first_name',
-              header: 'First Name',
-              sortable: true,
-            },
-            {
-              accessor: 'last_name',
-              header: 'Last Name',
-              sortable: true,
-            },
-            {
-              accessor: 'email',
-              header: 'Email',
-              sortable: true,
-            },
-            {
-              accessor: 'role',
-              header: 'Role',
-              sortable: true,
-            },
-            {
-              accessor: 'created_at',
-              header: 'Joined',
-              sortable: true,
-            },
+            { accessor: 'first_name', header: 'First Name', sortable: true },
+            { accessor: 'last_name', header: 'Last Name', sortable: true },
+            { accessor: 'email', header: 'Email', sortable: true },
+            { accessor: 'course', header: 'Course', sortable: true },
+            { accessor: 'role', header: 'Role', sortable: true },
+            { accessor: 'created_at', header: 'Joined', sortable: true },
           ]}
           data={members}
-          onRowClick={(member) => {
-            setSelectedMember(member)
-          }}
+          onRowClick={(member) => setSelectedMember(member)}
         />
       ) : (
-        <p className="text-muted-foreground">No members found.</p>
+        <div className="solid-card rounded-2xl p-12 text-center">
+          <p className="text-muted-foreground">No members found.</p>
+        </div>
       )}
 
-      {/* Member details sidebar (if selected) */}
+      {/* Member details panel */}
       {selectedMember && (
-        <div className="mt-6 border-t pt-6">
-          <h2 className="text-xl font-semibold text-primary mb-4">
-            Member details
-          </h2>
+        <div className="solid-card rounded-2xl p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-foreground">Member Details</h2>
+            <Button variant="ghost" size="sm" onClick={() => setSelectedMember(null)}>
+              ✕
+            </Button>
+          </div>
           <div className="space-y-4">
             <div className="flex items-center space-x-4">
-              <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
-                {selectedMember.first_name?.[0]}{selectedMember.last_name?.[0]}
+              <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-lg">
+                {selectedMember.first_name?.[0]?.toUpperCase()}{selectedMember.last_name?.[0]?.toUpperCase()}
               </div>
               <div>
-                <h3 className="font-bold text-lg">
+                <h3 className="font-bold text-lg text-foreground">
                   {selectedMember.first_name} {selectedMember.last_name}
                 </h3>
-                <p className="text-sm text-muted-foreground">
-                  {selectedMember.email}
-                </p>
+                <p className="text-sm text-muted-foreground">{selectedMember.email}</p>
+                {selectedMember.course && (
+                  <p className="text-sm text-muted-foreground mt-0.5">📚 {selectedMember.course}</p>
+                )}
               </div>
             </div>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-4">
-                <span className="font-medium">Role:</span>
-                <RoleSelector
-                  currentRole={selectedMember.role as any}
-                  onRoleChange={(newRole) => handleRoleChange(selectedMember.id, newRole)}
-                  disabled={!(isUniversityAdmin() || isSuperAdmin())} // Only university admin or super admin can change roles here
-                />
-              </div>
+
+            <div className="flex items-center space-x-4">
+              <span className="font-medium text-foreground">Role:</span>
+              <RoleSelector
+                currentRole={selectedMember.role as any}
+                onRoleChange={(newRole) => handleRoleChange(selectedMember.id, newRole)}
+                disabled={!canChangeRoles}
+              />
             </div>
+
+            {canChangeRoles && (
+              <div className="pt-2 border-t border-border">
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => setRemoveModalOpen(true)}
+                >
+                  Remove from all clubs
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       )}
 
       {/* Remove member modal */}
-      <RemoveMemberModal
-        member={selectedMember as any}
-        open={removeModalOpen}
-        onOpenChange={(open) => setRemoveModalOpen(open)}
-        onConfirm={handleRemoveMember}
-      />
+      {selectedMember && (
+        <RemoveMemberModal
+          member={selectedMember as any}
+          open={removeModalOpen}
+          onOpenChange={setRemoveModalOpen}
+          onConfirm={handleRemoveMember}
+        />
+      )}
     </div>
   )
 }

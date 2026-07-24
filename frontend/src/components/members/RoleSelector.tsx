@@ -7,6 +7,18 @@ import Button from '@/components/ui/Button'
 
 type Role = 'member' | 'officer' | 'club_admin' | 'university_admin' | 'super_admin'
 
+const ROLE_DISPLAY_NAMES: Record<Role, string> = {
+  member: 'Member',
+  officer: 'Officer',
+  club_admin: 'Club Admin',
+  university_admin: 'University Admin',
+  super_admin: 'Super Admin',
+}
+
+// Only university_admin and super_admin can change roles.
+// They can assign up to club_admin level — never university_admin or super_admin via this UI.
+const ASSIGNABLE_ROLES: Role[] = ['member', 'officer', 'club_admin']
+
 interface RoleSelectorProps {
   currentRole: Role
   onRoleChange: (newRole: Role) => void
@@ -22,21 +34,6 @@ export default function RoleSelector({
 }: RoleSelectorProps) {
   const [open, setOpen] = React.useState(false)
 
-  const roles: Role[] = [
-    'member',
-    'officer',
-    'club_admin',
-    'university_admin',
-    'super_admin',
-  ]
-
-  // Determine which roles are allowed to be selected based on the current user's role
-  // This should be passed from the parent, but for now we'll allow all and let the API handle permissions
-  // We'll just show all roles and disable the ones that are not allowed to be assigned by the current user.
-  // However, we don't have the current user's role in this component.
-  // We'll assume the parent will only pass roles that are allowed to be assigned.
-  // For simplicity, we'll show all roles and let the API handle errors.
-
   const handleSelect = (role: Role) => {
     if (role !== currentRole && !disabled) {
       onRoleChange(role)
@@ -50,30 +47,19 @@ export default function RoleSelector({
         disabled={disabled}
         className={cn(
           'w-full flex items-center justify-between px-3 py-2 bg-background border border-border rounded-md text-left text-foreground',
-          disabled && 'opacity-50',
+          disabled && 'opacity-50 cursor-not-allowed',
           !disabled && 'hover:bg-accent hover:text-accent-foreground'
         )}
       >
         <span className="text-left flex-1">
-          {/* Map role to display name */}
-          {(() => {
-            switch (currentRole) {
-              case 'member': return 'Member'
-              case 'officer': return 'Officer'
-              case 'club_admin': return 'Club Admin'
-              case 'university_admin': return 'University Admin'
-              case 'super_admin': return 'Super Admin'
-              default: return 'Member'
-            }
-          })()}
+          {ROLE_DISPLAY_NAMES[currentRole] || 'Member'}
         </span>
         <span className="ml-2 h-5 w-5">
-          {/* Dropdown icon */}
           {!open ? '▾' : '▴'}
         </span>
       </DropdownTrigger>
       <DropdownContent className="w-48 mt-2 z-50">
-        {roles.map((role) => (
+        {ASSIGNABLE_ROLES.map((role) => (
           <Button
             key={role}
             variant="ghost"
@@ -81,22 +67,11 @@ export default function RoleSelector({
             className={cn(
               'w-full text-left',
               role === currentRole && 'font-medium text-primary',
-              disabled && 'opacity-50'
             )}
             onClick={() => handleSelect(role)}
             disabled={disabled}
           >
-            {/* Map role to display name */}
-            {(() => {
-              switch (role) {
-                case 'member': return 'Member'
-                case 'officer': return 'Officer'
-                case 'club_admin': return 'Club Admin'
-                case 'university_admin': return 'University Admin'
-                case 'super_admin': return 'Super Admin'
-                default: return 'Member'
-              }
-            })()}
+            {ROLE_DISPLAY_NAMES[role]}
           </Button>
         ))}
       </DropdownContent>
