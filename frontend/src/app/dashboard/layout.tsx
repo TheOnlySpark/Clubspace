@@ -2,7 +2,7 @@
 import type { Metadata } from 'next'
 import Sidebar from '@/components/layout/Sidebar'
 import Navbar from '@/components/layout/Navbar'
-import { createClient } from '@/lib/supabase/server'
+import { getUser } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import SessionManager from '@/components/auth/SessionManager'
 
@@ -16,8 +16,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = createClient()
-  const { data: { user }, error } = await supabase.auth.getUser()
+  const { data: { user }, error } = await getUser()
 
   // If no user or error, redirect to login
   if (error || !user) {

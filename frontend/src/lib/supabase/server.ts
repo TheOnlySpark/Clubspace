@@ -1,5 +1,6 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import { cache } from 'react'
 
 export function createClient() {
   const cookieStore = cookies()
@@ -34,3 +35,8 @@ export function createClient() {
     }
   )
 }
+
+export const getUser = cache(async () => {
+  const supabase = createClient()
+  return await supabase.auth.getUser()
+})
