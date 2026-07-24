@@ -40,6 +40,7 @@ create table profiles (
   student_number text,
   department_id uuid references departments(id),
   avatar_url text,
+  course text,
   active boolean default true,
   created_at timestamptz default now()
 );

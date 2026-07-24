@@ -13,6 +13,7 @@ const registerSchema = z.object({
   password: z.string().min(8, 'Password must be at least 8 characters'),
   first_name: z.string().min(1, 'First name is required'),
   last_name: z.string().min(1, 'Last name is required'),
+  course: z.string().optional(),
 })
 
 export default function RegisterForm() {
@@ -20,6 +21,7 @@ export default function RegisterForm() {
   const [password, setPassword] = React.useState('')
   const [firstName, setFirstName] = React.useState('')
   const [lastName, setLastName] = React.useState('')
+  const [course, setCourse] = React.useState('')
   const [error, setError] = React.useState<string | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isSuccess, setIsSuccess] = React.useState(false)
@@ -33,7 +35,7 @@ export default function RegisterForm() {
     setIsLoading(true)
 
     try {
-      const parsed = registerSchema.parse({ email, password, first_name: firstName, last_name: lastName })
+      const parsed = registerSchema.parse({ email, password, first_name: firstName, last_name: lastName, course: course || undefined })
       // Call API
       const res = await fetch('/api/auth/register', {
         method: 'POST',
@@ -110,6 +112,19 @@ export default function RegisterForm() {
           placeholder="Last name"
           required
           className={cn('w-full', error ? 'border-destructive' : '')}
+        />
+      </div>
+      <div>
+        <label htmlFor="course" className="mb-2 block text-sm font-medium text-muted-foreground">
+          Course / Programme <span className="text-muted-foreground/60">(optional)</span>
+        </label>
+        <Input
+          id="course"
+          type="text"
+          value={course}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCourse(e.target.value)}
+          placeholder="e.g. BSc Computer Science"
+          className="w-full"
         />
       </div>
       <div>
