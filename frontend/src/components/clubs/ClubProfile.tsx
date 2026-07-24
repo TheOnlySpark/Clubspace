@@ -2,8 +2,6 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { Globe, Mail, Users, ChevronLeft } from 'lucide-react' // Assuming lucide-react is installed
-import MemberListModal from '@/components/members/MemberListModal'
-
 export type ClubProfileData = {
   id: string
   name: string
@@ -22,8 +20,6 @@ interface ClubProfileProps {
 }
 
 export function ClubProfile({ club, memberCount, isAdmin = false }: ClubProfileProps) {
-  const [isMembersModalOpen, setIsMembersModalOpen] = useState(false)
-
   // Try to parse social links if they exist
   const socials = club.social_links || {}
 
@@ -96,11 +92,10 @@ export function ClubProfile({ club, memberCount, isAdmin = false }: ClubProfileP
             <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
               <h3 className="font-semibold text-lg mb-4 text-navy">Club Info</h3>
               <ul className="space-y-4">
-                <li className="flex items-start text-gray-600 cursor-pointer group" onClick={() => setIsMembersModalOpen(true)}>
+                <li className="flex items-start text-gray-600 group">
                   <Users className="w-5 h-5 mr-3 text-electric-blue shrink-0 group-hover:text-blue-700 transition-colors" />
                   <div>
                     <p className="font-medium text-navy group-hover:text-blue-700 transition-colors">{memberCount} Members</p>
-                    <p className="text-sm group-hover:text-blue-700 transition-colors">Click to view members</p>
                   </div>
                 </li>
                 {club.contact_email && (
@@ -124,14 +119,6 @@ export function ClubProfile({ club, memberCount, isAdmin = false }: ClubProfileP
           </div>
         </div>
       </div>
-      
-      <MemberListModal
-        open={isMembersModalOpen}
-        onOpenChange={setIsMembersModalOpen}
-        clubId={club.id}
-        clubName={club.name}
-        isAdminOrSuperAdmin={isAdmin}
-      />
     </div>
   )
 }
