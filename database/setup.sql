@@ -70,7 +70,7 @@ create table club_memberships (
 create table announcements (
   id uuid primary key default gen_random_uuid(),
   university_id uuid not null references universities(id),
-  club_id uuid references clubs(id),          -- null = university-wide
+  club_id uuid references clubs(id) on delete cascade,          -- null = university-wide
   author_id uuid not null references profiles(id),
   title text not null check (char_length(title) between 1 and 150),
   body text not null check (char_length(body) <= 5000),
