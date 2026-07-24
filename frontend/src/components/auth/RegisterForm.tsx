@@ -7,13 +7,14 @@ import { z } from 'zod'
 import { cn } from '@/lib/utils'
 import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
+import { createClient } from '@/lib/supabase/client'
 
 const registerSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
   first_name: z.string().min(1, 'First name is required'),
   last_name: z.string().min(1, 'Last name is required'),
-  course: z.string().optional(),
+  course: z.string().min(1, 'Course is required'),
 })
 
 export default function RegisterForm() {
@@ -22,6 +23,8 @@ export default function RegisterForm() {
   const [firstName, setFirstName] = React.useState('')
   const [lastName, setLastName] = React.useState('')
   const [course, setCourse] = React.useState('')
+  const [courses, setCourses] = React.useState<string[]>([])
+  const [coursesLoading, setCoursesLoading] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isSuccess, setIsSuccess] = React.useState(false)
@@ -29,13 +32,52 @@ export default function RegisterForm() {
   const searchParams = useSearchParams()
   const next = searchParams.get('next')
 
+  // Fetch courses when email domain changes
+  React.useEffect(() => {
+    const domain = email.split('@')[1]
+    if (!domain || domain.length < 3) {
+      setCourses([])
+      return
+    }
+
+    const timeout = setTimeout(async () => {
+      setCoursesLoading(true)
+      try {
+        const supabase = createClient()
+        // Find university by domain
+        const { data: universities } = await supabase
+          .from('universities')
+          .select('id')
+          .contains('domain_allowlist', [domain])
+
+        if (universities && universities.length === 1) {
+          const { data: coursesData } = await supabase
+            .from('courses')
+            .select('name')
+            .eq('university_id', universities[0].id)
+            .order('name')
+
+          setCourses((coursesData || []).map((c: any) => c.name))
+        } else {
+          setCourses([])
+        }
+      } catch {
+        setCourses([])
+      } finally {
+        setCoursesLoading(false)
+      }
+    }, 500) // debounce
+
+    return () => clearTimeout(timeout)
+  }, [email])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
     setIsLoading(true)
 
     try {
-      const parsed = registerSchema.parse({ email, password, first_name: firstName, last_name: lastName, course: course || undefined })
+      const parsed = registerSchema.parse({ email, password, first_name: firstName, last_name: lastName, course })
       // Call API
       const res = await fetch('/api/auth/register', {
         method: 'POST',
@@ -59,7 +101,11 @@ export default function RegisterForm() {
       // On success, show verification message instead of auto-logging in
       setIsSuccess(true)
     } catch (err: any) {
-      setError(err.message ?? 'An unexpected error occurred')
+      if (err instanceof z.ZodError) {
+        setError(err.errors[0].message)
+      } else {
+        setError(err.message ?? 'An unexpected error occurred')
+      }
     } finally {
       setIsLoading(false)
     }
@@ -115,19 +161,6 @@ export default function RegisterForm() {
         />
       </div>
       <div>
-        <label htmlFor="course" className="mb-2 block text-sm font-medium text-muted-foreground">
-          Course / Programme <span className="text-muted-foreground/60">(optional)</span>
-        </label>
-        <Input
-          id="course"
-          type="text"
-          value={course}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCourse(e.target.value)}
-          placeholder="e.g. BSc Computer Science"
-          className="w-full"
-        />
-      </div>
-      <div>
         <label htmlFor="email" className="mb-2 block text-sm font-medium text-muted-foreground">
           Email address
         </label>
@@ -140,6 +173,34 @@ export default function RegisterForm() {
           required
           className={cn('w-full', error ? 'border-destructive' : '')}
         />
+      </div>
+      <div>
+        <label htmlFor="course" className="mb-2 block text-sm font-medium text-muted-foreground">
+          Course / Programme
+        </label>
+        <select
+          id="course"
+          value={course}
+          onChange={(e) => setCourse(e.target.value)}
+          disabled={courses.length === 0}
+          required
+          className={cn(
+            'w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground transition-colors',
+            'focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary',
+            courses.length === 0 && 'opacity-50 cursor-not-allowed'
+          )}
+        >
+          <option value="">
+            {coursesLoading
+              ? 'Loading courses...'
+              : courses.length === 0
+                ? 'Enter your email first'
+                : 'Select your course'}
+          </option>
+          {courses.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
       </div>
       <div>
         <label htmlFor="password" className="mb-2 block text-sm font-medium text-muted-foreground">

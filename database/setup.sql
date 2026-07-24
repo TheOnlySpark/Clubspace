@@ -45,6 +45,14 @@ create table profiles (
   created_at timestamptz default now()
 );
 
+create table courses (
+  id uuid primary key default gen_random_uuid(),
+  university_id uuid references universities(id) on delete cascade,
+  name text not null,
+  created_at timestamptz default now(),
+  unique(university_id, name)
+);
+
 create table clubs (
   id uuid primary key default gen_random_uuid(),
   university_id uuid references universities(id) on delete cascade,
@@ -295,6 +303,7 @@ alter table notifications enable row level security;
 alter table invite_links enable row level security;
 alter table csv_imports enable row level security;
 alter table gdpr_requests enable row level security;
+alter table courses enable row level security;
 
 
 -- ==============================================================================
@@ -306,6 +315,9 @@ create policy "universities_select" on universities for select using (true);
 
 -- Departments
 create policy "departments_select" on departments for select using (true);
+
+-- Courses (anyone can read — needed on the registration form before login)
+create policy "courses_select" on courses for select using (true);
 
 -- User Roles
 create policy "user_roles_select" on user_roles for select using (user_id = auth.uid());
