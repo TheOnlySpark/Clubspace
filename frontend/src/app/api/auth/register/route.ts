@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const body = await request.json()
     const parsed = registerSchema.parse(body)
 
-    const { email, password, first_name, last_name } = parsed
+    const { email, password, first_name, last_name, course } = parsed
 
     // Extract domain from email
     const domain = email.split('@')[1]
@@ -87,6 +87,7 @@ export async function POST(request: Request) {
         first_name,
         last_name,
         email,
+        course: course || null,
       })
       .eq('id', userId)
 
