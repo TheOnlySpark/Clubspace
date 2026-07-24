@@ -17,20 +17,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
         className
       )}
       {...props}
-    >
-      <thead className={cn('bg-muted')}>{React.Children.map(props.children, (child) => {
-        if (React.isValidElement(child) && child.type === 'thead') {
-          return child
-        }
-        return null
-      })}</thead>
-      <tbody className={cn('divide-y')}>{React.Children.map(props.children, (child) => {
-        if (React.isValidElement(child) && child.type === 'tbody') {
-          return child
-        }
-        return null
-      })}</tbody>
-    </table>
+    />
   )
 )
 Table.displayName = 'Table'
