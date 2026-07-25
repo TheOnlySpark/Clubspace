@@ -66,7 +66,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           </svg>
         ),
         iconColor: 'text-pink-400',
-        available: () => role !== null && role !== 'member',
+        available: () => true,
       },
       {
         title: 'Settings',
