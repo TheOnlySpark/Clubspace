@@ -173,6 +173,9 @@ export default function RegisterForm() {
           required
           className={cn('w-full', error ? 'border-destructive' : '')}
         />
+        <p className="mt-1.5 text-xs text-muted-foreground">
+          Use only university email
+        </p>
       </div>
       <div>
         <label htmlFor="course" className="mb-2 block text-sm font-medium text-muted-foreground">
