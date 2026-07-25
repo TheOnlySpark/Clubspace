@@ -117,10 +117,15 @@ export async function POST(request: Request) {
       )
     }
 
+    const requestUrl = new URL(request.url)
+
     // Trigger the confirmation email
     const { error: emailError } = await adminClient.auth.resend({
       type: 'signup',
       email: email,
+      options: {
+        emailRedirectTo: `${requestUrl.origin}/auth/verify-email`,
+      },
     })
 
     if (emailError) {

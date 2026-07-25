@@ -18,6 +18,7 @@ const registerSchema = z.object({
 })
 
 export default function RegisterForm() {
+  // Minor change to trigger Vercel redeployment
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [firstName, setFirstName] = React.useState('')
