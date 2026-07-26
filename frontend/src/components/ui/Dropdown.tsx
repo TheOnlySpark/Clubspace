@@ -123,6 +123,10 @@ const DropdownContent = React.forwardRef<HTMLDivElement, DropdownContentProps>(
           className
         )}
         {...props}
+        onClick={(e) => {
+          onClose?.()
+          if (props.onClick) props.onClick(e)
+        }}
       >
         <div className="py-1" role="none">
           {children}
