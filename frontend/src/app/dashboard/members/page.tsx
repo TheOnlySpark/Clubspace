@@ -47,8 +47,9 @@ export default function MembersPage() {
     setPendingChanges({})
     setSaveSuccess(false)
     try {
-      const response = await fetch(`/api/admin/members`, {
+      const response = await fetch(`/api/admin/members?t=${Date.now()}`, {
         method: 'GET',
+        cache: 'no-store',
       })
       if (!response.ok) {
         const errorData = await response.json()
@@ -56,10 +57,12 @@ export default function MembersPage() {
       }
       const data = await response.json()
       setMembers(data)
+      return data
     } catch (err: any) {
       console.error('Error loading members:', err)
       setError(err.message ?? 'Failed to load members')
       setMembers([])
+      return []
     } finally {
       setLoading(false)
     }
@@ -153,9 +156,12 @@ export default function MembersPage() {
     }
 
     // Refresh data
-    await loadMembers()
-    if (selectedMember) {
-      fetchMemberDetails(selectedMember.id)
+    const newData = await loadMembers()
+    if (selectedMember && newData) {
+      const updatedMember = newData.find((m: Member) => m.id === selectedMember.id)
+      if (updatedMember) {
+        setSelectedMemberDetails(updatedMember)
+      }
     }
     setSaving(false)
   }
