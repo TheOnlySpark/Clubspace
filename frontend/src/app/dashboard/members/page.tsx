@@ -298,16 +298,26 @@ export default function MembersPage() {
               accessor: 'role', 
               header: 'Role', 
               sortable: true,
-              renderCell: canChangeRoles ? (row) => (
-                <div className="no-row-click inline-block">
-                  <RoleSelector
-                    currentRole={row.role as any}
-                    onRoleChange={(newRole) => handleRoleChange(row.id, newRole)}
-                    disabled={saving}
-                    isSuperAdmin={isSuperAdmin()}
-                  />
-                </div>
-              ) : undefined
+              renderCell: (row) => {
+                if (canChangeRoles) {
+                  return (
+                    <div className="no-row-click inline-block">
+                      <RoleSelector
+                        currentRole={row.role as any}
+                        onRoleChange={(newRole) => handleRoleChange(row.id, newRole)}
+                        disabled={saving}
+                        isSuperAdmin={isSuperAdmin()}
+                      />
+                    </div>
+                  )
+                }
+                // For regular members/officers/club admins, just show the text nicely formatted
+                return (
+                  <span className="text-foreground capitalize">
+                    {row.role?.replace('_', ' ')}
+                  </span>
+                )
+              }
             },
             { accessor: 'created_at', header: 'Joined', sortable: true },
           ]}
