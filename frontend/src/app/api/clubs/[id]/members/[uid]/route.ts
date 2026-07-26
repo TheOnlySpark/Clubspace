@@ -141,7 +141,7 @@ async function requireAuthForClub(clubId: string) {
     .eq('user_id', session.user.id)
     .single()
 
-  if (membershipError) {
+  if (membershipError && membershipError.code !== 'PGRST116') {
     console.error('Error fetching membership:', membershipError)
     return {
       error: NextResponse.json(
@@ -151,16 +151,7 @@ async function requireAuthForClub(clubId: string) {
     }
   }
 
-  if (!membershipData) {
-    return {
-      error: NextResponse.json(
-        { error: 'You are not a member of this club' },
-        { status: 403 }
-      )
-    }
-  }
-
-  const userRoleInClub = membershipData.role
+  const userRoleInClub = membershipData?.role
 
   // Check if the user is an admin or officer in the club, or a university admin or super admin
   const isClubAdminOrOfficer = userRoleInClub === 'admin' || userRoleInClub === 'officer'
