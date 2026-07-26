@@ -1,10 +1,10 @@
-# ClubSpace System Architecture & Technical Overview
+# Campus Crew System Architecture & Technical Overview
 
-This document provides a comprehensive breakdown of the technologies, security models, APIs, and underlying architectural assets that power the ClubSpace platform behind the scenes.
+This document provides a comprehensive breakdown of the technologies, security models, APIs, and underlying architectural assets that power the Campus Crew platform behind the scenes.
 
 ## 1. Tech Stack
 
-ClubSpace is built on a modern, strictly-typed web stack designed for scale, speed, and security.
+Campus Crew is built on a modern, strictly-typed web stack designed for scale, speed, and security.
 
 - **Frontend Framework:** Next.js 14 (App Router)
 - **UI Library:** React 18
@@ -26,7 +26,7 @@ ClubSpace is built on a modern, strictly-typed web stack designed for scale, spe
 
 ## 3. Security Components
 
-Security is baked into the foundation of ClubSpace, relying on defense-in-depth rather than just front-end checks.
+Security is baked into the foundation of Campus Crew, relying on defense-in-depth rather than just front-end checks.
 
 - **Row Level Security (RLS):** The absolute source of truth. Every database table enforces strict Postgres RLS policies based on the user's JWT payload and role. Even if the frontend UI makes a mistake, the database physically blocks unauthorized data access.
 - **Native JWT Session Management:** Authentication relies on industry-standard JSON Web Tokens managed natively by Supabase. Tokens are securely passed and verified on every database interaction.
@@ -37,7 +37,7 @@ Security is baked into the foundation of ClubSpace, relying on defense-in-depth 
 
 ## 4. API Components
 
-ClubSpace uses Next.js Route Handlers (`src/app/api/`) to build a secure, serverless backend.
+Campus Crew uses Next.js Route Handlers (`src/app/api/`) to build a secure, serverless backend.
 
 - **/api/auth:** Handles complex registration flows, domain allow-listing (ensuring users belong to the correct university), and role assignment during onboarding.
 - **/api/announcements:** Manages the announcement lifecycle. Features endpoints for creating, pinning, submitting, approving (`/[id]/approve`), rejecting (`/[id]/reject`), and tracking reads.
@@ -47,7 +47,7 @@ ClubSpace uses Next.js Route Handlers (`src/app/api/`) to build a secure, server
 ## 5. Major Assets & Design Patterns
 
 ### Custom UI System
-Instead of relying on heavy third-party component libraries, ClubSpace uses a bespoke, lightweight UI folder (`src/components/ui/`) featuring optimized `Button`, `Input`, and `Modal` components that consume standard Tailwind classes merged via `tailwind-merge` and `clsx`.
+Instead of relying on heavy third-party component libraries, Campus Crew uses a bespoke, lightweight UI folder (`src/components/ui/`) featuring optimized `Button`, `Input`, and `Modal` components that consume standard Tailwind classes merged via `tailwind-merge` and `clsx`.
 
 ### Custom Hooks
 Business logic is abstracted into clean React Hooks for easy consumption:

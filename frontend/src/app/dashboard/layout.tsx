@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation'
 import SessionManager from '@/components/auth/SessionManager'
 
 export const metadata: Metadata = {
-  title: 'ClubSpace Dashboard',
+  title: 'Campus Crew Dashboard',
   description: 'Manage your university club memberships, events, and communications.',
 }
 

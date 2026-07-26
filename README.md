@@ -1,6 +1,6 @@
-# ClubSpace
+# Campus Crew
 
-ClubSpace is a production-ready, open-source platform for managing university student club memberships, events, and communications. It is fully configurable from the dashboard with zero hardcoded institutional values. It is legally compliant (GDPR + POPIA), secure, MIT licensed, and built to scale across multiple universities and clubs.
+Campus Crew is a production-ready, open-source platform for managing university student club memberships, events, and communications. It is fully configurable from the dashboard with zero hardcoded institutional values. It is legally compliant (GDPR + POPIA), secure, MIT licensed, and built to scale across multiple universities and clubs.
 
 ## Features
 
@@ -108,7 +108,7 @@ ClubSpace is a production-ready, open-source platform for managing university st
 
 ## Deployment to Vercel
 
-The easiest way to deploy ClubSpace is to use the [Vercel Platform](https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&filter=next.js&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The easiest way to deploy Campus Crew is to use the [Vercel Platform](https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&filter=next.js&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 1. Push your code to a GitHub/GitLab/Bitbucket repository
 2. Import the repository into Vercel

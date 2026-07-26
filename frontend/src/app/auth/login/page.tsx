@@ -17,7 +17,7 @@ export default function LoginPage() {
             </svg>
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-gradient">Welcome back</h1>
-          <p className="text-muted-foreground">Sign in to your ClubSpace account</p>
+          <p className="text-muted-foreground">Sign in to your Campus Crew account</p>
         </div>
         
         <div className="relative z-10">

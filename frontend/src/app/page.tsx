@@ -7,7 +7,7 @@ export default function Home() {
     <div className={styles.container}>
       <div className={styles.contentWrapper}>
         <h1 className={styles.title}>
-          ClubSpace
+          Campus Crew
         </h1>
         <p className={styles.subtitle}>
           Manage your university student clubs with ease

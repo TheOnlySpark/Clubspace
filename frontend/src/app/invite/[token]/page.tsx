@@ -122,7 +122,7 @@ export default function InvitePage({ params }: { params: { token: string } }) {
             Join {invite.clubs.name}
           </h1>
           <p className="text-muted-foreground">
-            You&apos;ve been invited to join this club on ClubSpace.
+            You&apos;ve been invited to join this club on Campus Crew.
           </p>
         </div>
 

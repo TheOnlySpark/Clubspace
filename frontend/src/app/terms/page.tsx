@@ -14,14 +14,14 @@ export default function TermsPage() {
             <div className="space-y-4">
               <h2 className="text-xl font-semibold text-primary">1. Acceptance of Terms</h2>
               <p className="text-muted-foreground">
-                By accessing or using ClubSpace (&quot;Service&quot;), you agree to be bound by these Terms of Service. If you do not agree to any part of these terms, you may not use the Service.
+                By accessing or using Campus Crew (&quot;Service&quot;), you agree to be bound by these Terms of Service. If you do not agree to any part of these terms, you may not use the Service.
               </p>
             </div>
 
             <div className="space-y-4">
               <h2 className="text-xl font-semibold text-primary">2. Description of Service</h2>
               <p className="text-muted-foreground">
-                ClubSpace is a platform for managing university student club memberships, events, and communications. We provide tools for club administration, event planning, member communication, and more.
+                Campus Crew is a platform for managing university student club memberships, events, and communications. We provide tools for club administration, event planning, member communication, and more.
               </p>
             </div>
 
@@ -42,7 +42,7 @@ export default function TermsPage() {
             <div className="space-y-4">
               <h2 className="text-xl font-semibold text-primary">5. Intellectual Property</h2>
               <p className="text-muted-foreground">
-                The Service and its original content, features, and functionality are owned by ClubSpace and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.
+                The Service and its original content, features, and functionality are owned by Campus Crew and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.
               </p>
             </div>
 
@@ -63,14 +63,14 @@ export default function TermsPage() {
             <div className="space-y-4">
               <h2 className="text-xl font-semibold text-primary">8. Limitation of Liability</h2>
               <p className="text-muted-foreground">
-                To the maximum extent permitted by law, ClubSpace shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses.
+                To the maximum extent permitted by law, Campus Crew shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses.
               </p>
             </div>
 
             <div className="space-y-4">
               <h2 className="text-xl font-semibold text-primary">9. Indemnification</h2>
               <p className="text-muted-foreground">
-                You agree to defend, indemnify, and hold harmless ClubSpace and its officers, directors, employees, and agents, from and against any claims, liabilities, damages, losses, and expenses, arising out of or in connection with your use of the Service.
+                You agree to defend, indemnify, and hold harmless Campus Crew and its officers, directors, employees, and agents, from and against any claims, liabilities, damages, losses, and expenses, arising out of or in connection with your use of the Service.
               </p>
             </div>
 

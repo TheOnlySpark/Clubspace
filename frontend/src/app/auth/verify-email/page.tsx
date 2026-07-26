@@ -24,7 +24,7 @@ export default function VerifyEmailPage() {
         </div>
         <h2 className="text-3xl font-bold tracking-tight text-foreground">Email Verified!</h2>
         <p className="text-lg text-muted-foreground">
-          Your account has been successfully verified. Welcome to Clubspace!
+          Your account has been successfully verified. Welcome to Campus Crew!
         </p>
         <div className="flex flex-col items-center justify-center space-y-3 pt-6">
           <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-primary border-t-transparent"></div>

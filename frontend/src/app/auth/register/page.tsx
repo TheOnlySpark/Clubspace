@@ -17,7 +17,7 @@ export default function RegisterPage() {
             </svg>
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-gradient">Create account</h1>
-          <p className="text-muted-foreground">Join your university&apos;s ClubSpace</p>
+          <p className="text-muted-foreground">Join your university&apos;s Campus Crew</p>
         </div>
         
         <div className="relative z-10">

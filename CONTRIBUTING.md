@@ -1,6 +1,6 @@
-# Contributing to ClubSpace
+# Contributing to Campus Crew
 
-Thank you for considering contributing to ClubSpace! We welcome contributions from the community.
+Thank you for considering contributing to Campus Crew! We welcome contributions from the community.
 
 ## Code of Conduct
 
@@ -81,4 +81,4 @@ Please do not report security vulnerabilities through public GitHub issues. Inst
 
 ## License
 
-By contributing to ClubSpace, you agree that your contributions will be licensed under the MIT License.
+By contributing to Campus Crew, you agree that your contributions will be licensed under the MIT License.

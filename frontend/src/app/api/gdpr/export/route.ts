@@ -102,7 +102,7 @@ export async function GET(
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Content-Disposition': `attachment; filename="clubspace-data-${userId}.json"`,
+        'Content-Disposition': `attachment; filename="campus-crew-data-${userId}.json"`,
       },
     })
   } catch (error: any) {

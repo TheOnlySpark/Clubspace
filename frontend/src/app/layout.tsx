@@ -11,8 +11,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | ClubSpace",
-    default: "ClubSpace",
+    template: "%s | Campus Crew",
+    default: "Campus Crew",
   },
   description: "Manage your university clubs efficiently.",
 };
