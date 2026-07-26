@@ -104,13 +104,16 @@ export default function MembersPage() {
     if (!canChangeRoles) return
 
     try {
-      const supabase = createClient()
-      const { error } = await supabase
-        .from('user_roles')
-        .update({ role: newRole })
-        .eq('user_id', memberId)
+      const response = await fetch(`/api/admin/members/${memberId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: newRole }),
+      })
 
-      if (error) throw error
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to update role')
+      }
 
       // Update optimistically
       setMembers(prev =>
