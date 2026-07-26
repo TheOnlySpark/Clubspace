@@ -7,7 +7,6 @@ import { useRole } from '@/hooks/useRole'
 import { createClient } from '@/lib/supabase/client'
 import UniversitySettings from '@/components/admin/UniversitySettings'
 import ClubManager from '@/components/admin/ClubManager'
-import UserRoleTable from '@/components/admin/UserRoleTable'
 import Button from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
 
@@ -176,13 +175,6 @@ export default function AdminPage() {
         <h2 className="text-xl font-semibold text-primary mb-4">Clubs Management</h2>
         <ClubManager universityId={university.id} onClubUpdate={() => {
           // TODO: refresh clubs list if needed
-        }} />
-      </div>
-
-      <div className="solid-panel border border-border rounded-xl p-6">
-        <h2 className="text-xl font-semibold text-primary mb-4">User Roles</h2>
-        <UserRoleTable universityId={university.id} onRoleUpdate={() => {
-          // TODO: refresh roles if needed
         }} />
       </div>
     </div>
