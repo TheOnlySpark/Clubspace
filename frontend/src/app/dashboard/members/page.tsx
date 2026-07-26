@@ -299,7 +299,7 @@ export default function MembersPage() {
               header: 'Role', 
               sortable: true,
               renderCell: canChangeRoles ? (row) => (
-                <div onClick={(e) => e.stopPropagation()}>
+                <div className="no-row-click inline-block">
                   <RoleSelector
                     currentRole={row.role as any}
                     onRoleChange={(newRole) => handleRoleChange(row.id, newRole)}

@@ -134,7 +134,10 @@ export default function MemberTable<T>({
             sortedData.map((row, index) => (
               <Tr
                 key={index}
-                onClick={() => onRowClick?.(row)}
+                onClick={(e: React.MouseEvent) => {
+                  if ((e.target as HTMLElement).closest('.no-row-click')) return;
+                  onRowClick?.(row);
+                }}
                 className="cursor-pointer hover:bg-muted"
               >
                 {columns.map((column) => {
