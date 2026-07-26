@@ -62,19 +62,20 @@ export default function RoleSelector({
       </DropdownTrigger>
       <DropdownContent className="w-48 mt-2 z-50">
         {assignableRoles.map((role) => (
-          <Button
+          <button
             key={role}
-            variant="ghost"
-            size="sm"
+            type="button"
             className={cn(
-              'w-full text-left',
-              role === currentRole && 'font-medium text-primary',
+              'w-full text-left px-3 py-2 text-sm rounded-md transition-colors',
+              role === currentRole 
+                ? 'bg-primary/10 text-primary font-medium'
+                : 'text-foreground hover:bg-accent hover:text-accent-foreground'
             )}
             onClick={() => handleSelect(role)}
             disabled={disabled}
           >
             {ROLE_DISPLAY_NAMES[role]}
-          </Button>
+          </button>
         ))}
       </DropdownContent>
     </Dropdown>
