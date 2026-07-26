@@ -40,9 +40,8 @@ export default function LoginForm() {
         throw new Error(authError.message)
       }
 
-      // On success, redirect to next or dashboard
-      router.push(next || '/dashboard')
-      router.refresh()
+      // On success, do a hard redirect to ensure cookies are sent to the server correctly
+      window.location.href = next || '/dashboard'
     } catch (err: any) {
       setError(err.message ?? 'An unexpected error occurred')
     } finally {
