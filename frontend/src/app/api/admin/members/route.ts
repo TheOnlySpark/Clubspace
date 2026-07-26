@@ -81,7 +81,7 @@ export async function GET(
       active: member.active,
       created_at: member.created_at,
       role: roleMap.get(member.id) || 'member', // fallback to member if missing
-    }))
+    })).filter((member: any) => member.role !== 'super_admin')
 
     return NextResponse.json(transformed, { status: 200 })
   } catch (error: any) {
