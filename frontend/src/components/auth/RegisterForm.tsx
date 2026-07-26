@@ -4,6 +4,7 @@ import * as React from 'react'
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { z } from 'zod'
+import { Eye, EyeOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
@@ -12,15 +13,22 @@ import { createClient } from '@/lib/supabase/client'
 const registerSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
+  confirmPassword: z.string(),
   first_name: z.string().min(1, 'First name is required'),
   last_name: z.string().min(1, 'Last name is required'),
   course: z.string().min(1, 'Course is required'),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
 })
 
 export default function RegisterForm() {
   // Minor change to trigger Vercel redeployment
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [confirmPassword, setConfirmPassword] = React.useState('')
+  const [showPassword, setShowPassword] = React.useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false)
   const [firstName, setFirstName] = React.useState('')
   const [lastName, setLastName] = React.useState('')
   const [course, setCourse] = React.useState('')
@@ -78,7 +86,7 @@ export default function RegisterForm() {
     setIsLoading(true)
 
     try {
-      const parsed = registerSchema.parse({ email, password, first_name: firstName, last_name: lastName, course })
+      const parsed = registerSchema.parse({ email, password, confirmPassword, first_name: firstName, last_name: lastName, course })
       // Call API
       const res = await fetch('/api/auth/register', {
         method: 'POST',
@@ -135,7 +143,7 @@ export default function RegisterForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="firstName" className="mb-2 block text-sm font-medium text-muted-foreground">
-          First name
+          First name <span className="text-destructive">*</span>
         </label>
         <Input
           id="firstName"
@@ -149,7 +157,7 @@ export default function RegisterForm() {
       </div>
       <div>
         <label htmlFor="lastName" className="mb-2 block text-sm font-medium text-muted-foreground">
-          Last name
+          Last name <span className="text-destructive">*</span>
         </label>
         <Input
           id="lastName"
@@ -210,15 +218,47 @@ export default function RegisterForm() {
         <label htmlFor="password" className="mb-2 block text-sm font-medium text-muted-foreground">
           Password
         </label>
-        <Input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-          placeholder="password"
-          required
-          className={cn('w-full', error ? 'border-destructive' : '')}
-        />
+        <div className="relative">
+          <Input
+            id="password"
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            placeholder="password"
+            required
+            className={cn('w-full pr-10', error ? 'border-destructive' : '')}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+          </button>
+        </div>
+      </div>
+      <div>
+        <label htmlFor="confirmPassword" className="mb-2 block text-sm font-medium text-muted-foreground">
+          Confirm Password
+        </label>
+        <div className="relative">
+          <Input
+            id="confirmPassword"
+            type={showConfirmPassword ? 'text' : 'password'}
+            value={confirmPassword}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
+            placeholder="confirm password"
+            required
+            className={cn('w-full pr-10', error ? 'border-destructive' : '')}
+          />
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {error && (
