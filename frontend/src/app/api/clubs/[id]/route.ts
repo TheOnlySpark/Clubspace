@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 // src/app/api/clubs/[id]/route.ts
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
@@ -192,16 +192,29 @@ export async function DELETE(
       return NextResponse.json({ error: 'Club ID is required' }, { status: 400 })
     }
 
-    // Only Super Admin can hard delete a club
-    const { data: superAdminRole } = await adminClient
+    // Get user's role
+    const { data: userRole } = await adminClient
       .from('user_roles')
-      .select('role')
+      .select('role, university_id')
       .eq('user_id', auth.session.user.id)
-      .eq('role', 'super_admin')
       .single()
 
-    if (!superAdminRole) {
-      return NextResponse.json({ error: 'Forbidden: Only Super Admins can hard delete clubs' }, { status: 403 })
+    // Get club's university
+    const { data: club } = await adminClient
+      .from('clubs')
+      .select('university_id')
+      .eq('id', clubId)
+      .single()
+
+    if (!userRole || !club) {
+      return NextResponse.json({ error: 'Forbidden: Could not verify permissions' }, { status: 403 })
+    }
+
+    const isSuperAdmin = userRole.role === 'super_admin'
+    const isUniAdminForClub = userRole.role === 'university_admin' && userRole.university_id === club.university_id
+
+    if (!isSuperAdmin && !isUniAdminForClub) {
+      return NextResponse.json({ error: 'Forbidden: Only Super Admins and University Admins can hard delete clubs' }, { status: 403 })
     }
 
     // Hard delete using adminClient
