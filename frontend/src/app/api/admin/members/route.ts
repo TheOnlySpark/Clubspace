@@ -57,8 +57,10 @@ export async function GET(
       throw membersError
     }
 
-    // Fetch roles
-    const { data: roles, error: rolesError } = await supabase
+    // Use adminClient to bypass RLS when fetching user_roles so we get actual roles instead of empty arrays
+    const { adminClient } = await import('@/lib/supabase/admin')
+
+    const { data: roles, error: rolesError } = await adminClient
       .from('user_roles')
       .select('user_id, role')
       .eq('university_id', universityId)
