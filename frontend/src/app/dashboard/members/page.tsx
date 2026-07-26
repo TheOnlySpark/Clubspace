@@ -30,68 +30,32 @@ export default function MembersPage() {
   const [detailsLoading, setDetailsLoading] = useState(false)
   const [removeModalOpen, setRemoveModalOpen] = useState(false)
 
+  // State for bulk saving roles
+  const [pendingChanges, setPendingChanges] = useState<Record<string, string>>({})
+  const [saving, setSaving] = useState(false)
+  const [saveSuccess, setSaveSuccess] = useState(false)
+  const hasPendingChanges = Object.keys(pendingChanges).length > 0
+
   const canChangeRoles = isUniversityAdmin() || isSuperAdmin()
 
-  // Fetch members for the user's university
+  // Fetch members via the API
   async function loadMembers() {
     if (!user) return
 
     setLoading(true)
     setError(null)
+    setPendingChanges({})
+    setSaveSuccess(false)
     try {
-      const supabase = createClient()
-
-      // Get the user's profile to get university_id
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('university_id')
-        .eq('id', user.id)
-        .single()
-
-      if (profileError || !profile?.university_id) {
-        throw new Error('Could not determine your university.')
+      const response = await fetch(`/api/admin/members`, {
+        method: 'GET',
+      })
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to fetch members')
       }
-
-      const universityId = profile.university_id
-
-      // Get all profiles for this university with their roles
-      const { data: profilesData, error: profilesError } = await supabase
-        .from('profiles')
-        .select('id, first_name, last_name, email, course, created_at')
-        .eq('university_id', universityId)
-        .order('created_at', { ascending: false })
-
-      if (profilesError) throw profilesError
-
-      // Fetch roles separately to avoid the inner join crash
-      const userIds = (profilesData || []).map((p: any) => p.id)
-      let rolesMap: Record<string, string> = {}
-
-      if (userIds.length > 0) {
-        const { data: rolesData, error: rolesError } = await supabase
-          .from('user_roles')
-          .select('user_id, role')
-          .in('user_id', userIds)
-
-        if (!rolesError && rolesData) {
-          for (const r of rolesData) {
-            rolesMap[r.user_id] = r.role
-          }
-        }
-      }
-
-      // Merge profiles + roles
-      const formattedMembers: Member[] = (profilesData || []).map((member: any) => ({
-        id: member.id,
-        first_name: member.first_name,
-        last_name: member.last_name,
-        email: member.email,
-        course: member.course,
-        role: rolesMap[member.id] || 'member',
-        created_at: member.created_at,
-      }))
-
-      setMembers(formattedMembers)
+      const data = await response.json()
+      setMembers(data)
     } catch (err: any) {
       console.error('Error loading members:', err)
       setError(err.message ?? 'Failed to load members')
@@ -101,32 +65,14 @@ export default function MembersPage() {
     }
   }
 
-  // Fetch details of a single member (including student number)
+  // Fetch details of a single member (including student number from members array)
   async function fetchMemberDetails(memberId: string) {
     setDetailsLoading(true)
     try {
-      const supabase = createClient()
-
-      // Fetch profile details (including student_number)
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('id, first_name, last_name, email, course, created_at, student_number')
-        .eq('id', memberId)
-        .single()
-
-      if (profileError) throw profileError
-
-      // Fetch role
-      const { data: roleData } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', memberId)
-        .maybeSingle()
-
-      setSelectedMemberDetails({
-        ...profile,
-        role: roleData?.role || 'member'
-      })
+      const member = members.find((m) => m.id === memberId)
+      if (member) {
+        setSelectedMemberDetails(member)
+      }
     } catch (err: any) {
       console.error('Error fetching member details:', err)
     } finally {
@@ -143,34 +89,75 @@ export default function MembersPage() {
     }
   }, [selectedMember?.id])
 
-  // Handle role change — only uni admin / super admin
-  async function handleRoleChange(memberId: string, newRole: string) {
+  // Stage role change locally
+  const handleRoleChange = (memberId: string, newRole: string) => {
     if (!canChangeRoles) return
 
-    try {
-      const response = await fetch(`/api/admin/members/${memberId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ role: newRole }),
+    const originalMember = members.find((m) => m.id === memberId)
+    if (!originalMember) return
+
+    if (originalMember.role === newRole) {
+      setPendingChanges((prev) => {
+        const updated = { ...prev }
+        delete updated[memberId]
+        return updated
       })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to update role')
-      }
-
-      // Update optimistically in the list
-      setMembers(prev =>
-        prev.map(member =>
-          member.id === memberId ? { ...member, role: newRole } : member
-        )
-      )
-      // Update details panel
-      setSelectedMemberDetails((prev: any) => prev ? { ...prev, role: newRole } : null)
-    } catch (err: any) {
-      console.error('Error changing role:', err)
-      alert('Failed to change role: ' + err.message)
+    } else {
+      setPendingChanges((prev) => ({ ...prev, [memberId]: newRole }))
     }
+    
+    // Update details panel optimistic view
+    setSelectedMemberDetails((prev: any) => (prev ? { ...prev, role: newRole } : null))
+  }
+
+  // Get displayed role for table list
+  const getDisplayedRole = (member: Member) => {
+    return pendingChanges[member.id] ?? member.role
+  }
+
+  // Save all pending role changes
+  const handleSaveAll = async () => {
+    if (!hasPendingChanges) return
+
+    setSaving(true)
+    setError(null)
+    setSaveSuccess(false)
+
+    const entries = Object.entries(pendingChanges)
+    const errors: string[] = []
+
+    for (const [memberId, newRole] of entries) {
+      try {
+        const response = await fetch(`/api/admin/members/${memberId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ role: newRole }),
+        })
+        
+        if (!response.ok) {
+          const errorData = await response.json()
+          const memberName = members.find((m) => m.id === memberId)
+          errors.push(
+            `${memberName?.first_name || 'User'}: ${errorData.error || 'Failed to update'}`
+          )
+        }
+      } catch (err: any) {
+        errors.push(err.message ?? 'Unknown error')
+      }
+    }
+
+    if (errors.length > 0) {
+      setError(`Some role updates failed: ${errors.join('; ')}`)
+    } else {
+      setSaveSuccess(true)
+    }
+
+    // Refresh data
+    await loadMembers()
+    if (selectedMember) {
+      fetchMemberDetails(selectedMember.id)
+    }
+    setSaving(false)
   }
 
   // Handle remove member — removes from club_memberships only
@@ -271,9 +258,21 @@ export default function MembersPage() {
             {members.length} member{members.length !== 1 ? 's' : ''} at your university
           </p>
         </div>
-        <Button variant="outline" onClick={loadMembers}>
-          Refresh
-        </Button>
+        <div className="flex items-center space-x-3">
+          {hasPendingChanges && (
+            <Button
+              variant="default"
+              onClick={handleSaveAll}
+              disabled={saving}
+              className="bg-primary text-primary-foreground"
+            >
+              {saving ? 'Saving...' : 'Save Role Changes'}
+            </Button>
+          )}
+          <Button variant="outline" onClick={loadMembers}>
+            Refresh
+          </Button>
+        </div>
       </div>
 
       {members.length > 0 ? (
@@ -286,8 +285,11 @@ export default function MembersPage() {
             { accessor: 'role', header: 'Role', sortable: true },
             { accessor: 'created_at', header: 'Joined', sortable: true },
           ]}
-          data={members}
-          onRowClick={(member) => setSelectedMember(member)}
+          data={members.map(m => ({ ...m, role: getDisplayedRole(m) }))}
+          onRowClick={(member) => {
+            const originalMember = members.find(m => m.id === member.id)
+            if (originalMember) setSelectedMember(originalMember)
+          }}
         />
       ) : (
         <div className="solid-card rounded-2xl p-12 text-center">
@@ -347,6 +349,16 @@ export default function MembersPage() {
                   disabled={!canChangeRoles || detailsLoading}
                   isSuperAdmin={isSuperAdmin()}
                 />
+                {pendingChanges[selectedMemberDetails.id] && (
+                  <Button 
+                    size="sm" 
+                    onClick={handleSaveAll} 
+                    disabled={saving}
+                    className="bg-primary text-primary-foreground"
+                  >
+                    {saving ? 'Saving...' : 'Save Role'}
+                  </Button>
+                )}
               </div>
 
               {canChangeRoles && (

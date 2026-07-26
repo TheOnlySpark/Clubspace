@@ -32,34 +32,8 @@ export async function GET(
 
     const universityId = profileData.university_id
 
-    // Check if user is university admin or super admin
-    const { data: roleData } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', session.user.id)
-      .eq('university_id', universityId)
-      .eq('role', 'university_admin')
-      .limit(1)
-      .maybeSingle()
-
-    const isUniversityAdmin = roleData?.role === 'university_admin'
-    
-    const { data: superAdminData } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', session.user.id)
-      .eq('role', 'super_admin')
-      .limit(1)
-      .maybeSingle()
-
-    const isSuperAdmin = superAdminData?.role === 'super_admin'
-
-    if (!(isUniversityAdmin || isSuperAdmin)) {
-      return NextResponse.json(
-        { error: 'Forbidden: Insufficient permissions to manage members' },
-        { status: 403 }
-      )
-    }
+    // Admins and Super Admins have special permissions for updates (handled in [uid]/route.ts),
+    // but any authenticated university member is allowed to view the member directory (GET).
 
     // Fetch members (profiles) for the university
     const { data: members, error: membersError } = await supabase
@@ -68,6 +42,8 @@ export async function GET(
         id,
         first_name,
         last_name,
+        email,
+        course,
         student_number,
         department_id,
         active,
@@ -96,6 +72,8 @@ export async function GET(
       id: member.id,
       first_name: member.first_name,
       last_name: member.last_name,
+      email: member.email,
+      course: member.course,
       student_number: member.student_number,
       department: member.departments?.name,
       active: member.active,
