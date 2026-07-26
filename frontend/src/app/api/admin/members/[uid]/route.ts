@@ -5,7 +5,7 @@ import { requireAuth } from '@/lib/api-helpers'
 import { createClient } from '@/lib/supabase/server'
 
 const roleUpdateSchema = z.object({
-  role: z.enum(['member', 'officer', 'club_admin', 'university_admin', 'super_admin']),
+  role: z.enum(['member', 'officer', 'club_admin', 'university_admin']),
 })
 
 export async function PATCH(
@@ -107,9 +107,9 @@ export async function PATCH(
     // Additional restrictions based on requester's role
     if (!isSuperAdmin && isUniversityAdmin) {
       // University admin can only assign roles below university_admin: officer, club_admin, member
-      if (parsed.role === 'university_admin' || parsed.role === 'super_admin') {
+      if (parsed.role === 'university_admin') {
         return NextResponse.json(
-          { error: 'Forbidden: University admin cannot assign university_admin or super_admin roles' },
+          { error: 'Forbidden: University admin cannot assign university_admin role' },
           { status: 403 }
         )
       }

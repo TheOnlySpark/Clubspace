@@ -40,7 +40,7 @@ export default function RoleSelector({
   }
 
   const assignableRoles: Role[] = isSuperAdmin
-    ? ['member', 'officer', 'club_admin', 'university_admin', 'super_admin']
+    ? ['member', 'officer', 'club_admin', 'university_admin']
     : ['member', 'officer', 'club_admin']
 
   return (
