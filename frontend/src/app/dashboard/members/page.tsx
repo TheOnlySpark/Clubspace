@@ -68,14 +68,20 @@ export default function MembersPage() {
     }
   }
 
-  // Fetch details of a single member (including student number from members array)
+  // Fetch details of a single member from the database
   async function fetchMemberDetails(memberId: string) {
     setDetailsLoading(true)
     try {
-      const member = members.find((m) => m.id === memberId)
-      if (member) {
-        setSelectedMemberDetails(member)
+      const response = await fetch(`/api/admin/members/${memberId}?t=${Date.now()}`, { cache: 'no-store' })
+      if (!response.ok) throw new Error('Failed to fetch member details')
+      const data = await response.json()
+      
+      // If there's a pending role change locally, respect it
+      if (pendingChanges[memberId]) {
+        data.role = pendingChanges[memberId]
       }
+      
+      setSelectedMemberDetails(data)
     } catch (err: any) {
       console.error('Error fetching member details:', err)
     } finally {

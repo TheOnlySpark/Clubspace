@@ -138,9 +138,17 @@ export default function MemberTable<T>({
               >
                 {columns.map((column) => {
                   const value = row[column.accessor]
+                  let displayValue = value == null ? '' : String(value)
+                  
+                  if (value instanceof Date) {
+                    displayValue = value.toLocaleDateString()
+                  } else if (column.accessor === 'created_at' && typeof value === 'string') {
+                    displayValue = new Date(value).toLocaleDateString()
+                  }
+                  
                   return (
                     <Td key={String(column.accessor)}>
-                      {value instanceof Date ? value.toLocaleDateString() : String(value)}
+                      {displayValue}
                     </Td>
                   )
                 })}

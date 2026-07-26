@@ -8,6 +8,52 @@ const roleUpdateSchema = z.object({
   role: z.enum(['member', 'officer', 'club_admin', 'university_admin']),
 })
 
+export async function GET(
+  request: Request,
+  { params }: { params: { uid: string } }
+) {
+  try {
+    const auth = await requireAuth()
+    if ('error' in auth) {
+      return auth.error
+    }
+
+    const { supabase } = auth
+    const { uid } = params
+
+    if (!uid) {
+      return NextResponse.json({ error: 'User ID is required' }, { status: 400 })
+    }
+
+    // Use adminClient to bypass RLS and guarantee we get the user role
+    const { adminClient } = await import('@/lib/supabase/admin')
+
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('id, first_name, last_name, email, course, created_at, student_number')
+      .eq('id', uid)
+      .single()
+
+    if (profileError || !profile) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    }
+
+    const { data: roleData } = await adminClient
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', uid)
+      .maybeSingle()
+
+    return NextResponse.json({
+      ...profile,
+      role: roleData?.role || 'member'
+    }, { status: 200 })
+  } catch (error: any) {
+    console.error('Error in GET /api/admin/members/[uid]:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
+
 export async function PATCH(
   request: Request,
   { params }: { params: { uid: string } }
