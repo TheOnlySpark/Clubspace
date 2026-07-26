@@ -11,6 +11,7 @@ interface MemberTableProps<T> {
     accessor: keyof T
     header: string
     sortable?: boolean
+    renderCell?: (row: T) => React.ReactNode
   }>
   data: T[]
   onRowClick?: (row: T) => void
@@ -148,7 +149,7 @@ export default function MemberTable<T>({
                   
                   return (
                     <Td key={String(column.accessor)}>
-                      {displayValue}
+                      {column.renderCell ? column.renderCell(row) : displayValue}
                     </Td>
                   )
                 })}

@@ -294,7 +294,21 @@ export default function MembersPage() {
             { accessor: 'last_name', header: 'Last Name', sortable: true },
             { accessor: 'email', header: 'Email', sortable: true },
             { accessor: 'course', header: 'Course', sortable: true },
-            { accessor: 'role', header: 'Role', sortable: true },
+            { 
+              accessor: 'role', 
+              header: 'Role', 
+              sortable: true,
+              renderCell: canChangeRoles ? (row) => (
+                <div onClick={(e) => e.stopPropagation()}>
+                  <RoleSelector
+                    currentRole={row.role as any}
+                    onRoleChange={(newRole) => handleRoleChange(row.id, newRole)}
+                    disabled={saving}
+                    isSuperAdmin={isSuperAdmin()}
+                  />
+                </div>
+              ) : undefined
+            },
             { accessor: 'created_at', header: 'Joined', sortable: true },
           ]}
           data={members.map(m => ({ ...m, role: getDisplayedRole(m) }))}
@@ -355,22 +369,9 @@ export default function MembersPage() {
 
               <div className="flex items-center space-x-4">
                 <span className="font-medium text-foreground">Role:</span>
-                <RoleSelector
-                  currentRole={selectedMemberDetails.role as any}
-                  onRoleChange={(newRole) => handleRoleChange(selectedMemberDetails.id, newRole)}
-                  disabled={!canChangeRoles || detailsLoading}
-                  isSuperAdmin={isSuperAdmin()}
-                />
-                {pendingChanges[selectedMemberDetails.id] && (
-                  <Button 
-                    size="sm" 
-                    onClick={handleSaveAll} 
-                    disabled={saving}
-                    className="bg-primary text-primary-foreground"
-                  >
-                    {saving ? 'Saving...' : 'Save Role'}
-                  </Button>
-                )}
+                <span className="text-muted-foreground capitalize">
+                  {selectedMemberDetails.role?.replace('_', ' ')}
+                </span>
               </div>
 
               {canChangeRoles && (
