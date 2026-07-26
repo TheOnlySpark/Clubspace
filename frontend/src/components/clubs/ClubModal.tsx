@@ -157,7 +157,9 @@ export default function ClubModal({ club, isOpen, onClose, onUpdated }: ClubModa
   const fetchMembers = async () => {
     setMembersLoading(true)
     try {
-      const res = await fetch(`/api/clubs/${club.id}/members`)
+      const res = await fetch(`/api/clubs/${club.id}/members?t=${Date.now()}`, {
+        cache: 'no-store'
+      })
       const data = await res.json()
       if (res.ok) {
         setMembers(data.members || [])
