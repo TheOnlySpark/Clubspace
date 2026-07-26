@@ -12,9 +12,7 @@ export default function LoginPage() {
         
         <div className="text-center space-y-2 relative z-10">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-background border border-border mb-4 shadow-inner">
-            <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
+            <img src="/logo.png" alt="Campus Crew Logo" className="w-8 h-8 object-contain" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-gradient">Welcome back</h1>
           <p className="text-muted-foreground">Sign in to your Campus Crew account</p>

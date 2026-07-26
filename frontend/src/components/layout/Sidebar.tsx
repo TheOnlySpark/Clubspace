@@ -121,7 +121,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         )}
         {...props}
       >
-        <div className="flex h-16 items-center px-6 border-b border-border">
+        <div className="flex h-16 items-center space-x-3 px-6 border-b border-border">
+          <img src="/logo.png" alt="Campus Crew Logo" className="w-8 h-8 object-contain" />
           <h2 className="text-xl font-bold text-gradient">Campus Crew</h2>
         </div>
         <nav className="flex-1 overflow-y-auto mt-6">

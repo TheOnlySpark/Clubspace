@@ -12,9 +12,7 @@ export default function RegisterPage() {
         
         <div className="text-center space-y-2 relative z-10">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-background border border-border mb-4 shadow-inner">
-            <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-            </svg>
+            <img src="/logo.png" alt="Campus Crew Logo" className="w-8 h-8 object-contain" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-gradient">Create account</h1>
           <p className="text-muted-foreground">Join your university&apos;s Campus Crew</p>

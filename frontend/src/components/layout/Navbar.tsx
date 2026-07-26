@@ -49,7 +49,10 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
         {...props}
       >
         <div className="flex items-center space-x-4">
-          <h1 className="text-lg font-bold text-gradient md:hidden">Campus Crew</h1>
+          <div className="flex items-center space-x-2 md:hidden">
+            <img src="/logo.png" alt="Campus Crew Logo" className="w-8 h-8 object-contain" />
+            <h1 className="text-lg font-bold text-gradient">Campus Crew</h1>
+          </div>
           <h2 className="hidden md:block text-sm font-medium text-slate-300 px-3 py-1 rounded-full bg-slate-800 border border-slate-700">Overview</h2>
         </div>
         <div className="flex items-center space-x-4">
