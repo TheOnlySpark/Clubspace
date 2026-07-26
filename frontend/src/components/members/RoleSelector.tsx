@@ -15,15 +15,12 @@ const ROLE_DISPLAY_NAMES: Record<Role, string> = {
   super_admin: 'Super Admin',
 }
 
-// Only university_admin and super_admin can change roles.
-// They can assign up to club_admin level — never university_admin or super_admin via this UI.
-const ASSIGNABLE_ROLES: Role[] = ['member', 'officer', 'club_admin']
-
 interface RoleSelectorProps {
   currentRole: Role
   onRoleChange: (newRole: Role) => void
   disabled?: boolean
   className?: string
+  isSuperAdmin?: boolean
 }
 
 export default function RoleSelector({
@@ -31,6 +28,7 @@ export default function RoleSelector({
   onRoleChange,
   disabled = false,
   className,
+  isSuperAdmin = false,
 }: RoleSelectorProps) {
   const [open, setOpen] = React.useState(false)
 
@@ -40,6 +38,10 @@ export default function RoleSelector({
       setOpen(false)
     }
   }
+
+  const assignableRoles: Role[] = isSuperAdmin
+    ? ['member', 'officer', 'club_admin', 'university_admin', 'super_admin']
+    : ['member', 'officer', 'club_admin']
 
   return (
     <Dropdown className={cn('relative inline-block', className)}>
@@ -59,7 +61,7 @@ export default function RoleSelector({
         </span>
       </DropdownTrigger>
       <DropdownContent className="w-48 mt-2 z-50">
-        {ASSIGNABLE_ROLES.map((role) => (
+        {assignableRoles.map((role) => (
           <Button
             key={role}
             variant="ghost"

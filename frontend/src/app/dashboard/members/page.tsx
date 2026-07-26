@@ -26,6 +26,8 @@ export default function MembersPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedMember, setSelectedMember] = useState<Member | null>(null)
+  const [selectedMemberDetails, setSelectedMemberDetails] = useState<any | null>(null)
+  const [detailsLoading, setDetailsLoading] = useState(false)
   const [removeModalOpen, setRemoveModalOpen] = useState(false)
 
   const canChangeRoles = isUniversityAdmin() || isSuperAdmin()
@@ -99,6 +101,48 @@ export default function MembersPage() {
     }
   }
 
+  // Fetch details of a single member (including student number)
+  async function fetchMemberDetails(memberId: string) {
+    setDetailsLoading(true)
+    try {
+      const supabase = createClient()
+
+      // Fetch profile details (including student_number)
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('id, first_name, last_name, email, course, created_at, student_number')
+        .eq('id', memberId)
+        .single()
+
+      if (profileError) throw profileError
+
+      // Fetch role
+      const { data: roleData } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', memberId)
+        .maybeSingle()
+
+      setSelectedMemberDetails({
+        ...profile,
+        role: roleData?.role || 'member'
+      })
+    } catch (err: any) {
+      console.error('Error fetching member details:', err)
+    } finally {
+      setDetailsLoading(false)
+    }
+  }
+
+  // Load details whenever selectedMember changes
+  useEffect(() => {
+    if (selectedMember) {
+      fetchMemberDetails(selectedMember.id)
+    } else {
+      setSelectedMemberDetails(null)
+    }
+  }, [selectedMember?.id])
+
   // Handle role change — only uni admin / super admin
   async function handleRoleChange(memberId: string, newRole: string) {
     if (!canChangeRoles) return
@@ -115,16 +159,14 @@ export default function MembersPage() {
         throw new Error(errorData.error || 'Failed to update role')
       }
 
-      // Update optimistically
+      // Update optimistically in the list
       setMembers(prev =>
         prev.map(member =>
           member.id === memberId ? { ...member, role: newRole } : member
         )
       )
-      // Update selected member if it's the same one
-      if (selectedMember?.id === memberId) {
-        setSelectedMember(prev => prev ? { ...prev, role: newRole } : null)
-      }
+      // Update details panel
+      setSelectedMemberDetails((prev: any) => prev ? { ...prev, role: newRole } : null)
     } catch (err: any) {
       console.error('Error changing role:', err)
       alert('Failed to change role: ' + err.message)
@@ -258,47 +300,71 @@ export default function MembersPage() {
         <div className="solid-card rounded-2xl p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-foreground">Member Details</h2>
-            <Button variant="ghost" size="sm" onClick={() => setSelectedMember(null)}>
-              ✕
-            </Button>
-          </div>
-          <div className="space-y-4">
-            <div className="flex items-center space-x-4">
-              <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-lg">
-                {selectedMember.first_name?.[0]?.toUpperCase()}{selectedMember.last_name?.[0]?.toUpperCase()}
-              </div>
-              <div>
-                <h3 className="font-bold text-lg text-foreground">
-                  {selectedMember.first_name} {selectedMember.last_name}
-                </h3>
-                <p className="text-sm text-muted-foreground">{selectedMember.email}</p>
-                {selectedMember.course && (
-                  <p className="text-sm text-muted-foreground mt-0.5">📚 {selectedMember.course}</p>
-                )}
-              </div>
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => fetchMemberDetails(selectedMember.id)}
+                disabled={detailsLoading}
+              >
+                {detailsLoading ? 'Refreshing...' : 'Refresh'}
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => { setSelectedMember(null); setSelectedMemberDetails(null); }}>
+                ✕
+              </Button>
             </div>
-
-            <div className="flex items-center space-x-4">
-              <span className="font-medium text-foreground">Role:</span>
-              <RoleSelector
-                currentRole={selectedMember.role as any}
-                onRoleChange={(newRole) => handleRoleChange(selectedMember.id, newRole)}
-                disabled={!canChangeRoles}
-              />
-            </div>
-
-            {canChangeRoles && (
-              <div className="pt-2 border-t border-border">
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => setRemoveModalOpen(true)}
-                >
-                  Remove from all clubs
-                </Button>
-              </div>
-            )}
           </div>
+
+          {detailsLoading && !selectedMemberDetails ? (
+            <div className="flex justify-center py-6">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            </div>
+          ) : selectedMemberDetails ? (
+            <div className="space-y-4">
+              <div className="flex items-center space-x-4">
+                <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-lg">
+                  {selectedMemberDetails.first_name?.[0]?.toUpperCase()}{selectedMemberDetails.last_name?.[0]?.toUpperCase()}
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg text-foreground">
+                    {selectedMemberDetails.first_name} {selectedMemberDetails.last_name}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">{selectedMemberDetails.email}</p>
+                  {selectedMemberDetails.course && (
+                    <p className="text-sm text-muted-foreground mt-0.5">📚 {selectedMemberDetails.course}</p>
+                  )}
+                  {selectedMemberDetails.student_number && (
+                    <p className="text-sm text-muted-foreground mt-0.5">🆔 Student Number: {selectedMemberDetails.student_number}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-4">
+                <span className="font-medium text-foreground">Role:</span>
+                <RoleSelector
+                  currentRole={selectedMemberDetails.role as any}
+                  onRoleChange={(newRole) => handleRoleChange(selectedMemberDetails.id, newRole)}
+                  disabled={!canChangeRoles || detailsLoading}
+                  isSuperAdmin={isSuperAdmin()}
+                />
+              </div>
+
+              {canChangeRoles && (
+                <div className="pt-2 border-t border-border">
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => setRemoveModalOpen(true)}
+                    disabled={detailsLoading}
+                  >
+                    Remove from all clubs
+                  </Button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="text-muted-foreground py-4">Failed to load member details.</p>
+          )}
         </div>
       )}
 
