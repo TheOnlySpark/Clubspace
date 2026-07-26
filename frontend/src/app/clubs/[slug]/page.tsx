@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function PublicClubPage() {
   const { slug } = useParams()
@@ -99,10 +100,13 @@ export default function PublicClubPage() {
       {/* Club Header with Banner */}
       {club.banner_url && (
         <div className="relative h-48 w-full overflow-hidden">
-          <img
+          <Image
             src={club.banner_url}
             alt={`${club.name} banner`}
-            className="object-cover w-full h-full"
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
         </div>

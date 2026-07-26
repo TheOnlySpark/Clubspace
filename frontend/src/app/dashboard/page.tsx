@@ -35,20 +35,21 @@ export default async function DashboardPage() {
   let membersCount = 0
 
   if (universityId) {
-    const { count: cCount } = await supabase.from('clubs').select('*', { count: 'exact', head: true }).eq('university_id', universityId)
-    const { count: mCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('university_id', universityId)
+    const [clubsResult, membersResult] = await Promise.all([
+      supabase.from('clubs').select('*', { count: 'exact', head: true }).eq('university_id', universityId),
+      supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('university_id', universityId),
+    ])
 
-
-
-    clubsCount = cCount || 0
-    membersCount = mCount || 0
+    clubsCount = clubsResult.count || 0
+    membersCount = membersResult.count || 0
   } else {
     // If no university_id, fetch global stats for super_admin using adminClient to bypass RLS
-    const { count: cCount } = await adminClient.from('clubs').select('*', { count: 'exact', head: true })
-    const { count: mCount } = await adminClient.from('profiles').select('*', { count: 'exact', head: true })
-    clubsCount = cCount || 0
-    membersCount = mCount || 0
-
+    const [clubsResult, membersResult] = await Promise.all([
+      adminClient.from('clubs').select('*', { count: 'exact', head: true }),
+      adminClient.from('profiles').select('*', { count: 'exact', head: true }),
+    ])
+    clubsCount = clubsResult.count || 0
+    membersCount = membersResult.count || 0
   }
 
   // Fetch recent announcements for "Recent Activity"

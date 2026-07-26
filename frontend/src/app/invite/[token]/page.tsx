@@ -2,6 +2,7 @@
 "use client"
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import Button from '@/components/ui/Button'
 import { createClient } from '@/lib/supabase/client'
 
@@ -104,10 +105,12 @@ export default function InvitePage({ params }: { params: { token: string } }) {
 
       <div className="w-full max-w-md space-y-8 solid-card p-8 md:p-10 rounded-[2rem] animate-in fade-in zoom-in-95 duration-500 relative z-10 text-center">
         {invite.clubs.banner_url ? (
-          <img
+          <Image
             src={invite.clubs.banner_url}
             alt={invite.clubs.name}
-            className="w-24 h-24 rounded-full mx-auto object-cover border-4 border-background shadow-lg mb-4"
+            width={96}
+            height={96}
+            className="rounded-full mx-auto object-cover border-4 border-background shadow-lg mb-4"
           />
         ) : (
           <div className="w-24 h-24 rounded-full mx-auto bg-primary/10 flex items-center justify-center border-4 border-background shadow-lg mb-4">

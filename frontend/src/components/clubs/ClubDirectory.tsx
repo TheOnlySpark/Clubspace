@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 type Club = {
   id: string
@@ -119,8 +120,7 @@ export function ClubDirectory() {
               <div className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-200 h-full flex flex-col">
                 <div className="h-32 bg-gray-100 relative flex items-center justify-center border-b border-gray-100">
                   {club.logo_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={club.logo_url} alt={`${club.name} logo`} className="h-full w-full object-cover" />
+                    <Image src={club.logo_url} alt={`${club.name} logo`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
                   ) : (
                     <span className="text-gray-400 text-4xl font-bold opacity-30">{club.name.substring(0, 2).toUpperCase()}</span>
                   )}

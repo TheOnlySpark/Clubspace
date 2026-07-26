@@ -1,5 +1,6 @@
 "use client"
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { Globe, Mail, Users, ChevronLeft } from 'lucide-react' // Assuming lucide-react is installed
 export type ClubProfileData = {
@@ -36,8 +37,7 @@ export function ClubProfile({ club, memberCount, isAdmin = false }: ClubProfileP
       {/* Banner */}
       <div className="w-full h-48 md:h-72 bg-navy relative rounded-t-2xl overflow-hidden">
         {club.banner_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={club.banner_url} alt="Club Banner" className="w-full h-full object-cover opacity-80" />
+          <Image src={club.banner_url} alt="Club Banner" fill className="object-cover opacity-80" sizes="100vw" priority />
         ) : (
           <div className="w-full h-full bg-gradient-to-r from-navy to-electric-blue opacity-90"></div>
         )}
@@ -49,8 +49,7 @@ export function ClubProfile({ club, memberCount, isAdmin = false }: ClubProfileP
             {/* Logo */}
             <div className="w-32 h-32 md:w-40 md:h-40 rounded-xl border-4 border-white bg-white shadow-md overflow-hidden shrink-0 flex items-center justify-center">
               {club.logo_url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={club.logo_url} alt={`${club.name} logo`} className="w-full h-full object-cover" />
+                <Image src={club.logo_url} alt={`${club.name} logo`} fill className="object-cover" sizes="160px" />
               ) : (
                 <span className="text-gray-400 text-5xl font-bold opacity-30">{club.name.substring(0, 2).toUpperCase()}</span>
               )}
