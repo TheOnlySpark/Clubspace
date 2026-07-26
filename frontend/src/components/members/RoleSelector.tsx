@@ -66,7 +66,7 @@ export default function RoleSelector({
             key={role}
             type="button"
             className={cn(
-              'w-full text-left px-3 py-2 text-sm rounded-md transition-colors',
+              'block w-full text-left px-3 py-2 text-sm rounded-md transition-colors',
               role === currentRole 
                 ? 'bg-primary/10 text-primary font-medium'
                 : 'text-foreground hover:bg-accent hover:text-accent-foreground'
