@@ -134,15 +134,15 @@ export async function PATCH(
       .single()
 
     const isUniversityAdmin = userRoleData?.role === 'university_admin'
-    
-    // Super admin role might not be tied to a specific university_id, so check generally
+
+    // Super admin role might not be tied to a specific university_id,so check generally
     const { data: superAdminRole } = await adminClient
       .from('user_roles')
       .select('role')
       .eq('user_id', userId)
       .eq('role', 'super_admin')
       .single()
-      
+
     const isSuperAdmin = !!superAdminRole
 
     if (!(isClubAdminOrOfficer || isUniversityAdmin || isSuperAdmin)) {
