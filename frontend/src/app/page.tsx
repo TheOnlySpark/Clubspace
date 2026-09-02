@@ -7,7 +7,7 @@ export default function Home() {
     <div className={styles.container}>
       <div className={styles.contentWrapper}>
         <div className="flex justify-center mb-6">
-          <img src="/logo.png" alt="Campus Crew Logo" className="w-20 h-20 object-contain" />
+          <img src="/logo.png" alt="Campus Crew Logo" className="w-20 h-20 object-contain mix-blend-multiply" />
         </div>
         <h1 className={styles.title}>
           Campus Crew
