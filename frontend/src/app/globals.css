@@ -3,7 +3,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #F8FAFC;
+  --color-background: #F1F5F9;
   --color-foreground: #0F172A;
   --color-primary: #4338CA;
   --color-primary-foreground: #ffffff;
@@ -13,7 +13,7 @@
   --color-muted: #f8fafc;
   --color-muted-foreground: #64748B;
   --color-border: #e2e8f0;
-  --color-card: #ffffff;
+  --color-card: #F8FAFC;
   --color-card-foreground: #0f172a;
   
   --font-sans: 'Inter', sans-serif;
@@ -21,7 +21,7 @@
 }
 
 :root {
-  --background: #F8FAFC;
+  --background: #F1F5F9;
   --foreground: #0F172A;
 }
 
@@ -47,14 +47,14 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Solid Flat utilities */
 .solid-card {
-  background-color: #ffffff;
+  background-color: #F8FAFC;
   border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 1.5rem; /* rounded-3xl default */
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow-sm */
 }
 
 .solid-panel {
-  background-color: #ffffff;
+  background-color: #F8FAFC;
   border-right: 1px solid #e2e8f0;
   border-bottom: 1px solid #e2e8f0;
 }
