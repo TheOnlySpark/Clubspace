@@ -54,21 +54,36 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  try {
-    const { data: { user }, error } = await supabase.auth.getUser()
+  const { pathname } = request.nextUrl
 
-    if (error || !user) {
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    // Protected routes requiring authentication
+    const isProtectedRoute = pathname.startsWith('/dashboard')
+    const isAuthRoute = pathname.startsWith('/auth')
+
+    if (isProtectedRoute && !user) {
       const redirectUrl = new URL('/auth/login', request.url)
-      redirectUrl.searchParams.set('next', request.nextUrl.pathname)
+      redirectUrl.searchParams.set('next', pathname)
       return NextResponse.redirect(redirectUrl)
+    }
+
+    if (isAuthRoute && user) {
+      // If user is already logged in and navigates to auth pages, redirect to dashboard
+      return NextResponse.redirect(new URL('/dashboard', request.url))
     }
 
     return response
   } catch (error) {
-    // Fail CLOSED
-    const redirectUrl = new URL('/auth/login', request.url)
-    redirectUrl.searchParams.set('next', request.nextUrl.pathname)
-    return NextResponse.redirect(redirectUrl)
+    if (pathname.startsWith('/dashboard')) {
+      const redirectUrl = new URL('/auth/login', request.url)
+      redirectUrl.searchParams.set('next', pathname)
+      return NextResponse.redirect(redirectUrl)
+    }
+    return response
   }
 }
 
@@ -76,15 +91,12 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * - icons (public icons)
-     * - auth (authentication routes)
-     * - privacy (privacy policy)
-     * - terms (terms of service)
+     * - api (API routes)
+     * - static files with extensions (.svg, .png, .jpg, .jpeg, .gif, .webp, .ico, .css, .js, fonts, etc.)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|icons|auth|privacy|terms).*)',
+    '/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|woff|woff2|ttf|otf|eot)$).*)',
   ],
 }
