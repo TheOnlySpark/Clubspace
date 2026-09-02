@@ -53,8 +53,8 @@ export default function AnnouncementsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-100">Announcements</h1>
-          <p className="text-sm text-slate-400 mt-1">Create, manage, and review announcements</p>
+          <h1 className="text-2xl font-extrabold text-slate-900">Announcements</h1>
+          <p className="text-sm text-slate-500 mt-1">Create, manage, and review announcements</p>
         </div>
         {canCreate && (
           <Button
@@ -68,8 +68,8 @@ export default function AnnouncementsPage() {
 
       {/* Composer */}
       {showForm && (
-        <div className="rounded-xl border border-slate-700 bg-slate-800 p-6">
-          <h2 className="text-lg font-semibold text-slate-100 mb-4">New Announcement</h2>
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-bold text-slate-900 mb-4">New Announcement</h2>
           <AnnouncementForm
             onSubmit={handleCreate}
             onCancel={() => setShowForm(false)}
@@ -81,15 +81,15 @@ export default function AnnouncementsPage() {
       <PinnedBanner />
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-slate-700 pb-px">
+      <div className="flex gap-1 border-b border-slate-200 pb-px">
         {tabs.filter(t => t.show).map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors ${
+            className={`px-4 py-2.5 text-sm font-semibold rounded-t-lg transition-colors ${
               activeTab === tab.id
-                ? 'text-blue-400 border-b-2 border-blue-400 bg-slate-800/50'
-                : 'text-slate-400 hover:text-slate-300 hover:bg-slate-800/30'
+                ? 'text-indigo-700 border-b-2 border-indigo-700 bg-indigo-50/50'
+                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
             }`}
           >
             {tab.label}
@@ -99,11 +99,11 @@ export default function AnnouncementsPage() {
 
       {/* Content */}
       {loading ? (
-        <div className="text-center py-12 text-slate-400">Loading announcements...</div>
+        <div className="text-center py-12 text-slate-500 font-medium">Loading announcements...</div>
       ) : error ? (
         <div className="text-center py-12">
-          <p className="text-red-400 mb-2">{error}</p>
-          <a href="/dashboard" className="text-sm text-blue-400 hover:underline">Go back to dashboard</a>
+          <p className="text-red-500 font-medium mb-2">{error}</p>
+          <a href="/dashboard" className="text-sm text-indigo-600 hover:underline">Go back to dashboard</a>
         </div>
       ) : activeTab === 'pending' ? (
         <ApprovalQueue />

@@ -2,7 +2,7 @@
   min-height: calc(100vh - 8rem);
   padding: 2rem;
   background-color: transparent;
-  color: #f8fafc;
+  color: #0f172a;
 }
 
 .header {
@@ -23,14 +23,14 @@
 
 .title {
   font-size: 1.75rem;
-  font-weight: 700;
-  color: #f8fafc;
+  font-weight: 800;
+  color: #0f172a;
   margin: 0;
   font-family: var(--font-heading);
 }
 
 .subtitle {
-  color: #94a3b8;
+  color: #64748b;
   margin-top: 0.25rem;
   font-size: 0.875rem;
 }
@@ -73,9 +73,9 @@
   width: 100%;
   padding: 0.5rem 1rem 0.5rem 2.5rem;
   border-radius: 1rem;
-  background-color: #1e293b;
-  border: 1px solid #334155;
-  color: #f8fafc;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
   font-size: 0.875rem;
   transition: all 0.2s ease;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -83,28 +83,28 @@
 
 .searchInput:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  border-color: #4338ca;
+  box-shadow: 0 0 0 2px rgba(67, 56, 202, 0.2);
 }
 
 .createButton {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #2563eb;
+  background-color: #4338ca;
   color: #ffffff;
   padding: 0.5rem 1rem;
   border-radius: 1rem;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   border: none;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 4px 6px -1px rgba(67, 56, 202, 0.2);
 }
 
 .createButton:hover {
-  background-color: #1d4ed8;
+  background-color: #3730a3;
   transform: translateY(-1px);
 }
 
@@ -122,10 +122,10 @@
 .emptyState {
   text-align: center;
   padding: 4rem 1rem;
-  background-color: #1e293b;
-  border-radius: 1rem;
-  border: 1px dashed #334155;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  border: 1px dashed #cbd5e1;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .emptyIcon {
@@ -137,8 +137,8 @@
 
 .emptyTitle {
   font-size: 1.125rem;
-  font-weight: 600;
-  color: #f8fafc;
+  font-weight: 700;
+  color: #0f172a;
   margin-bottom: 0.25rem;
 }
 
@@ -166,19 +166,20 @@
 }
 
 .card {
-  background-color: #1e293b;
-  border: 1px solid #334155;
-  border-radius: 1rem;
+  background-color: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 1.5rem;
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .card:hover {
   transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-  border-color: #475569;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e1;
 }
 
 .cardHeader {
@@ -190,8 +191,8 @@
 
 .cardTitle {
   font-size: 1.125rem;
-  font-weight: 700;
-  color: #f8fafc;
+  font-weight: 800;
+  color: #0f172a;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -200,22 +201,25 @@
 }
 
 .badge {
-  padding: 0.25rem 0.625rem;
+  padding: 0.25rem 0.875rem;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: 9999px;
   white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
 }
 
 .badgeMember {
-  background-color: rgba(16, 185, 129, 0.1);
-  color: #059669;
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
 }
 
 .badgePrivacy {
-  background-color: rgba(37, 99, 235, 0.1);
-  color: #2563eb;
-  text-transform: capitalize;
+  background-color: #f1f5f9;
+  color: #334155;
+  border: 1px solid #e2e8f0;
 }
 
 .cardDescription {
@@ -235,7 +239,7 @@
   align-items: center;
   justify-content: space-between;
   padding-top: 1rem;
-  border-top: 1px solid #334155;
+  border-top: 1px solid #e2e8f0;
   margin-top: auto;
 }
 
@@ -244,7 +248,7 @@
   align-items: center;
   color: #64748b;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .memberIcon {
@@ -256,14 +260,16 @@
 .joinButton {
   background: none;
   border: none;
-  color: #2563eb;
+  color: #4338ca;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  padding: 0;
-  transition: color 0.2s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
 }
 
 .joinButton:hover {
-  color: #1d4ed8;
+  background-color: #e0e7ff;
+  color: #3730a3;
 }

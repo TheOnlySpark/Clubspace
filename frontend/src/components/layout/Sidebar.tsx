@@ -136,13 +136,13 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
                     <a
                       href={item.href}
                       className={cn(
-                        'flex w-full items-center rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200',
+                        'flex w-full items-center rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200',
                         isActive 
-                          ? 'bg-primary text-primary-foreground shadow-sm' 
-                          : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground'
+                          ? 'bg-indigo-50 text-indigo-700 shadow-sm' 
+                          : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                       )}
                     >
-                      <span className={cn("mr-3", isActive ? "text-primary-foreground" : item.iconColor || "text-muted-foreground")}>{item.icon}</span>
+                      <span className={cn("mr-3", isActive ? "text-indigo-700" : item.iconColor || "text-slate-400")}>{item.icon}</span>
                       {item.title}
                     </a>
                   </li>
@@ -157,16 +157,16 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
               await supabase.auth.signOut()
               window.location.href = '/auth/login'
             }}
-            className="flex items-center space-x-3 w-full p-2 rounded-xl hover:bg-accent transition-colors cursor-pointer group"
+            className="flex items-center space-x-3 w-full p-2 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer group"
           >
-            <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold group-hover:scale-105 transition-transform uppercase">
+            <div className="h-10 w-10 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-700 font-bold group-hover:scale-105 transition-transform uppercase">
               {userInitial}
             </div>
             <div className="space-y-0.5 overflow-hidden flex-1">
-              <p className="text-sm font-semibold text-foreground truncate group-hover:text-red-400 transition-colors">Sign Out</p>
-              <p className="text-xs text-primary/80 truncate capitalize">{role ? role.replace('_', ' ') : 'Loading...'}</p>
+              <p className="text-sm font-semibold text-slate-700 truncate group-hover:text-amber-600 transition-colors">Sign Out</p>
+              <p className="text-xs text-slate-500 truncate capitalize">{role ? role.replace('_', ' ') : 'Loading...'}</p>
             </div>
-            <svg className="w-5 h-5 text-muted-foreground group-hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5 text-slate-400 group-hover:text-amber-600 opacity-0 group-hover:opacity-100 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
           </div>
