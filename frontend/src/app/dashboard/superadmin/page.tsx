@@ -113,7 +113,7 @@ export default function SuperAdminPage() {
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-bold text-primary">Super Admin Panel</h1>
+        <h1 className="text-2xl font-extrabold text-slate-900">Super Admin Panel</h1>
         <div className="flex items-center space-x-3 mt-4 sm:mt-0">
           <Button
             variant="outline"
@@ -134,52 +134,52 @@ export default function SuperAdminPage() {
 
       {/* Overview Section */}
       {overview && (
-        <div className="solid-panel border border-border rounded-xl p-6">
-          <h2 className="text-xl font-semibold text-primary mb-4">Platform Overview</h2>
+        <div className="solid-card p-6">
+          <h2 className="text-xl font-bold text-slate-900 mb-4">Platform Overview</h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <h3 className="text-lg font-semibold text-primary mb-2">Universities</h3>
-              <p className="text-2xl font-bold text-primary">{overview.universities}</p>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Universities</h3>
+              <p className="text-2xl font-bold text-indigo-700">{overview.universities}</p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-primary mb-2">Users</h3>
-              <p className="text-2xl font-bold text-primary">{overview.users}</p>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Users</h3>
+              <p className="text-2xl font-bold text-indigo-700">{overview.users}</p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-primary mb-2">Clubs</h3>
-              <p className="text-2xl font-bold text-primary">{overview.clubs}</p>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Clubs</h3>
+              <p className="text-2xl font-bold text-indigo-700">{overview.clubs}</p>
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-primary mb-2">Announcements</h3>
-              <p className="text-2xl font-bold text-primary">{overview.announcements}</p>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Announcements</h3>
+              <p className="text-2xl font-bold text-indigo-700">{overview.announcements}</p>
             </div>
           </div>
         </div>
       )}
 
       {/* Universities Section */}
-      <div className="solid-panel border border-border rounded-xl p-6">
-        <h2 className="text-xl font-semibold text-primary mb-4">Universities</h2>
+      <div className="solid-card p-6">
+        <h2 className="text-xl font-bold text-slate-900 mb-4">Universities</h2>
         {universities.length === 0 ? (
-          <p className="text-center py-4 text-muted-foreground">No universities found.</p>
+          <p className="text-center py-4 text-slate-500">No universities found.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-background border-b border-border">
+            <table className="min-w-full divide-y divide-slate-200">
+              <thead className="bg-slate-50 border-b border-slate-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     Name
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     Slug
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     Created At
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/10">
+              <tbody className="divide-y divide-slate-200 bg-white">
                 {universities.map((uni) => (
                   <tr key={uni.id} className="hover:bg-background transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
@@ -200,33 +200,33 @@ export default function SuperAdminPage() {
       </div>
 
       {/* Users Section */}
-      <div className="solid-panel border border-border rounded-xl p-6">
-        <h2 className="text-xl font-semibold text-primary mb-4">Users</h2>
+      <div className="solid-card p-6">
+        <h2 className="text-xl font-bold text-slate-900 mb-4">Users</h2>
         {users.length === 0 ? (
-          <p className="text-center py-4 text-muted-foreground">No users found.</p>
+          <p className="text-center py-4 text-slate-500">No users found.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-background border-b border-border">
+            <table className="min-w-full divide-y divide-slate-200">
+              <thead className="bg-slate-50 border-b border-slate-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     Name
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     Student Number
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     Role
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     University
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/10">
+              <tbody className="divide-y divide-slate-200 bg-white">
                 {users.map((user) => (
-                  <tr key={user.id} className="hover:bg-background transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
+                  <tr key={user.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
                       {user.first_name || ''} {user.last_name || ''}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">

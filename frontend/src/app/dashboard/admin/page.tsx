@@ -128,7 +128,7 @@ export default function AdminPage() {
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-bold text-primary">University Admin Panel</h1>
+        <h1 className="text-2xl font-extrabold text-slate-900">University Admin Panel</h1>
         <div className="flex items-center space-x-3 mt-4 sm:mt-0">
           <Button
             variant="outline"
@@ -142,20 +142,20 @@ export default function AdminPage() {
         </div>
       </div>
 
-      <div className="solid-panel border border-border rounded-xl p-6">
-        <h2 className="text-xl font-semibold text-primary mb-4">University Overview</h2>
+      <div className="solid-card p-6">
+        <h2 className="text-xl font-bold text-slate-900 mb-4">University Overview</h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">Name</label>
-            <p className="text-lg font-medium">{university.name}</p>
+            <label className="block text-sm font-medium text-slate-500 mb-2">Name</label>
+            <p className="text-lg font-medium text-slate-900">{university.name}</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">Slug</label>
-            <p className="text-sm font-medium">{university.slug}</p>
+            <label className="block text-sm font-medium text-slate-500 mb-2">Slug</label>
+            <p className="text-sm font-medium text-slate-900">{university.slug}</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">Domain Allowlist</label>
-            <p className="text-sm font-medium">
+            <label className="block text-sm font-medium text-slate-500 mb-2">Domain Allowlist</label>
+            <p className="text-sm font-medium text-slate-900">
               {university.domain_allowlist?.length > 0
                 ? university.domain_allowlist.join(', ')
                 : 'No domains allowed'}
@@ -164,15 +164,15 @@ export default function AdminPage() {
         </div>
       </div>
 
-      <div className="solid-panel border border-border rounded-xl p-6">
-        <h2 className="text-xl font-semibold text-primary mb-4">Manage University</h2>
+      <div className="solid-card p-6">
+        <h2 className="text-xl font-bold text-slate-900 mb-4">Manage University</h2>
         <div className="space-y-4">
           <UniversitySettings university={university} onUpdate={fetchUniversity} />
         </div>
       </div>
 
-      <div className="solid-panel border border-border rounded-xl p-6">
-        <h2 className="text-xl font-semibold text-primary mb-4">Clubs Management</h2>
+      <div className="solid-card p-6">
+        <h2 className="text-xl font-bold text-slate-900 mb-4">Clubs Management</h2>
         <ClubManager universityId={university.id} onClubUpdate={() => {
           // TODO: refresh clubs list if needed
         }} />

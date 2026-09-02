@@ -207,24 +207,24 @@ export default function MembersPage() {
       <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex flex-col gap-2">
-            <h1 className="text-4xl font-bold tracking-tight text-gradient">Members</h1>
-            <div className="h-5 w-64 bg-muted/40 rounded-md animate-pulse" />
+            <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">Members</h1>
+            <div className="h-5 w-64 bg-slate-200 rounded-md animate-pulse" />
           </div>
-          <div className="h-10 w-24 bg-muted/40 rounded-lg animate-pulse" />
+          <div className="h-10 w-24 bg-slate-200 rounded-lg animate-pulse" />
         </div>
 
         {/* Skeleton search bar */}
         <div className="solid-card rounded-2xl p-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-            <div className="h-10 w-64 bg-muted/30 rounded-lg animate-pulse" />
-            <div className="h-10 w-32 bg-muted/30 rounded-lg animate-pulse hidden md:block" />
+            <div className="h-10 w-64 bg-slate-100 rounded-lg animate-pulse" />
+            <div className="h-10 w-32 bg-slate-100 rounded-lg animate-pulse hidden md:block" />
           </div>
 
           {/* Skeleton table header */}
-          <div className="border border-border rounded-xl overflow-hidden">
-            <div className="bg-muted/20 px-4 py-3 flex gap-4">
+          <div className="border border-slate-200 rounded-xl overflow-hidden">
+            <div className="bg-slate-50 px-4 py-3 flex gap-4">
               {['w-28', 'w-28', 'w-44', 'w-32', 'w-20', 'w-24'].map((w, i) => (
-                <div key={i} className={`h-4 ${w} bg-muted/40 rounded animate-pulse`} />
+                <div key={i} className={`h-4 ${w} bg-slate-200 rounded animate-pulse`} />
               ))}
             </div>
 
@@ -232,11 +232,11 @@ export default function MembersPage() {
             {[...Array(6)].map((_, i) => (
               <div
                 key={i}
-                className="px-4 py-4 flex gap-4 border-t border-border"
+                className="px-4 py-4 flex gap-4 border-t border-slate-200"
                 style={{ opacity: 1 - i * 0.12 }}
               >
                 {['w-28', 'w-28', 'w-44', 'w-32', 'w-20', 'w-24'].map((w, j) => (
-                  <div key={j} className={`h-4 ${w} bg-muted/30 rounded animate-pulse`} />
+                  <div key={j} className={`h-4 ${w} bg-slate-100 rounded animate-pulse`} />
                 ))}
               </div>
             ))}
@@ -265,8 +265,8 @@ export default function MembersPage() {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <h1 className="text-4xl font-bold tracking-tight text-gradient">Members</h1>
-          <p className="text-muted-foreground text-lg">
+          <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">Members</h1>
+          <p className="text-slate-500 text-lg">
             {members.length} member{members.length !== 1 ? 's' : ''} at your university
           </p>
         </div>
@@ -313,7 +313,7 @@ export default function MembersPage() {
                 }
                 // For regular members/officers/club admins, just show the text nicely formatted
                 return (
-                  <span className="text-foreground capitalize">
+                  <span className="bg-slate-100 text-slate-700 rounded-full py-1 px-3.5 text-xs font-bold tracking-wide uppercase">
                     {row.role?.replace('_', ' ')}
                   </span>
                 )
@@ -337,7 +337,7 @@ export default function MembersPage() {
       {selectedMember && (
         <div className="solid-card rounded-2xl p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-foreground">Member Details</h2>
+            <h2 className="text-xl font-bold text-slate-900">Member Details</h2>
             <div className="flex items-center space-x-2">
               <Button
                 variant="outline"
@@ -360,26 +360,26 @@ export default function MembersPage() {
           ) : selectedMemberDetails ? (
             <div className="space-y-4">
               <div className="flex items-center space-x-4">
-                <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-lg">
+                <div className="h-12 w-12 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-700 font-bold text-lg">
                   {selectedMemberDetails.first_name?.[0]?.toUpperCase()}{selectedMemberDetails.last_name?.[0]?.toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg text-foreground">
+                  <h3 className="font-bold text-lg text-slate-900">
                     {selectedMemberDetails.first_name} {selectedMemberDetails.last_name}
                   </h3>
-                  <p className="text-sm text-muted-foreground">{selectedMemberDetails.email}</p>
+                  <p className="text-sm text-slate-500">{selectedMemberDetails.email}</p>
                   {selectedMemberDetails.course && (
-                    <p className="text-sm text-muted-foreground mt-0.5">📚 {selectedMemberDetails.course}</p>
+                    <p className="text-sm text-slate-500 mt-0.5">📚 {selectedMemberDetails.course}</p>
                   )}
                   {selectedMemberDetails.student_number && (
-                    <p className="text-sm text-muted-foreground mt-0.5">🆔 Student Number: {selectedMemberDetails.student_number}</p>
+                    <p className="text-sm text-slate-500 mt-0.5">🆔 Student Number: {selectedMemberDetails.student_number}</p>
                   )}
                 </div>
               </div>
 
               <div className="flex items-center space-x-4">
-                <span className="font-medium text-foreground">Role:</span>
-                <span className="text-muted-foreground capitalize">
+                <span className="font-semibold text-slate-900">Role:</span>
+                <span className="bg-slate-100 text-slate-700 rounded-full py-1 px-3.5 text-xs font-bold tracking-wide uppercase">
                   {selectedMemberDetails.role?.replace('_', ' ')}
                 </span>
               </div>

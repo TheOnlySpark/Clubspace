@@ -237,7 +237,7 @@ export default function SettingsPage() {
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-bold text-primary">Club Settings</h1>
+        <h1 className="text-2xl font-extrabold text-slate-900">Club Settings</h1>
         <div className="flex items-center space-x-3 mt-4 sm:mt-0">
           <Button
             variant="outline"
@@ -252,35 +252,34 @@ export default function SettingsPage() {
 
       {/* Club Info Section (Only visible if in a club) */}
       {club && (
-        <div className="solid-panel p-6 border border-white/5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
-        <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <div className="solid-card p-6">
+        <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+          <svg className="w-5 h-5 text-indigo-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
           Club Information
         </h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">Name</label>
-            <p className="text-lg font-medium">{club.name}</p>
+            <label className="block text-sm font-medium text-slate-500 mb-2">Name</label>
+            <p className="text-lg font-medium text-slate-900">{club.name}</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">Description</label>
-            <p className="text-muted-foreground">{club.description || 'No description'}</p>
+            <label className="block text-sm font-medium text-slate-500 mb-2">Description</label>
+            <p className="text-slate-600">{club.description || 'No description'}</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">Privacy</label>
-            <p className="text-sm font-medium">{club.privacy}</p>
+            <label className="block text-sm font-medium text-slate-500 mb-2">Privacy</label>
+            <p className="text-sm font-medium text-slate-900">{club.privacy}</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">Join Policy</label>
-            <p className="text-sm font-medium">{club.join_policy}</p>
+            <label className="block text-sm font-medium text-slate-500 mb-2">Join Policy</label>
+            <p className="text-sm font-medium text-slate-900">{club.join_policy}</p>
           </div>
         </div>
 
         {/* Edit club info (only for admins) */}
         {isClubAdmin() || isUniversityAdmin() || isSuperAdmin() && (
-          <div className="mt-6 pt-4 border-t">
-            <h3 className="text-lg font-semibold text-primary mb-4">Edit Club Information</h3>
+          <div className="mt-6 pt-4 border-t border-slate-200">
+            <h3 className="text-lg font-semibold text-indigo-700 mb-4">Edit Club Information</h3>
             {clubEditError && <p className="text-sm text-destructive mb-4">{clubEditError}</p>}
             {isEditingClub ? (
               <div className="space-y-4">
@@ -379,10 +378,9 @@ export default function SettingsPage() {
 
       {/* Invite Links Section (Only visible if in a club) */}
       {club && (
-      <div className="solid-panel p-6 border border-white/5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
-        <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <svg className="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+      <div className="solid-card p-6">
+        <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+          <svg className="w-5 h-5 text-indigo-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
           Invite Links
         </h2>
         {showGenerator && (
@@ -403,13 +401,12 @@ export default function SettingsPage() {
       )}
 
       {/* GDPR Actions Section */}
-      <div className="solid-panel p-6 border border-white/5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
-        <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <svg className="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+      <div className="solid-card p-6">
+        <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+          <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
           Data & Privacy
         </h2>
-        <p className="text-muted-foreground mb-4">
+        <p className="text-slate-500 mb-4">
           Request erasure in accordance with GDPR and POPIA regulations.
         </p>
         <div className="space-y-4">

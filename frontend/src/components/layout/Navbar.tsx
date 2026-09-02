@@ -43,7 +43,7 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
       <header
         ref={ref}
         className={cn(
-          'flex h-16 items-center justify-between px-6 border-b border-slate-700 solid-panel z-50 sticky top-0',
+          'flex h-16 items-center justify-between px-6 border-b border-slate-200 bg-white z-50 sticky top-0',
           className
         )}
         {...props}
@@ -51,34 +51,34 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2 md:hidden">
             <img src="/logo.png" alt="Campus Crew Logo" className="w-8 h-8 object-contain" />
-            <h1 className="text-lg font-bold text-gradient">Campus Crew</h1>
+            <h1 className="text-lg font-bold text-slate-900">Campus Crew</h1>
           </div>
-          <h2 className="hidden md:block text-sm font-medium text-slate-300 px-3 py-1 rounded-full bg-slate-800 border border-slate-700">Overview</h2>
+          <h2 className="hidden md:block text-sm font-medium text-slate-600 px-3 py-1 rounded-full bg-slate-50 border border-slate-200">Overview</h2>
         </div>
         <div className="flex items-center space-x-4">
           <div className="relative" ref={menuRef}>
             <button
               onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 border border-blue-200 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 border border-indigo-100 shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200"
               aria-label="User menu"
             >
-              <div className="text-sm font-semibold text-white uppercase">
+              <div className="text-sm font-semibold text-indigo-700 uppercase">
                 {userInitial}
               </div>
             </button>
 
             {isUserMenuOpen && (
-              <div className="absolute right-0 mt-2 w-48 rounded-xl bg-slate-800 border border-slate-700 shadow-2xl py-1 z-50 animate-in fade-in zoom-in-95 duration-200">
+              <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white border border-slate-200 shadow-lg py-1 z-50 animate-in fade-in zoom-in-95 duration-200">
                 <button
                   onClick={() => { setIsUserMenuOpen(false); router.push('/dashboard/settings') }}
-                  className="w-full text-left px-4 py-2 text-sm text-foreground hover:bg-slate-700 transition-colors"
+                  className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
                 >
                   Settings
                 </button>
-                <div className="h-px bg-slate-700 my-1" />
+                <div className="h-px bg-slate-100 my-1" />
                 <button
                   onClick={handleSignOut}
-                  className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-900/30 transition-colors font-medium"
+                  className="w-full text-left px-4 py-2 text-sm text-amber-600 hover:bg-amber-50 transition-colors font-medium"
                 >
                   Sign out
                 </button>
