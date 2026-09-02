@@ -50,7 +50,7 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
       >
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2 md:hidden">
-            <img src="/logo.png" alt="Campus Crew Logo" className="w-8 h-8 object-contain mix-blend-multiply" />
+            <img src="/logo.png" alt="Campus Crew Logo" className="w-8 h-8 object-contain mix-blend-multiply contrast-125 brightness-110" />
             <h1 className="text-lg font-bold text-slate-900">Campus Crew</h1>
           </div>
           <h2 className="hidden md:block text-sm font-medium text-slate-600 px-3 py-1 rounded-full bg-slate-50 border border-slate-200">Overview</h2>

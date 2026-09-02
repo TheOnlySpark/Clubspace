@@ -9,7 +9,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md space-y-8 solid-card p-8 md:p-10 rounded-[2rem] animate-in fade-in zoom-in-95 duration-500 relative overflow-hidden">
         <div className="text-center space-y-2 relative z-10">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 mb-4 shadow-sm">
-            <img src="/logo.png" alt="Campus Crew Logo" className="w-8 h-8 object-contain mix-blend-multiply" />
+            <img src="/logo.png" alt="Campus Crew Logo" className="w-8 h-8 object-contain mix-blend-multiply contrast-125 brightness-110" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-gradient">Create account</h1>
           <p className="text-muted-foreground">Join your university&apos;s Campus Crew</p>
